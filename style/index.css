@@ -1,0 +1,38 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+header .navbar{
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.w-50{
+    max-width: 50%;
+    margin: 0 auto;
+}
+
+.w-60{
+    max-width: 60%;
+    margin: 0 auto;
+}
+
+.w-70{
+    max-width: 70%;
+    margin: 0 auto;
+}
+
+.w-80{
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.w-90{
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+.spaceatas{
+    margin-top: 5%;
+}
