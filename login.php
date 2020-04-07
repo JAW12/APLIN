@@ -11,8 +11,8 @@
         <link href="css/all.css" rel="stylesheet">
 
         <!-- CSS template login -->
-        <!--===============================================================================================-->
-        <link rel="icon" type="image/png" href="images/login/icons/favicon.ico" />        
+        <!--===============================================================================================-->        
+        <link rel="icon" type="image/png" href="res/img/goblin.png" />     
         <!--===============================================================================================-->
         <link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
         <!--===============================================================================================-->
@@ -37,32 +37,45 @@
     </head>
     <body>
         <div class="limiter">
-            <div class="container-login100" style="background-image: url('images/login/bg-06.jpg');">
-                <div class="wrap-login100 p-t-30 p-b-50">
-                    <span class="login100-form-title p-b-41">
+            <div class="container-login100" style="background-image: url('res/img/login/bg-06.jpg');">
+                <div class="wrap-login100 p-t-30 p-b-50">      
+                    <!-- <span class="login100-form-title p-b-41">
                         Account Login
-                    </span>
-                    <form class="login100-form validate-form p-b-33 p-t-5">
-                        <div class="wrap-input100 validate-input" data-validate="Enter username">
-                            <input class="input100" type="text" name="username" placeholder="User name">
-                            <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                    </span> -->
+                    <div class="card rounded">
+                        <div class="text-center mt-5">
+                            <img src="res/img/logo.png" class="card-img mx-auto w-50 h-50" alt="...">
                         </div>
+                        <div class="card-body" style="box-sizing: border-box">                        
+                            <form class="login100-form validate-form p-b-33 p-t-5">
+                                <div class="wrap-input100 validate-input" data-validate="Enter username">
+                                    <input class="input100" type="text" name="username" placeholder="Username">
+                                    <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                                </div>
 
-                        <div class="wrap-input100 validate-input" data-validate="Enter password">
-                            <input class="input100" type="password" name="pass" placeholder="Password">
-                            <span class="focus-input100" data-placeholder="&#xe80f;"></span>
+                                <div class="wrap-input100 validate-input" data-validate="Enter password">
+                                    <input class="input100" type="password" name="pass" placeholder="Password">
+                                    <span class="focus-input100" data-placeholder="&#xe80f;"></span>
+                                </div>
+
+                                <div class="container-login100-form-btn m-t-32 d-flex justify-content-around">
+                                    <button class="login100-form-btn w-75">
+                                        Login
+                                    </button>
+                                </div>
+
+                                <div class="container text-center">
+                                    <button class="btn btn-link mt-4 text-decoration-none">
+                                        <span class="text-secondary mt-2">Don't have an account?</span>
+                                        <span class="text-primary font-weight-bold"> &nbsp;Sign Up </span>
+                                    </button>
+                                </div>
+
+                            </form>
                         </div>
-
-                        <div class="container-login100-form-btn m-t-32 d-flex justify-content-around">
-                            <button class="login100-form-btn">
-                                Login
-                            </button>
-                            <button class="login100-form-btn">
-                                Register
-                            </button>
-                        </div>
-
-                    </form>
+                    </div>
+                    
+                    
                 </div>
             </div>
         </div>
