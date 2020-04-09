@@ -63,27 +63,44 @@
                                 </div>
                                 <div class="wrap-input100 validate-input" data-validate="Enter Email">
                                     <input class="input100" type="text" name="email" placeholder="Email">
-                                    <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                                    <span class="focus-input100" data-placeholder="&#xe818;"></span>
                                 </div>
                                 <div class="wrap-input100 validate-input" data-validate="Enter First Name">
                                     <input class="input100" type="text" name="firstname" placeholder="First Name">
-                                    <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                                    <span class="focus-input100" data-placeholder="&#xe890;"></span>
                                 </div>
                                 <div class="wrap-input100 validate-input" data-validate="Enter Last Name">
                                     <input class="input100" type="text" name="lastname" placeholder="Last Name">
-                                    <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                                    <span class="focus-input100" data-placeholder="&#xe892;"></span>
                                 </div>
-                                
+                                <div class="row">
+                                <legend class="col-form-label col-sm-3 pt-0">Gender</legend>
+                                <div class="col-sm-9">
+                                    <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
+                                    <label class="form-check-label" for="gridRadios1">
+                                        Laki-Laki
+                                    </label>
+                                    </div>
+                                    <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+                                    <label class="form-check-label" for="gridRadios2">
+                                       Perempuan
+                                    </label>
+                                    </div>
+                                </div>
+                                </div>
                                 <div class="container-login100-form-btn m-t-32 d-flex justify-content-around">
                                     <button class="login100-form-btn w-75">
                                         Register
                                     </button>
                                 </div>
-
+                                
+                                
                                 <div class="container text-center">
                                     <button class="btn btn-link mt-4 text-decoration-none">
-                                        <span class="text-secondary mt-2">Don't have an account?</span>
-                                        <span class="text-primary font-weight-bold"> &nbsp;Sign Up </span>
+                                        <span class="text-secondary mt-2"> have an account?</span>
+                                        <span class="text-primary font-weight-bold"> &nbsp;Log in</span>
                                     </button>
                                 </div>
 
