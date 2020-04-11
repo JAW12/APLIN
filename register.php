@@ -36,7 +36,6 @@
         <link href="style/lrc.css" rel="stylesheet">
 
         <!-- JS Sendiri -->
-
         <title>Register Page</title>
     </head>
     <body>
