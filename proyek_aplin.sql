@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 13, 2020 at 06:51 PM
+-- Generation Time: Apr 13, 2020 at 09:39 PM
 -- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.1
+-- PHP Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -49,7 +49,11 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`, `QTY`) VALUES
-(2, 3, 1);
+(2, 3, 1),
+(5, 6, 30),
+(6, 7, 1),
+(7, 6, 2),
+(7, 7, 1);
 
 -- --------------------------------------------------------
 
@@ -65,7 +69,7 @@ CREATE TABLE `customer` (
   `NAMA_DEPAN_CUSTOMER` varchar(50) NOT NULL,
   `NAMA_BELAKANG_CUSTOMER` varchar(50) NOT NULL,
   `JENIS_KELAMIN_CUSTOMER` varchar(1) NOT NULL COMMENT 'L = Laki-laki; P = Perempuan; U=Undefined (untuk organisasi/perusahaan)'
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `customer`
@@ -74,7 +78,9 @@ CREATE TABLE `customer` (
 INSERT INTO `customer` (`ROW_ID_CUSTOMER`, `USERNAME`, `PASSWORD`, `EMAIL`, `NAMA_DEPAN_CUSTOMER`, `NAMA_BELAKANG_CUSTOMER`, `JENIS_KELAMIN_CUSTOMER`) VALUES
 (1, 'winda', 'winda1234', 'wau959@gmail.com', 'Winda', 'Angelina', 'P'),
 (2, 'bambang', 'bambang1234', 'bambangmantoel@yahoo.com', 'Bambang', 'Mantoel', 'L'),
-(5, 'majujaya', 'majujaya1234', 'majuselalu@gmail.com', 'PT MAJU ', 'JAYA', 'U');
+(5, 'majujaya', 'majujaya1234', 'majuselalu@gmail.com', 'PT MAJU ', 'JAYA', 'U'),
+(6, 'Siti', 'siti001', 'sitin1@gmail.com', 'Siti', 'Nurbaya', 'P'),
+(7, 'Jamesj1', 'jsj1', 'jamesjeff@gmail.com', 'James', 'Jefferson', 'L');
 
 -- --------------------------------------------------------
 
@@ -89,6 +95,15 @@ CREATE TABLE `dtrans` (
   `HARGA_PRODUK` int(11) DEFAULT NULL,
   `SUBTOTAL` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `dtrans`
+--
+
+INSERT INTO `dtrans` (`ROW_ID_HTRANS`, `ROW_ID_PRODUK`, `QTY_PRODUK`, `HARGA_PRODUK`, `SUBTOTAL`) VALUES
+(1, 5, 3, 195605, 586815),
+(1, 6, 3, 1500000, 4500000),
+(1, 7, 2, 259000, 518000);
 
 --
 -- Triggers `dtrans`
@@ -150,7 +165,16 @@ CREATE TABLE `htrans` (
   `TOTAL_TRANS` int(11) DEFAULT 0,
   `STATUS_PEMBAYARAN` int(11) NOT NULL COMMENT '0=Pending,  1= Accepted,  2=Rejected',
   `LOKASI_FOTO_BUKTI_PEMBAYARAN` int(11) DEFAULT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `htrans`
+--
+
+INSERT INTO `htrans` (`ROW_ID_HTRANS`, `TANGGAL_TRANS`, `NO_NOTA`, `TOTAL_TRANS`, `STATUS_PEMBAYARAN`, `LOKASI_FOTO_BUKTI_PEMBAYARAN`) VALUES
+(1, '2020-02-20 02:33:56', '2020022000001', 5604815, 1, NULL),
+(2, '2020-03-18 02:35:55', '2020031800001', 0, 2, NULL),
+(3, '2020-04-14 02:36:31', '2020041400001', 0, 0, NULL);
 
 --
 -- Triggers `htrans`
@@ -177,7 +201,7 @@ CREATE TABLE `kategori` (
   `ID_KATEGORI` varchar(5) DEFAULT NULL,
   `NAMA_KATEGORI` varchar(30) NOT NULL,
   `STATUS_AKTIF_KATEGORI` varchar(1) NOT NULL COMMENT '1=aktif, 0= tidak aktif'
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `kategori`
@@ -187,7 +211,10 @@ INSERT INTO `kategori` (`ROW_ID_KATEGORI`, `ID_KATEGORI`, `NAMA_KATEGORI`, `STAT
 (1, 'BT001', 'BATH TUB', '1'),
 (2, 'WA001', 'WASTAFEL', '0'),
 (3, 'KE001', 'KERAMIK', '1'),
-(6, 'BO001', 'BOHLAM', '1');
+(6, 'BO001', 'BOHLAM', '1'),
+(7, 'AP001', 'APPLIANCES', '1'),
+(9, 'EA001', 'ELECTRICAL AND LIGHTING', '1'),
+(10, 'RC001', 'RICE COOKER', '1');
 
 --
 -- Triggers `kategori`
@@ -228,6 +255,15 @@ CREATE TABLE `kategori_produk` (
   `ROW_ID_KATEGORI_CHILD` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `kategori_produk`
+--
+
+INSERT INTO `kategori_produk` (`ROW_ID_PRODUK`, `ROW_ID_KATEGORI_PARENT`, `ROW_ID_KATEGORI_CHILD`) VALUES
+(5, 9, 6),
+(6, 7, 2),
+(7, 7, 10);
+
 -- --------------------------------------------------------
 
 --
@@ -247,7 +283,7 @@ CREATE TABLE `produk` (
   `DESKRIPSI_PRODUK` text DEFAULT NULL,
   `LOKASI_FOTO_PRODUK` text DEFAULT NULL,
   `STOK_PRODUK` int(11) NOT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `produk`
@@ -256,7 +292,9 @@ CREATE TABLE `produk` (
 INSERT INTO `produk` (`ROW_ID_PRODUK`, `ID_PRODUK`, `NAMA_PRODUK`, `STATUS_AKTIF_PRODUK`, `HARGA_PRODUK`, `DIMENSI_KEMASAN`, `DIMENSI_PRODUK`, `BERAT_PRODUK`, `SATUAN_PRODUK`, `DESKRIPSI_PRODUK`, `LOKASI_FOTO_PRODUK`, `STOK_PRODUK`) VALUES
 (3, 'CR001', 'CERAMAX ROJO FSB0371 W/HUNG BA', '1', 472500, '40cm X 40cm X 14cm', '38cm X 38cm X 12cm', '9 Kg', 'PCS', NULL, 'CERAMAX ROJO FSB0371 Wall Hung Wastafel\r\n\r\nSpesifikasi:\r\n\r\nTipe: Wall Hung Basin\r\nDimensi 380x380x120MM\r\nMaterial: Porselen\r\nFitur:\r\n\r\nHarga terjangkau\r\nMaterial berbahan porselen mudah dibersihkan dan tidak ada tepian yang tajam\r\nSistem pembuangan yang lancar\r\nDesain elegan\r\nHemat ruang', 54),
 (4, 'CR002', 'CERAMAX ROJO FSB0372 W/HUNG BA', '1', 772500, '40cm X 40cm X 14cm', '38cm X 38cm X 12cm', '15 Kg', 'PCS', 'CERAMAX ROJO FSB0371 Wall Hung Wastafel\r\n\r\nSpesifikasi:\r\n\r\nTipe: Wall Hung Basin\r\nDimensi 380x380x120MM\r\nMaterial: Porselen\r\nFitur:\r\n\r\nHarga terjangkau\r\nMaterial berbahan porselen mudah dibersihkan dan tidak ada tepian yang tajam\r\nSistem pembuangan yang lancar\r\nDesain elegan\r\nHemat ruang', '', 6),
-(5, 'P1001', 'PHILIPS 17401 59449 105 9W 65K MESON CD G3 (3PC)', '1', 195605, '14cm X 12cm X 12cm', '14cm X 12cm X 12cm', '200 gr', 'PCS', 'Keunggulan:\r\n\r\nLED Downlight dengan harga terjangku\r\nTermasuk lampu & driver terintegrasi, Anda bisa langsung\r\nmemasangnya\r\nMudah dipasang\r\nCahaya yang rata dengan diffuser anti silau\r\nHemat Listrik = Hemat Biaya!\r\nTahan lama, umur hingga 15.000 jam\r\nTersedia dalam berbagai macam pilihan ukuran & watt\r\nSpesifikasi:\r\n\r\nColor: Putih (cool day light)\r\nPower: 9W\r\nLumen: 650lm (6500K)\r\nDiameter: 120mm\r\nKetebalan: 47mm\r\nLubang Plafon / Cutout: 105mm / 4.1 inch\r\nKoneksi: flying wire\r\nUmur: hingga 15.000 jam\r\nCRI80\r\nIP20\r\n220-240V ~ 50-60 Hz\r\nTidak dapat diredupkan / Non Dimmable\r\nTidak dapat diganti lampu atau driver-nya saja\r\nUntuk pemakaian di dalam ruangan / Indoor use only', NULL, -8);
+(5, 'P1001', 'PHILIPS 17401 59449 105 9W 65K MESON CD G3 (3PC)', '1', 195605, '14cm X 12cm X 12cm', '14cm X 12cm X 12cm', '200 gr', 'PCS', 'Keunggulan:\r\n\r\nLED Downlight dengan harga terjangku\r\nTermasuk lampu & driver terintegrasi, Anda bisa langsung\r\nmemasangnya\r\nMudah dipasang\r\nCahaya yang rata dengan diffuser anti silau\r\nHemat Listrik = Hemat Biaya!\r\nTahan lama, umur hingga 15.000 jam\r\nTersedia dalam berbagai macam pilihan ukuran & watt\r\nSpesifikasi:\r\n\r\nColor: Putih (cool day light)\r\nPower: 9W\r\nLumen: 650lm (6500K)\r\nDiameter: 120mm\r\nKetebalan: 47mm\r\nLubang Plafon / Cutout: 105mm / 4.1 inch\r\nKoneksi: flying wire\r\nUmur: hingga 15.000 jam\r\nCRI80\r\nIP20\r\n220-240V ~ 50-60 Hz\r\nTidak dapat diredupkan / Non Dimmable\r\nTidak dapat diganti lampu atau driver-nya saja\r\nUntuk pemakaian di dalam ruangan / Indoor use only', NULL, -11),
+(6, 'TF001', 'TIDY FSA0042 WHITE ONE PIECE TOILET', '1', 1500000, '70cm X 44cm X 61cm', '68cm X 42cm X 59cm', '41kg', 'SET', 'TIDY FSA0042 WHITE ONE PIECE TOILET\r\n\r\nSpesifikasi:\r\n\r\nTipe: Monoblok / One piece toilet\r\nSistem pembuangan: Siphonic\r\nSoft closing seat cover\r\nAs/Jarak dinding/Rough-in/S-trap 300mm\r\nOutfall diameter 100mm\r\nMaterial: Porselen\r\nFitur:\r\n\r\nHarga relatif terjangkau\r\nOne piece toilet dengan ukuran yang sesuai dengan masyarakat Asia\r\nDesain modern\r\nHemat ruang\r\nSistem syphonic', NULL, 47),
+(7, 'GX001', 'GLUCKLICH X01HI1 0.3LT 200W RICE COOKER', '1', 259000, '20cm X 20cm X 22cm', '18cm X 18cm X 20cm', '3kg', 'UNIT', 'Keunggulan:\r\n\r\nBagian dalam anti lengket\r\nFitur tetap hangat\r\nBahan lebih tebal\r\nPerlindungan sekering ganda\r\nPerlindungan suhu tunggi\r\nBaki pengukus tebal\r\nGaransi service 2 tahun\r\nDapat sendok, mangkuk takar, kabel\r\nSpesifikasi:\r\n\r\nGaris air: 0,3 liter\r\nVolume pot: 3 liter\r\nKetebalan: 0.75mm\r\nTegangan: 50/60Hz, 220V\r\nDaya: 200 Watt', NULL, 198);
 
 --
 -- Triggers `produk`
@@ -295,6 +333,15 @@ CREATE TABLE `wishlist` (
   `ROW_ID_CUSTOMER` int(11) NOT NULL,
   `ROW_ID_PRODUK` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `wishlist`
+--
+
+INSERT INTO `wishlist` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`) VALUES
+(6, 5),
+(6, 6),
+(7, 7);
 
 --
 -- Indexes for dumped tables
@@ -364,25 +411,25 @@ ALTER TABLE `wishlist`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `ROW_ID_CUSTOMER` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ROW_ID_CUSTOMER` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `htrans`
 --
 ALTER TABLE `htrans`
-  MODIFY `ROW_ID_HTRANS` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ROW_ID_HTRANS` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `kategori`
 --
 ALTER TABLE `kategori`
-  MODIFY `ROW_ID_KATEGORI` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ROW_ID_KATEGORI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `ROW_ID_PRODUK` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ROW_ID_PRODUK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
@@ -392,30 +439,30 @@ ALTER TABLE `produk`
 -- Constraints for table `cart`
 --
 ALTER TABLE `cart`
-  ADD CONSTRAINT `FK_CART_ROW_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`row_id_customer`),
-  ADD CONSTRAINT `FK_CART_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`row_id_produk`);
+  ADD CONSTRAINT `FK_CART_ROW_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`),
+  ADD CONSTRAINT `FK_CART_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
 
 --
 -- Constraints for table `dtrans`
 --
 ALTER TABLE `dtrans`
   ADD CONSTRAINT `FK_DTRANS_ROW_HTRANS` FOREIGN KEY (`ROW_ID_HTRANS`) REFERENCES `htrans` (`ROW_ID_HTRANS`),
-  ADD CONSTRAINT `FK_DTRANS_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`row_id_produk`);
+  ADD CONSTRAINT `FK_DTRANS_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
 
 --
 -- Constraints for table `kategori_produk`
 --
 ALTER TABLE `kategori_produk`
-  ADD CONSTRAINT `FK_KATEGORI_PRODUK_ROW_KAT_CHILD` FOREIGN KEY (`row_id_kategori_child`) REFERENCES `kategori` (`ROW_ID_KATEGORI`),
-  ADD CONSTRAINT `FK_KATEGORI_PRODUK_ROW_KAT_PARENT` FOREIGN KEY (`row_id_kategori_parent`) REFERENCES `kategori` (`ROW_ID_KATEGORI`),
-  ADD CONSTRAINT `FK_KATEGORI_PRODUK_ROW_PRODUK` FOREIGN KEY (`row_id_produk`) REFERENCES `produk` (`row_id_produk`);
+  ADD CONSTRAINT `FK_KATEGORI_PRODUK_ROW_KAT_CHILD` FOREIGN KEY (`ROW_ID_KATEGORI_CHILD`) REFERENCES `kategori` (`ROW_ID_KATEGORI`),
+  ADD CONSTRAINT `FK_KATEGORI_PRODUK_ROW_KAT_PARENT` FOREIGN KEY (`ROW_ID_KATEGORI_PARENT`) REFERENCES `kategori` (`ROW_ID_KATEGORI`),
+  ADD CONSTRAINT `FK_KATEGORI_PRODUK_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
 
 --
 -- Constraints for table `wishlist`
 --
 ALTER TABLE `wishlist`
-  ADD CONSTRAINT `FK_WISHLIST_ROW_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`row_id_customer`),
-  ADD CONSTRAINT `FK_WISHLIST_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`row_id_produk`);
+  ADD CONSTRAINT `FK_WISHLIST_ROW_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`),
+  ADD CONSTRAINT `FK_WISHLIST_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
