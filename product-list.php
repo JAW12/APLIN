@@ -46,7 +46,7 @@
                                     </p>                            
                                 </div>
                                 <div class="card-body p-2 d-flex justify-content-around my-2 mt-n1">
-                                    <button class="btn btn-primary w-100 rounded" name="lihatDetail">Lihat Detail</button>
+                                    <button class="btn btn-primary w-100 rounded" name="lihatDetail" formaction="product-detail.php">Lihat Detail</button>
                                 </div>
                             </div>                        
                         </form>                        
