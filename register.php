@@ -84,7 +84,7 @@
                                     <div class="form-check">
                                     <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
                                     <label class="form-check-label" for="gridRadios2">
-                                       Perempuan
+                                        Perempuan
                                     </label>
                                     </div>
                                 </div>
@@ -94,15 +94,12 @@
                                         Register
                                     </button>
                                 </div>
-                                
-                                
                                 <div class="container text-center">
-                                    <button class="btn btn-link mt-4 text-decoration-none">
+                                    <button class="mt-4 text-decoration-none">
                                         <span class="text-secondary mt-2"> have an account?</span>
-                                        <span class="text-primary font-weight-bold"> &nbsp;Log in</span>
+                                        <a href="login.php" class="text-primary font-weight-bold"> &nbsp;Log in</a>
                                     </button>
                                 </div>
-
                             </form>
                         </div>
                     </div>

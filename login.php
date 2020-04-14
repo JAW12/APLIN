@@ -65,17 +65,14 @@
                                 </div>
 
                                 <div class="container text-center">
-                                    <button class="btn btn-link mt-4 text-decoration-none">
+                                    <button class="mt-4 text-decoration-none">
                                         <span class="text-secondary mt-2">Don't have an account?</span>
-                                        <span class="text-primary font-weight-bold"> &nbsp;Sign Up </span>
+                                        <a href="register.php" class="text-primary font-weight-bold"> &nbsp;Sign Up</a>
                                     </button>
                                 </div>
-
                             </form>
                         </div>
                     </div>
-                    
-                    
                 </div>
             </div>
         </div>
