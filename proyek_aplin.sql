@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 14, 2020 at 09:01 PM
+-- Generation Time: Apr 15, 2020 at 05:50 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -64,7 +64,7 @@ INSERT INTO `cart` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`, `QTY`) VALUES
 CREATE TABLE `customer` (
   `ROW_ID_CUSTOMER` int(11) NOT NULL,
   `USERNAME` varchar(20) NOT NULL,
-  `PASSWORD` varchar(20) NOT NULL,
+  `PASSWORD` text NOT NULL,
   `EMAIL` varchar(320) NOT NULL,
   `NAMA_DEPAN_CUSTOMER` varchar(50) NOT NULL,
   `NAMA_BELAKANG_CUSTOMER` varchar(50) NOT NULL,
