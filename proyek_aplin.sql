@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 15, 2020 at 05:50 AM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.1
+-- Waktu pembuatan: 16 Apr 2020 pada 20.15
+-- Versi server: 10.4.11-MariaDB
+-- Versi PHP: 7.4.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -24,7 +23,7 @@ SET time_zone = "+00:00";
 
 DELIMITER $$
 --
--- Functions
+-- Fungsi
 --
 CREATE DEFINER=`root`@`localhost` FUNCTION `F_HELLO` (`PESAN` VARCHAR(20)) RETURNS TEXT CHARSET utf8 BEGIN
 	RETURN PESAN;
@@ -35,7 +34,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cart`
+-- Struktur dari tabel `cart`
 --
 
 CREATE TABLE `cart` (
@@ -45,7 +44,7 @@ CREATE TABLE `cart` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cart`
+-- Dumping data untuk tabel `cart`
 --
 
 INSERT INTO `cart` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`, `QTY`) VALUES
@@ -53,12 +52,22 @@ INSERT INTO `cart` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`, `QTY`) VALUES
 (5, 6, 30),
 (6, 7, 1),
 (7, 6, 2),
-(7, 7, 1);
+(7, 7, 1),
+(7, 11, 2),
+(8, 8, 12),
+(9, 13, 10),
+(9, 14, 5),
+(10, 9, 3),
+(10, 13, 7),
+(12, 10, 5),
+(12, 13, 2),
+(13, 14, 1),
+(15, 16, 20);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `customer`
+-- Struktur dari tabel `customer`
 --
 
 CREATE TABLE `customer` (
@@ -72,7 +81,7 @@ CREATE TABLE `customer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `customer`
+-- Dumping data untuk tabel `customer`
 --
 
 INSERT INTO `customer` (`ROW_ID_CUSTOMER`, `USERNAME`, `PASSWORD`, `EMAIL`, `NAMA_DEPAN_CUSTOMER`, `NAMA_BELAKANG_CUSTOMER`, `JENIS_KELAMIN_CUSTOMER`) VALUES
@@ -80,12 +89,20 @@ INSERT INTO `customer` (`ROW_ID_CUSTOMER`, `USERNAME`, `PASSWORD`, `EMAIL`, `NAM
 (2, 'bambang', 'bambang1234', 'bambangmantoel@yahoo.com', 'Bambang', 'Mantoel', 'L'),
 (5, 'majujaya', 'majujaya1234', 'majuselalu@gmail.com', 'PT MAJU ', 'JAYA', 'U'),
 (6, 'Siti', 'siti001', 'sitin1@gmail.com', 'Siti', 'Nurbaya', 'P'),
-(7, 'Jamesj1', 'jsj1', 'jamesjeff@gmail.com', 'James', 'Jefferson', 'L');
+(7, 'Jamesj1', 'jsj1', 'jamesjeff@gmail.com', 'James', 'Jefferson', 'L'),
+(8, 'nadya', 'nadya1', 'nadya@gmail.com', 'nadya', 'hamdani', 'L'),
+(9, 'arnold', 'arnold2', 'arnold@gmail.com', 'arnold', 'Christopher', 'L'),
+(10, 'Raymond', 'raymond1', 'Raymond@yahoo.com', 'raymond', 'yaputra', 'L'),
+(11, 'Felia', 'felia1', 'felia@gmail.com', 'felia', 'subagyo', 'P'),
+(12, 'juan', 'juan1', 'juan@gmail.com', 'juan', 'tjipta', 'L'),
+(13, 'angel', 'angel1', 'angel@gmail.com', 'angel', 'yaputri', 'P'),
+(14, 'juci', 'juci1', 'juci@gmail.com', 'juci', 'tjipta', 'U'),
+(15, 'hamdani', 'hamdani1', 'hamdani2@gmail.com', 'hamdani', 'evan', 'U');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `dtrans`
+-- Struktur dari tabel `dtrans`
 --
 
 CREATE TABLE `dtrans` (
@@ -97,16 +114,27 @@ CREATE TABLE `dtrans` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `dtrans`
+-- Dumping data untuk tabel `dtrans`
 --
 
 INSERT INTO `dtrans` (`ROW_ID_HTRANS`, `ROW_ID_PRODUK`, `QTY_PRODUK`, `HARGA_PRODUK`, `SUBTOTAL`) VALUES
 (1, 5, 3, 195605, 586815),
 (1, 6, 3, 1500000, 4500000),
-(1, 7, 2, 259000, 518000);
+(1, 7, 2, 259000, 518000),
+(3, 11, 4, 1161000, 4644000),
+(4, 13, 2, 4099000, 8198000),
+(4, 14, 1, 489000, 489000),
+(6, 10, 3, 381694, 1145082),
+(7, 6, 2, 1500000, 3000000),
+(8, 14, 7, 489000, 3423000),
+(12, 11, 5, 1161000, 5805000),
+(14, 5, 1, 195605, 195605),
+(15, 9, 2, 1056400, 2112800),
+(16, 13, 3, 4099000, 12297000),
+(17, 11, 4, 1161000, 4644000);
 
 --
--- Triggers `dtrans`
+-- Trigger `dtrans`
 --
 DELIMITER $$
 CREATE TRIGGER `afterInsert_dtrans_check` AFTER INSERT ON `dtrans` FOR EACH ROW BEGIN
@@ -155,7 +183,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `htrans`
+-- Struktur dari tabel `htrans`
 --
 
 CREATE TABLE `htrans` (
@@ -168,16 +196,28 @@ CREATE TABLE `htrans` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `htrans`
+-- Dumping data untuk tabel `htrans`
 --
 
 INSERT INTO `htrans` (`ROW_ID_HTRANS`, `TANGGAL_TRANS`, `NO_NOTA`, `TOTAL_TRANS`, `STATUS_PEMBAYARAN`, `LOKASI_FOTO_BUKTI_PEMBAYARAN`) VALUES
 (1, '2020-02-20 02:33:56', '2020022000001', 5604815, 1, NULL),
 (2, '2020-03-18 02:35:55', '2020031800001', 0, 2, NULL),
-(3, '2020-04-14 02:36:31', '2020041400001', 0, 0, NULL);
+(3, '2020-04-14 02:36:31', '2020041400001', 4644000, 0, NULL),
+(4, '2020-04-16 02:01:01', '2020041600001', 8687000, 1, NULL),
+(5, '2020-04-17 02:01:44', '2020041700001', 0, 0, NULL),
+(6, '2020-04-17 02:02:04', '2020041700002', 1145082, 2, NULL),
+(7, '2020-04-17 02:02:25', '2020041700003', 3000000, 0, NULL),
+(8, '2020-04-17 02:02:38', '2020041700004', 3423000, 1, NULL),
+(11, '2020-04-17 02:03:42', '2020041700005', 0, 1, NULL),
+(12, '2020-04-17 02:03:54', '2020041700006', 5805000, 0, NULL),
+(13, '2020-04-17 02:04:03', '2020041700007', 0, 2, NULL),
+(14, '2020-04-17 02:04:16', '2020041700008', 195605, 1, NULL),
+(15, '2020-04-17 02:04:28', '2020041700009', 2112800, 1, NULL),
+(16, '2020-04-17 02:04:39', '2020041700010', 19311000, 2, NULL),
+(17, '2020-04-17 02:04:48', '2020041700011', 4644000, 1, NULL);
 
 --
--- Triggers `htrans`
+-- Trigger `htrans`
 --
 DELIMITER $$
 CREATE TRIGGER `beforeInsert_htrans_check` BEFORE INSERT ON `htrans` FOR EACH ROW BEGIN
@@ -193,7 +233,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kategori`
+-- Struktur dari tabel `kategori`
 --
 
 CREATE TABLE `kategori` (
@@ -204,7 +244,7 @@ CREATE TABLE `kategori` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `kategori`
+-- Dumping data untuk tabel `kategori`
 --
 
 INSERT INTO `kategori` (`ROW_ID_KATEGORI`, `ID_KATEGORI`, `NAMA_KATEGORI`, `STATUS_AKTIF_KATEGORI`) VALUES
@@ -214,10 +254,18 @@ INSERT INTO `kategori` (`ROW_ID_KATEGORI`, `ID_KATEGORI`, `NAMA_KATEGORI`, `STAT
 (6, 'BO001', 'BOHLAM', '1'),
 (7, 'AP001', 'APPLIANCES', '1'),
 (9, 'EA001', 'ELECTRICAL AND LIGHTING', '1'),
-(10, 'RC001', 'RICE COOKER', '1');
+(10, 'RC001', 'RICE COOKER', '1'),
+(20, 'HD001', 'HOME DECORATION', '1'),
+(21, 'FA001', 'FLOOR AND WALL', '0'),
+(22, 'HI001', 'HOME IMPROVEMENT', '0'),
+(23, 'OU001', 'OUTDOOR', '1'),
+(24, 'SA001', 'SAFETY AND  SECURITY', '0'),
+(25, 'KI001', 'KITCHEN', '1'),
+(26, 'TA001', 'TOOL AND HARDWARE', '0'),
+(27, 'DA001', 'DOOR AND WINDOW', '1');
 
 --
--- Triggers `kategori`
+-- Trigger `kategori`
 --
 DELIMITER $$
 CREATE TRIGGER `beforeInsert_kategori_check` BEFORE INSERT ON `kategori` FOR EACH ROW BEGIN
@@ -246,7 +294,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kategori_produk`
+-- Struktur dari tabel `kategori_produk`
 --
 
 CREATE TABLE `kategori_produk` (
@@ -256,18 +304,25 @@ CREATE TABLE `kategori_produk` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `kategori_produk`
+-- Dumping data untuk tabel `kategori_produk`
 --
 
 INSERT INTO `kategori_produk` (`ROW_ID_PRODUK`, `ROW_ID_KATEGORI_PARENT`, `ROW_ID_KATEGORI_CHILD`) VALUES
 (5, 9, 6),
 (6, 7, 2),
-(7, 7, 10);
+(7, 7, 10),
+(8, 3, 27),
+(9, 20, 27),
+(10, 20, 27),
+(11, 7, 22),
+(13, 25, 26),
+(14, 25, 9),
+(16, 7, 26);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `produk`
+-- Struktur dari tabel `produk`
 --
 
 CREATE TABLE `produk` (
@@ -286,17 +341,24 @@ CREATE TABLE `produk` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `produk`
+-- Dumping data untuk tabel `produk`
 --
 
 INSERT INTO `produk` (`ROW_ID_PRODUK`, `ID_PRODUK`, `NAMA_PRODUK`, `STATUS_AKTIF_PRODUK`, `HARGA_PRODUK`, `DIMENSI_KEMASAN`, `DIMENSI_PRODUK`, `BERAT_PRODUK`, `SATUAN_PRODUK`, `DESKRIPSI_PRODUK`, `LOKASI_FOTO_PRODUK`, `STOK_PRODUK`) VALUES
 (3, 'CR001', 'CERAMAX ROJO FSB0371 W/HUNG BASIN', '1', 472500, '40cm X 40cm X 14cm', '38cm X 38cm X 12cm', '9 Kg', 'PCS', 'CERAMAX ROJO FSB0371 Wall Hung Wastafel\r\n\r\nSpesifikasi:\r\n\r\nTipe: Wall Hung Basin\r\nDimensi 380x380x120MM\r\nMaterial: Porselen\r\nFitur:\r\n\r\nHarga terjangkau\r\nMaterial berbahan porselen mudah dibersihkan dan tidak ada tepian yang tajam\r\nSistem pembuangan yang lancar\r\nDesain elegan\r\nHemat ruang', 'res/img/produk/CR001.jpg', 54),
-(5, 'P1001', 'PHILIPS 17401 59449 105 9W 65K MESON CD G3 (3PC)', '1', 195605, '14cm X 12cm X 12cm', '14cm X 12cm X 12cm', '200 gr', 'PCS', 'Keunggulan:\r\n\r\nLED Downlight dengan harga terjangku\r\nTermasuk lampu & driver terintegrasi, Anda bisa langsung\r\nmemasangnya\r\nMudah dipasang\r\nCahaya yang rata dengan diffuser anti silau\r\nHemat Listrik = Hemat Biaya!\r\nTahan lama, umur hingga 15.000 jam\r\nTersedia dalam berbagai macam pilihan ukuran & watt\r\nSpesifikasi:\r\n\r\nColor: Putih (cool day light)\r\nPower: 9W\r\nLumen: 650lm (6500K)\r\nDiameter: 120mm\r\nKetebalan: 47mm\r\nLubang Plafon / Cutout: 105mm / 4.1 inch\r\nKoneksi: flying wire\r\nUmur: hingga 15.000 jam\r\nCRI80\r\nIP20\r\n220-240V ~ 50-60 Hz\r\nTidak dapat diredupkan / Non Dimmable\r\nTidak dapat diganti lampu atau driver-nya saja\r\nUntuk pemakaian di dalam ruangan / Indoor use only', 'res/img/produk/P1001.jpg', -11),
-(6, 'TF001', 'TIDY FSA0042 WHITE ONE PIECE TOILET', '1', 1500000, '70cm X 44cm X 61cm', '68cm X 42cm X 59cm', '41kg', 'SET', 'TIDY FSA0042 WHITE ONE PIECE TOILET\r\n\r\nSpesifikasi:\r\n\r\nTipe: Monoblok / One piece toilet\r\nSistem pembuangan: Siphonic\r\nSoft closing seat cover\r\nAs/Jarak dinding/Rough-in/S-trap 300mm\r\nOutfall diameter 100mm\r\nMaterial: Porselen\r\nFitur:\r\n\r\nHarga relatif terjangkau\r\nOne piece toilet dengan ukuran yang sesuai dengan masyarakat Asia\r\nDesain modern\r\nHemat ruang\r\nSistem syphonic', 'res/img/produk/TF001.jpg', 47),
-(7, 'GX001', 'GLUCKLICH X01HI1 0.3LT 200W RICE COOKER', '1', 259000, '20cm X 20cm X 22cm', '18cm X 18cm X 20cm', '3kg', 'UNIT', 'Keunggulan:\r\n\r\nBagian dalam anti lengket\r\nFitur tetap hangat\r\nBahan lebih tebal\r\nPerlindungan sekering ganda\r\nPerlindungan suhu tunggi\r\nBaki pengukus tebal\r\nGaransi service 2 tahun\r\nDapat sendok, mangkuk takar, kabel\r\nSpesifikasi:\r\n\r\nGaris air: 0,3 liter\r\nVolume pot: 3 liter\r\nKetebalan: 0.75mm\r\nTegangan: 50/60Hz, 220V\r\nDaya: 200 Watt', 'res/img/produk/GX001.jpg', 198);
+(5, 'P1001', 'PHILIPS 17401 59449 105 9W 65K MESON CD G3 (3PC)', '1', 195605, '14cm X 12cm X 12cm', '14cm X 12cm X 12cm', '200 gr', 'PCS', 'Keunggulan:\r\n\r\nLED Downlight dengan harga terjangku\r\nTermasuk lampu & driver terintegrasi, Anda bisa langsung\r\nmemasangnya\r\nMudah dipasang\r\nCahaya yang rata dengan diffuser anti silau\r\nHemat Listrik = Hemat Biaya!\r\nTahan lama, umur hingga 15.000 jam\r\nTersedia dalam berbagai macam pilihan ukuran & watt\r\nSpesifikasi:\r\n\r\nColor: Putih (cool day light)\r\nPower: 9W\r\nLumen: 650lm (6500K)\r\nDiameter: 120mm\r\nKetebalan: 47mm\r\nLubang Plafon / Cutout: 105mm / 4.1 inch\r\nKoneksi: flying wire\r\nUmur: hingga 15.000 jam\r\nCRI80\r\nIP20\r\n220-240V ~ 50-60 Hz\r\nTidak dapat diredupkan / Non Dimmable\r\nTidak dapat diganti lampu atau driver-nya saja\r\nUntuk pemakaian di dalam ruangan / Indoor use only', 'res/img/produk/P1001.jpg', -12),
+(6, 'TF001', 'TIDY FSA0042 WHITE ONE PIECE TOILET', '1', 1500000, '70cm X 44cm X 61cm', '68cm X 42cm X 59cm', '41kg', 'SET', 'TIDY FSA0042 WHITE ONE PIECE TOILET\r\n\r\nSpesifikasi:\r\n\r\nTipe: Monoblok / One piece toilet\r\nSistem pembuangan: Siphonic\r\nSoft closing seat cover\r\nAs/Jarak dinding/Rough-in/S-trap 300mm\r\nOutfall diameter 100mm\r\nMaterial: Porselen\r\nFitur:\r\n\r\nHarga relatif terjangkau\r\nOne piece toilet dengan ukuran yang sesuai dengan masyarakat Asia\r\nDesain modern\r\nHemat ruang\r\nSistem syphonic', 'res/img/produk/TF001.jpg', 45),
+(7, 'GX001', 'GLUCKLICH X01HI1 0.3LT 200W RICE COOKER', '1', 259000, '20cm X 20cm X 22cm', '18cm X 18cm X 20cm', '3kg', 'UNIT', 'Keunggulan:\r\n\r\nBagian dalam anti lengket\r\nFitur tetap hangat\r\nBahan lebih tebal\r\nPerlindungan sekering ganda\r\nPerlindungan suhu tunggi\r\nBaki pengukus tebal\r\nGaransi service 2 tahun\r\nDapat sendok, mangkuk takar, kabel\r\nSpesifikasi:\r\n\r\nGaris air: 0,3 liter\r\nVolume pot: 3 liter\r\nKetebalan: 0.75mm\r\nTegangan: 50/60Hz, 220V\r\nDaya: 200 Watt', 'res/img/produk/GX001.jpg', 198),
+(8, 'TA001', 'TIDY ALUMIX PVC MIN KC 2 / 02', '1', 1593150, '100cm x 100cm x 100cm', '20cm x 20cm x 20cm', '10KG', 'PCS', 'Ringan dan Kokoh -Tahan terhadap air -Tidak berkarat -Menggunakan kusen aluminium sehingga lebih awet dan tahan lama -Tidak berubah bentuk akibat cuaca', 'res/img/produk/TA001.jpg', 2000),
+(9, 'DU001', 'DOORWAY UPVC DOOR HW017L 3/4KC', '0', 1056400, '70cm x 70cm x 70cm', '20cm x 20 cm x 18cm', '4kg', 'UNIT', 'Pintu uPVC yang cocok untuk pintu kamar mandi, karena keunggulanya yaitu tahan air, tahan rayap, dan kokoh. ditambahkan lagi uPVC merupakan bahan yang akan meredam suara dan ramah lingkungan', 'res/img/produk/DU001.jpg', 98),
+(10, 'NF001', 'NIRO FLEUR GFL03 MARIGOLD PGVT', '0', 381694, '80cm x 80cm x 80cm', '19cm x 19cm x 19cm', '8kg', 'BOX', 'Granite Niro Exclusive Design Only at Mitra10. Granite lantai Glazed Polsihed Digital ukuran 80x80 glossy surface memberikan nuansa mewah untuk ruangan anda\r\n\r\n\r\nFungsi: granite porcelain, porcelain tiles, granite lantai, granite polished, granite 80x80, granite digital, granite niro, granite glaze\r\n\r\nGranite Niro Exclusive Design Only at Mitra10. Granite lantai Glazed Polsihed Digital ukuran 80x80 glossy surface memberikan nuansa mewah untuk ruangan anda\r\n\r\n\r\nFungsi: granite porcelain, porcelain tiles, granite lantai, granite polished, granite 80x80, granite digital, granite niro, granite glaze', 'res/img/produk/NF001.jpg', 8997),
+(11, 'ZT001', 'ZEHN TANGGA ALUMINIUM YKF-403 ( 3 X 4 STEP )', '1', 1161000, '20cm x 30cm x 30cm', '19cm x 20cm x 20cm', '20kg', 'SET', 'Zehn Tangga Aluminium 403 adalah jenis tangga yang bisa dilipat empat, dengan total panjang 3,70 m. Tangga ini bisa disetel/adjust (multipurpose)', 'res/img/produk/ZT001.jpg', 937),
+(13, 'PP001', 'POLYTRON PRM 28 QS/QB MIRROR 2D REFRIGERATOR', '0', 4099000, '75cm x 75cm x 75cm', '45cm x 45cm x 45', '20kg', 'SET', 'Polytron Belleza 3 hadir dengan mengusung “Zen Design” yang memberikan keseimbangan antara penyempurnaan tampilan dalam (interior) dan tampilan luar (eksterior) dengan menampilkan sentuhan borderless.', 'res/img/produk/PP001.jpg', 745),
+(14, 'EE001', 'ELECTROLUX ETS 3505 POP UP TOASTER', '0', 489000, '43cm x 43cm x 42cm', '34cm x 34cm x 34cm', '25kg', 'UNIT', 'ELECTROLUX ETS 3505 POP UP TOASTER\r\n\r\nMemanggang roti dengan kematangan yang sempurna. Membuat sarapan Anda tersaji dengan lebih baik dan lebih cepat.', 'res/img/produk/EE001.jpg', 492),
+(16, 'PM001', 'PANASONIC MC-CG300X546 VACUUM CLEANER', '0', 1169000, '35cm x 35cm x 35cm', '40cm x 40cm x 40cm', '45kg', 'SET', 'Panasonic MC-CG300X546 merupakan vacuum cleaner yang dapat membersihkan ruangan dari debu, bakteri, jamur, tungau dan allergen lainnya. Dengan Panasonic MC-CG300X546 Anda dapat membersihkan rumah dengan mudah tanpa membutuhkan tenaga ekstra dan menyita banyak waktu Anda.', 'res/img/produk/PM001.jpg', 644);
 
 --
--- Triggers `produk`
+-- Trigger `produk`
 --
 DELIMITER $$
 CREATE TRIGGER `beforeInsert_produk_check` BEFORE INSERT ON `produk` FOR EACH ROW BEGIN
@@ -325,7 +387,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `wishlist`
+-- Struktur dari tabel `wishlist`
 --
 
 CREATE TABLE `wishlist` (
@@ -334,27 +396,36 @@ CREATE TABLE `wishlist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `wishlist`
+-- Dumping data untuk tabel `wishlist`
 --
 
 INSERT INTO `wishlist` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`) VALUES
+(1, 5),
 (6, 5),
 (6, 6),
-(7, 7);
+(7, 7),
+(7, 16),
+(9, 8),
+(10, 9),
+(10, 14),
+(11, 11),
+(12, 7),
+(13, 6),
+(14, 13);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `cart`
+-- Indeks untuk tabel `cart`
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`ROW_ID_CUSTOMER`,`ROW_ID_PRODUK`),
   ADD KEY `FK_CART_ROW_PRODUK` (`ROW_ID_PRODUK`);
 
 --
--- Indexes for table `customer`
+-- Indeks untuk tabel `customer`
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`ROW_ID_CUSTOMER`),
@@ -362,27 +433,27 @@ ALTER TABLE `customer`
   ADD UNIQUE KEY `unique_customer_email` (`EMAIL`);
 
 --
--- Indexes for table `dtrans`
+-- Indeks untuk tabel `dtrans`
 --
 ALTER TABLE `dtrans`
   ADD PRIMARY KEY (`ROW_ID_HTRANS`,`ROW_ID_PRODUK`),
   ADD KEY `FK_DTRANS_ROW_PRODUK` (`ROW_ID_PRODUK`);
 
 --
--- Indexes for table `htrans`
+-- Indeks untuk tabel `htrans`
 --
 ALTER TABLE `htrans`
   ADD PRIMARY KEY (`ROW_ID_HTRANS`),
   ADD UNIQUE KEY `unique_htrans_no_nota` (`NO_NOTA`);
 
 --
--- Indexes for table `kategori`
+-- Indeks untuk tabel `kategori`
 --
 ALTER TABLE `kategori`
   ADD PRIMARY KEY (`ROW_ID_KATEGORI`);
 
 --
--- Indexes for table `kategori_produk`
+-- Indeks untuk tabel `kategori_produk`
 --
 ALTER TABLE `kategori_produk`
   ADD PRIMARY KEY (`ROW_ID_PRODUK`,`ROW_ID_KATEGORI_PARENT`,`ROW_ID_KATEGORI_CHILD`),
@@ -390,66 +461,66 @@ ALTER TABLE `kategori_produk`
   ADD KEY `FK_KATEGORI_PRODUK_ROW_KAT_CHILD` (`ROW_ID_KATEGORI_CHILD`);
 
 --
--- Indexes for table `produk`
+-- Indeks untuk tabel `produk`
 --
 ALTER TABLE `produk`
   ADD PRIMARY KEY (`ROW_ID_PRODUK`);
 
 --
--- Indexes for table `wishlist`
+-- Indeks untuk tabel `wishlist`
 --
 ALTER TABLE `wishlist`
   ADD PRIMARY KEY (`ROW_ID_CUSTOMER`,`ROW_ID_PRODUK`),
   ADD KEY `FK_WISHLIST_ROW_PRODUK` (`ROW_ID_PRODUK`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `customer`
+-- AUTO_INCREMENT untuk tabel `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `ROW_ID_CUSTOMER` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ROW_ID_CUSTOMER` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT for table `htrans`
+-- AUTO_INCREMENT untuk tabel `htrans`
 --
 ALTER TABLE `htrans`
-  MODIFY `ROW_ID_HTRANS` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ROW_ID_HTRANS` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT for table `kategori`
+-- AUTO_INCREMENT untuk tabel `kategori`
 --
 ALTER TABLE `kategori`
-  MODIFY `ROW_ID_KATEGORI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `ROW_ID_KATEGORI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
--- AUTO_INCREMENT for table `produk`
+-- AUTO_INCREMENT untuk tabel `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `ROW_ID_PRODUK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ROW_ID_PRODUK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- Constraints for dumped tables
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `cart`
+-- Ketidakleluasaan untuk tabel `cart`
 --
 ALTER TABLE `cart`
   ADD CONSTRAINT `FK_CART_ROW_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`),
   ADD CONSTRAINT `FK_CART_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
 
 --
--- Constraints for table `dtrans`
+-- Ketidakleluasaan untuk tabel `dtrans`
 --
 ALTER TABLE `dtrans`
   ADD CONSTRAINT `FK_DTRANS_ROW_HTRANS` FOREIGN KEY (`ROW_ID_HTRANS`) REFERENCES `htrans` (`ROW_ID_HTRANS`),
   ADD CONSTRAINT `FK_DTRANS_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
 
 --
--- Constraints for table `kategori_produk`
+-- Ketidakleluasaan untuk tabel `kategori_produk`
 --
 ALTER TABLE `kategori_produk`
   ADD CONSTRAINT `FK_KATEGORI_PRODUK_ROW_KAT_CHILD` FOREIGN KEY (`ROW_ID_KATEGORI_CHILD`) REFERENCES `kategori` (`ROW_ID_KATEGORI`),
@@ -457,7 +528,7 @@ ALTER TABLE `kategori_produk`
   ADD CONSTRAINT `FK_KATEGORI_PRODUK_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
 
 --
--- Constraints for table `wishlist`
+-- Ketidakleluasaan untuk tabel `wishlist`
 --
 ALTER TABLE `wishlist`
   ADD CONSTRAINT `FK_WISHLIST_ROW_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`),
