@@ -1,5 +1,5 @@
 <?php
-    include "system/database.php";
+    include "conn.php";
 
     $query = "SELECT * FROM PRODUK";
     $listProduk = getQueryResultRowArrays($db, $query);
@@ -78,7 +78,7 @@
         <link rel="stylesheet" type="text/css" href="css/datatables.css"/>
         <link href="css/all.css" rel="stylesheet">
         <link rel="icon" type="image/png" href="res/img/goblin.png" />    
-        
+
         <!-- JS Library Import -->
         <script src="js/jquery-3.4.1.min.js"></script>
         <script src="js/bootstrap.bundle.min.js"></script>

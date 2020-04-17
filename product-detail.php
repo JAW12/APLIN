@@ -1,5 +1,5 @@
 <?php
-    include "system/database.php";
+    include "conn.php";
 
     if(isset($_POST['idProduk'])){
         $idProduk = $_POST['idProduk'];
@@ -71,7 +71,7 @@
         <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/jQueryUI.js"></script>
         <script type="text/javascript" src="js/datatables.js"></script>
-        
+
         <title>Detail Produk</title>
         <script>
             $( function() {
