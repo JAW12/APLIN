@@ -5,7 +5,13 @@
         $idProduk = $_POST['idProduk'];
     }
     else{
-        $idProduk = "7";
+        $idProduk = "9";
+    }
+    if(isset($_POST['idCust'])){
+        $idCustomer = $_POST['idCust'];
+    }
+    else{
+        $idCustomer = "6";
     }
     $query = "SELECT * FROM PRODUK WHERE ROW_ID_PRODUK=$idProduk";
     $produk = getQueryResultRow($db, $query);
@@ -13,12 +19,36 @@
     $namaProduk=$produk['NAMA_PRODUK'];
     $hargaProduk=$produk['HARGA_PRODUK'];
     $stokProduk=$produk['STOK_PRODUK'];
+    $deskripsiProduk=$produk['DESKRIPSI_PRODUK'];
+    $dimensiKemasan=$produk['DIMENSI_KEMASAN'];
+    $dimensiProduk=$produk['DIMENSI_PRODUK'];
+    $beratProduk=$produk['BERAT_PRODUK'];
+    $satuanProduk=$produk['SATUAN_PRODUK'];
     if(isset($_POST['btnBeli'])){
         if($_POST['jumlahBeliProduk']>$stokProduk){
             echo "<script>alert('Maaf stok tidak mencukupi');</script>";
         }
         else{
-            
+            try {
+                $query = "INSERT INTO CART VALUES(:idCust, :idProduk, :qty)";
+                $stmt = $db->prepare($query);
+                $stmt->bindValue(":idCust", $_POST['idCust'], PDO::PARAM_INT);
+                $stmt->bindValue(":idProduk", $_POST['idProduk'], PDO::PARAM_INT);
+                $stmt->bindValue(":qty", $_POST['jumlahBeliProduk'], PDO::PARAM_INT);
+                $result = $stmt->execute();
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
+            try{
+                $query = "UPDATE PRODUK SET STOK_PRODUK = :stokBaru WHERE ROW_ID_PRODUK = :id";
+                $db->prepare($query);
+                $stmt->bindValue(":stokBaru", $stokProduk-intval($_POST['jumlahBeliProduk']), PDO::PARAM_INT);
+                $stmt->bindValue(":id", $_POST['idProduk'], PDO::PARAM_INT);
+                $stmt->execute();
+            }catch (Exception $e) {
+                echo $e->getMessage();
+            }
+            $stokProduk = $stokProduk-intval($_POST['jumlahBeliProduk']);
             echo "<script>alert('Pembelian sukses');</script>";
         }
     }
@@ -50,58 +80,66 @@
         </script>
     </head>
     <body id="page-top">
-        <header>
-            <nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top py-3" id="mainNav">
-                <a class="navbar-brand js-scroll-trigger" href="#page-top">Logo</a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ml-auto my-2 my-lg-0 mr-4">
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">About Us</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">Contact Us</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">Products</a></li>
-                    </ul>
-                    <form class="form-inline my-2 my-lg-0 mr-3">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-                    <a class="btn btn-primary" href="login.php" role="button">Login</a>
-                </div>
-            </nav>
-        </header>
+        <nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top py-3" id="mainNav">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">Logo</a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto my-2 my-lg-0 mr-4">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">Products</a></li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0 mr-3">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <a class="btn btn-primary" href="login.php" role="button">Login</a>
+            </div>
+        </nav>
 
         <main>
-            <div style="width: 40%">
-                <img src="<?= $fotoProduk?>" width="300px" height="300px"/>
+            <div class="container">
+            <div class="row mt-5 mb-5">
+                <div class="col mt-5">
+                    <img src="<?= $fotoProduk?>" width="300px" height="500px"/>
+                </div>
+                <div class="col mt-5">
+                    <h1 class="display-4 font-weight-bold mb-4"><?=$namaProduk?></h1>
+                    <h2 class="mb-4" style="color: grey">Rp. <?=number_format($hargaProduk)?></h2>
+                    <form method="POST">
+                        <input type="hidden" name="idProduk" value="<?=$idProduk?>">
+                        <input type="hidden" name="idCust" value="<?=$idCustomer?>">
+                        <div class="input-group mb-3">
+                            <input type="text" name="jumlahBeliProduk" class="form-control" placeholder="1" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">dari <?=$stokProduk." ".ucfirst("$satuanProduk")?></span>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success" name="btnBeli"> <i class="fas fa-shopping-cart"></i>
+                        &nbsp;&nbsp;&nbsp;Beli Sekarang</button>
+                    </form>
+                </div>
             </div>
-            <div style="width: 40%">
-                <h1><?=$namaProduk?></h1>
-                <h2><?=$hargaProduk?></h2>
-            </div>
-            <form method="POST">
-                <input type="hidden" name="idProduk" value="<?=$idProduk?>">
-                <input type="text" name="jumlahBeliProduk" placeholder="1">
-                <button type="submit" class="btn btn-success" name="btnBeli">Beli Sekarang</button>
-            </form>
-            <div id="tabs">
+        </main>
+        <div id="tabs">
                 <ul>
-                    <li><a href="#tabs-1">Nunc tincidunt</a></li>
-                    <li><a href="#tabs-2">Proin dolor</a></li>
-                    <li><a href="#tabs-3">Aenean lacinia</a></li>
+                    <li><a href="#tabs-1">DESKRIPSI PPRODUK</a></li>
+                    <li><a href="#tabs-2">INFORMASI LAINNYA</a></li>
                 </ul>
                 <div id="tabs-1">
-                    <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
+                    <p><?=$deskripsiProduk?></p>
                 </div>
                 <div id="tabs-2">
-                    <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
-                </div>
-                <div id="tabs-3">
-                    <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
+                    <p>Dimensi Kemasan : </br>
+                    <?= $dimensiKemasan?></p>
+                    <p>Dimensi Produk : </br>
+                    <?= $dimensiProduk?> </p>
+                    <p>Berat Produk : </br>
+                    <?= $beratProduk?> </p>
                 </div>
             </div>
             <div class="text-center my-3">
                 <a class="btn btn-lg btn-dark" href="" role="button">CONTACT US</a>
             </div>
-        </main>
-
         <footer class="bg-dark py-5">
             <div class="container">
                 <div class="medium text-center text-light">
