@@ -31,16 +31,17 @@
 
         <!-- CSS Library Import -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="asset/css/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
         <link rel="stylesheet" type="text/css" href="css/datatables.css"/>
         <link href="css/all.css" rel="stylesheet">
         <link rel="icon" type="image/png" href="res/img/goblin.png" />    
-         
+
         <!-- JS Library Import -->
         <script src="js/jquery-3.4.1.min.js"></script>
         <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/jQueryUI.js"></script>
         <script type="text/javascript" src="js/datatables.js"></script>
+        
         <title>Detail Produk</title>
         <script>
             $( function() {
