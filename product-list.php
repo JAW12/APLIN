@@ -1,58 +1,75 @@
 <?php
     include "conn.php";
 
-    $query = "SELECT * FROM PRODUK";
-    $listProduk = getQueryResultRowArrays($db, $query);
-
     // ngambil nama produk dari row pertama
     // $query = "SELECT NAMA_PRODUK FROM PRODUK";
     // $nama = getQueryResultRowField($db, $query,"NAMA_PRODUK");
     // showAlert(strval($nama));
 
     //--- function ----
-    function showCardProduk($listProduk){
+    function showCardProduk($db){
+        $query = "SELECT * FROM PRODUK";
+        $condition = "";
+        if (isset($_GET['q'])) {
+            $condition = " WHERE LOWER(NAMA_PRODUK) LIKE '%{$_GET['q']}%'";
+        }
+        $query = $query . $condition;
+        $listProduk = getQueryResultRowArrays($db, $query);
         if ($listProduk == false) {
             showAlert("list produk tidak ada");
         }
         else{
             ?>
-            <div class="container-fluid px-2 my-3 d-flex flex-wrap justify-content-center">
-                <?php
-                // echo "<pre>";
-                // print_r($listProduk);
-                // echo "</pre>";
-                foreach ($listProduk as $key => $value) {
-                    ?>
-                        <form method="POST">
-                            <div class="card my-2 mx-1 p-3 border-0 hover-shadow" style="width: 18rem;box-sizing: border-box">
-                                <img src="<?= $value['LOKASI_FOTO_PRODUK'] ?>" class="card-img-top" alt="gambar produk">
-                                <div class="card-body">
-                                    <!-- <h5 class="card-title"><?= $value['NAMA_PRODUK'] ?></h5> -->
-                                    <p class="card-text">
-                                        <?php
-                                            if (intval($value['STOK_PRODUK']) <= 0) {
-                                                echo "<p class='font-weight-bold text-danger text-right'>Out of Stock</p>";
-                                            }
-                                            else{                                                
-                                                echo "<p> &nbsp; </p>";
-                                            }
-                                        ?>
-                                        <p class="font-weight-bold text-left">
-                                            Rp. <?= $value['HARGA_PRODUK'] ?>
-                                        </p><br/>
-                                        <p>
-                                            <?= $value['NAMA_PRODUK'] ?>
-                                        </p>
-                                    </p>                            
-                                </div>
-                                <div class="card-body p-2 d-flex justify-content-around my-2 mt-n1">
-                                    <button class="btn btn-primary w-100 rounded" name="lihatDetail" formaction="product-detail.php">Lihat Detail</button>
-                                </div>
-                            </div>                        
-                        </form>                        
-                    <?php
-                }
-                ?>
+            <div class="container-fluid px-2 my-3 d-flex justify-content-around">
+                <!-- <div class="col-2">
+                    <label>Harga</label>
+                </div> -->
+                <div class="col-12">
+                    <div class="row row-cols-1 row-cols-md-4 card-deck">
+                        <?php
+                        // echo "<pre>";
+                        // print_r($listProduk);
+                        // echo "</pre>";
+                        foreach ($listProduk as $key => $value) {
+                            ?>
+                                <form method="POST">                            
+                                    <div class="card border-0 hover-shadow my-4 p-3" style="width: 18rem;box-sizing: border-box">
+                                        <div>
+                                            <img width="256px" height="256px" src="<?= $value['LOKASI_FOTO_PRODUK'] ?>" class="card-img-top" alt="gambar produk">
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- <h5 class="card-title"><?= $value['NAMA_PRODUK'] ?></h5> -->
+                                            <p class="card-text">
+                                                <?php
+                                                    if (intval($value['STOK_PRODUK']) <= 0) {
+                                                        echo "<p class='font-weight-bold text-danger text-right'>Out of Stock</p>";
+                                                    }
+                                                    else{                                                
+                                                        echo "<p> &nbsp; </p>";
+                                                    }
+                                                ?>
+                                                <p class="font-weight-bold text-left">
+                                                    Rp. <?= $value['HARGA_PRODUK'] ?>
+                                                </p><br/>
+                                                <p>
+                                                    <button class="btn btn-link text-left text-dark text-decoration-none" style="width : 230px;height:100px;" name="lihatDetail" formaction="product-detail.php">
+                                                        <?= $value['NAMA_PRODUK'] ?>
+                                                    </button>                                                 
+                                                </p>
+                                            </p>                            
+                                        </div>
+                                        <div class="card-button p-2 d-flex flex-wrap justify-content-around my-2 mt-n1">
+                                            <input type="hidden" name="idProduk" value="<?= $value['ROW_ID_PRODUK'] ?>">
+                                            <button class="btn btn-primary w-100 rounded my-2" name="lihatDetail" formaction="product-detail.php">View Detail</button>    
+                                            <button class="btn btn-warning w-100 rounded my-2" name="addToWishlist" formaction="wishlist.php">Add to Wishlist</button>                           
+                                        </div>
+                                    </div>              
+                                </form>                        
+                            <?php
+                        }
+                        ?>                  
+                    </div>        
+                </div>
             </div>
             <?php
         }
@@ -95,6 +112,10 @@
             .hover-shadow:hover{
                 box-shadow: 0px 0px 10px lightgrey;                
             }
+
+            .card-button{
+                display: none;
+            }
         </style>
 
         <!-- JS Sendiri -->
@@ -111,10 +132,10 @@
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">Contact Us</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">Products</a></li>
                     </ul>
-                    <form class="form-inline my-2 my-lg-0 mr-3">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
-                    </form>
+                    <!-- <form class="form-inline my-2 my-lg-0 mr-3">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
+                    </form> -->
                     <a class="btn btn-primary" href="login.php" role="button">Login</a>
                 </div>
             </nav>
@@ -126,10 +147,31 @@
             <div class="spaceatas"></div>
             
             <!-- container -> jarak ikut bootstrap, container-fluid -> jarak full width, w-(ukuran) -> sesuai persentase, contoh w-80 -> 80% -->
+            <div class="container">
+                <div class="container-fluid px-2 my-3 d-flex flex-nowrap justify-content-around">
+                    <div class="col-2">
+                        &nbsp;
+                    </div>
+                    <div class="col-10">        
+                        <form method="GET" class="form-inline">
+                            <?php
+                                $keyword = "";
+                                if (isset($_GET['q'])) {
+                                    $keyword = $_GET['q'];
+                                }                                
+                            ?>
+                            <input type="text" class="form-control ml-5" style="width: 60%" placeholder="Search Products By Name" 
+                            name="q" value='<?= $keyword ?>'>                
+                            <button type="submit" class="btn btn-info ml-3">Search</button>
+                            <!-- <a href="master-product.php" class="btn btn-danger ml-3">Master Product</a> -->
+                        </form>       
+                    </div>    
+                </div>
+            </div>
+
             <section class="w-80">
                 <!-- content start here, silahkan dihapus tes tes nya dibawah kalau sudah mulai-->
-                <?php showCardProduk($listProduk);?>
-                <?php showCardProduk($listProduk);?>
+                <?php showCardProduk($db);?>
             </section>
 
             <!-- Button Contact Us -->

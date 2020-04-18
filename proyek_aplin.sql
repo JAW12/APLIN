@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 16 Apr 2020 pada 20.15
--- Versi server: 10.4.11-MariaDB
--- Versi PHP: 7.4.4
+-- Generation Time: Apr 18, 2020 at 10:07 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -23,7 +24,7 @@ SET time_zone = "+00:00";
 
 DELIMITER $$
 --
--- Fungsi
+-- Functions
 --
 CREATE DEFINER=`root`@`localhost` FUNCTION `F_HELLO` (`PESAN` VARCHAR(20)) RETURNS TEXT CHARSET utf8 BEGIN
 	RETURN PESAN;
@@ -34,7 +35,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `cart`
+-- Table structure for table `cart`
 --
 
 CREATE TABLE `cart` (
@@ -44,7 +45,7 @@ CREATE TABLE `cart` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `cart`
+-- Dumping data for table `cart`
 --
 
 INSERT INTO `cart` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`, `QTY`) VALUES
@@ -67,7 +68,7 @@ INSERT INTO `cart` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`, `QTY`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `customer`
+-- Table structure for table `customer`
 --
 
 CREATE TABLE `customer` (
@@ -81,7 +82,7 @@ CREATE TABLE `customer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `customer`
+-- Dumping data for table `customer`
 --
 
 INSERT INTO `customer` (`ROW_ID_CUSTOMER`, `USERNAME`, `PASSWORD`, `EMAIL`, `NAMA_DEPAN_CUSTOMER`, `NAMA_BELAKANG_CUSTOMER`, `JENIS_KELAMIN_CUSTOMER`) VALUES
@@ -102,7 +103,7 @@ INSERT INTO `customer` (`ROW_ID_CUSTOMER`, `USERNAME`, `PASSWORD`, `EMAIL`, `NAM
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `dtrans`
+-- Table structure for table `dtrans`
 --
 
 CREATE TABLE `dtrans` (
@@ -114,7 +115,7 @@ CREATE TABLE `dtrans` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `dtrans`
+-- Dumping data for table `dtrans`
 --
 
 INSERT INTO `dtrans` (`ROW_ID_HTRANS`, `ROW_ID_PRODUK`, `QTY_PRODUK`, `HARGA_PRODUK`, `SUBTOTAL`) VALUES
@@ -134,7 +135,7 @@ INSERT INTO `dtrans` (`ROW_ID_HTRANS`, `ROW_ID_PRODUK`, `QTY_PRODUK`, `HARGA_PRO
 (17, 11, 4, 1161000, 4644000);
 
 --
--- Trigger `dtrans`
+-- Triggers `dtrans`
 --
 DELIMITER $$
 CREATE TRIGGER `afterInsert_dtrans_check` AFTER INSERT ON `dtrans` FOR EACH ROW BEGIN
@@ -183,41 +184,42 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `htrans`
+-- Table structure for table `htrans`
 --
 
 CREATE TABLE `htrans` (
   `ROW_ID_HTRANS` int(11) NOT NULL,
+  `ROW_ID_CUSTOMER` int(11) NOT NULL,
   `TANGGAL_TRANS` datetime NOT NULL,
   `NO_NOTA` varchar(15) DEFAULT NULL,
   `TOTAL_TRANS` int(11) DEFAULT 0,
   `STATUS_PEMBAYARAN` int(11) NOT NULL COMMENT '0=Pending,  1= Accepted,  2=Rejected',
-  `LOKASI_FOTO_BUKTI_PEMBAYARAN` int(11) DEFAULT NULL
+  `LOKASI_FOTO_BUKTI_PEMBAYARAN` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `htrans`
+-- Dumping data for table `htrans`
 --
 
-INSERT INTO `htrans` (`ROW_ID_HTRANS`, `TANGGAL_TRANS`, `NO_NOTA`, `TOTAL_TRANS`, `STATUS_PEMBAYARAN`, `LOKASI_FOTO_BUKTI_PEMBAYARAN`) VALUES
-(1, '2020-02-20 02:33:56', '2020022000001', 5604815, 1, NULL),
-(2, '2020-03-18 02:35:55', '2020031800001', 0, 2, NULL),
-(3, '2020-04-14 02:36:31', '2020041400001', 4644000, 0, NULL),
-(4, '2020-04-16 02:01:01', '2020041600001', 8687000, 1, NULL),
-(5, '2020-04-17 02:01:44', '2020041700001', 0, 0, NULL),
-(6, '2020-04-17 02:02:04', '2020041700002', 1145082, 2, NULL),
-(7, '2020-04-17 02:02:25', '2020041700003', 3000000, 0, NULL),
-(8, '2020-04-17 02:02:38', '2020041700004', 3423000, 1, NULL),
-(11, '2020-04-17 02:03:42', '2020041700005', 0, 1, NULL),
-(12, '2020-04-17 02:03:54', '2020041700006', 5805000, 0, NULL),
-(13, '2020-04-17 02:04:03', '2020041700007', 0, 2, NULL),
-(14, '2020-04-17 02:04:16', '2020041700008', 195605, 1, NULL),
-(15, '2020-04-17 02:04:28', '2020041700009', 2112800, 1, NULL),
-(16, '2020-04-17 02:04:39', '2020041700010', 19311000, 2, NULL),
-(17, '2020-04-17 02:04:48', '2020041700011', 4644000, 1, NULL);
+INSERT INTO `htrans` (`ROW_ID_HTRANS`, `ROW_ID_CUSTOMER`, `TANGGAL_TRANS`, `NO_NOTA`, `TOTAL_TRANS`, `STATUS_PEMBAYARAN`, `LOKASI_FOTO_BUKTI_PEMBAYARAN`) VALUES
+(1, 1, '2020-02-20 02:33:56', '2020022000001', 5604815, 1, '1.jpg'),
+(2, 1, '2020-03-18 02:35:55', '2020031800001', 0, 2, '2.jpg'),
+(3, 1, '2020-04-14 02:36:31', '2020041400001', 4644000, 0, '3.jpg'),
+(4, 1, '2020-04-16 02:01:01', '2020041600001', 8687000, 1, NULL),
+(5, 2, '2020-04-17 02:01:44', '2020041700001', 0, 0, NULL),
+(6, 2, '2020-04-17 02:02:04', '2020041700002', 1145082, 2, NULL),
+(7, 2, '2020-04-17 02:02:25', '2020041700003', 3000000, 0, NULL),
+(8, 2, '2020-04-17 02:02:38', '2020041700004', 3423000, 1, NULL),
+(11, 5, '2020-04-17 02:03:42', '2020041700005', 0, 1, NULL),
+(12, 5, '2020-04-17 02:03:54', '2020041700006', 5805000, 0, NULL),
+(13, 5, '2020-04-17 02:04:03', '2020041700007', 0, 2, NULL),
+(14, 5, '2020-04-17 02:04:16', '2020041700008', 195605, 1, NULL),
+(15, 5, '2020-04-17 02:04:28', '2020041700009', 2112800, 1, NULL),
+(16, 5, '2020-04-17 02:04:39', '2020041700010', 19311000, 2, NULL),
+(17, 2, '2020-04-17 02:04:48', '2020041700011', 4644000, 1, NULL);
 
 --
--- Trigger `htrans`
+-- Triggers `htrans`
 --
 DELIMITER $$
 CREATE TRIGGER `beforeInsert_htrans_check` BEFORE INSERT ON `htrans` FOR EACH ROW BEGIN
@@ -233,7 +235,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `kategori`
+-- Table structure for table `kategori`
 --
 
 CREATE TABLE `kategori` (
@@ -244,7 +246,7 @@ CREATE TABLE `kategori` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `kategori`
+-- Dumping data for table `kategori`
 --
 
 INSERT INTO `kategori` (`ROW_ID_KATEGORI`, `ID_KATEGORI`, `NAMA_KATEGORI`, `STATUS_AKTIF_KATEGORI`) VALUES
@@ -265,7 +267,7 @@ INSERT INTO `kategori` (`ROW_ID_KATEGORI`, `ID_KATEGORI`, `NAMA_KATEGORI`, `STAT
 (27, 'DA001', 'DOOR AND WINDOW', '1');
 
 --
--- Trigger `kategori`
+-- Triggers `kategori`
 --
 DELIMITER $$
 CREATE TRIGGER `beforeInsert_kategori_check` BEFORE INSERT ON `kategori` FOR EACH ROW BEGIN
@@ -294,7 +296,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `kategori_produk`
+-- Table structure for table `kategori_produk`
 --
 
 CREATE TABLE `kategori_produk` (
@@ -304,7 +306,7 @@ CREATE TABLE `kategori_produk` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `kategori_produk`
+-- Dumping data for table `kategori_produk`
 --
 
 INSERT INTO `kategori_produk` (`ROW_ID_PRODUK`, `ROW_ID_KATEGORI_PARENT`, `ROW_ID_KATEGORI_CHILD`) VALUES
@@ -322,7 +324,7 @@ INSERT INTO `kategori_produk` (`ROW_ID_PRODUK`, `ROW_ID_KATEGORI_PARENT`, `ROW_I
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `produk`
+-- Table structure for table `produk`
 --
 
 CREATE TABLE `produk` (
@@ -341,7 +343,7 @@ CREATE TABLE `produk` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `produk`
+-- Dumping data for table `produk`
 --
 
 INSERT INTO `produk` (`ROW_ID_PRODUK`, `ID_PRODUK`, `NAMA_PRODUK`, `STATUS_AKTIF_PRODUK`, `HARGA_PRODUK`, `DIMENSI_KEMASAN`, `DIMENSI_PRODUK`, `BERAT_PRODUK`, `SATUAN_PRODUK`, `DESKRIPSI_PRODUK`, `LOKASI_FOTO_PRODUK`, `STOK_PRODUK`) VALUES
@@ -358,7 +360,7 @@ INSERT INTO `produk` (`ROW_ID_PRODUK`, `ID_PRODUK`, `NAMA_PRODUK`, `STATUS_AKTIF
 (16, 'PM001', 'PANASONIC MC-CG300X546 VACUUM CLEANER', '0', 1169000, '35cm x 35cm x 35cm', '40cm x 40cm x 40cm', '45kg', 'SET', 'Panasonic MC-CG300X546 merupakan vacuum cleaner yang dapat membersihkan ruangan dari debu, bakteri, jamur, tungau dan allergen lainnya. Dengan Panasonic MC-CG300X546 Anda dapat membersihkan rumah dengan mudah tanpa membutuhkan tenaga ekstra dan menyita banyak waktu Anda.', 'res/img/produk/PM001.jpg', 644);
 
 --
--- Trigger `produk`
+-- Triggers `produk`
 --
 DELIMITER $$
 CREATE TRIGGER `beforeInsert_produk_check` BEFORE INSERT ON `produk` FOR EACH ROW BEGIN
@@ -387,7 +389,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `wishlist`
+-- Table structure for table `wishlist`
 --
 
 CREATE TABLE `wishlist` (
@@ -396,7 +398,7 @@ CREATE TABLE `wishlist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `wishlist`
+-- Dumping data for table `wishlist`
 --
 
 INSERT INTO `wishlist` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`) VALUES
@@ -418,14 +420,14 @@ INSERT INTO `wishlist` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`) VALUES
 --
 
 --
--- Indeks untuk tabel `cart`
+-- Indexes for table `cart`
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`ROW_ID_CUSTOMER`,`ROW_ID_PRODUK`),
   ADD KEY `FK_CART_ROW_PRODUK` (`ROW_ID_PRODUK`);
 
 --
--- Indeks untuk tabel `customer`
+-- Indexes for table `customer`
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`ROW_ID_CUSTOMER`),
@@ -433,27 +435,28 @@ ALTER TABLE `customer`
   ADD UNIQUE KEY `unique_customer_email` (`EMAIL`);
 
 --
--- Indeks untuk tabel `dtrans`
+-- Indexes for table `dtrans`
 --
 ALTER TABLE `dtrans`
   ADD PRIMARY KEY (`ROW_ID_HTRANS`,`ROW_ID_PRODUK`),
   ADD KEY `FK_DTRANS_ROW_PRODUK` (`ROW_ID_PRODUK`);
 
 --
--- Indeks untuk tabel `htrans`
+-- Indexes for table `htrans`
 --
 ALTER TABLE `htrans`
   ADD PRIMARY KEY (`ROW_ID_HTRANS`),
-  ADD UNIQUE KEY `unique_htrans_no_nota` (`NO_NOTA`);
+  ADD UNIQUE KEY `unique_htrans_no_nota` (`NO_NOTA`),
+  ADD KEY `FK_HTRANS_CUSTOMER` (`ROW_ID_CUSTOMER`);
 
 --
--- Indeks untuk tabel `kategori`
+-- Indexes for table `kategori`
 --
 ALTER TABLE `kategori`
   ADD PRIMARY KEY (`ROW_ID_KATEGORI`);
 
 --
--- Indeks untuk tabel `kategori_produk`
+-- Indexes for table `kategori_produk`
 --
 ALTER TABLE `kategori_produk`
   ADD PRIMARY KEY (`ROW_ID_PRODUK`,`ROW_ID_KATEGORI_PARENT`,`ROW_ID_KATEGORI_CHILD`),
@@ -461,66 +464,72 @@ ALTER TABLE `kategori_produk`
   ADD KEY `FK_KATEGORI_PRODUK_ROW_KAT_CHILD` (`ROW_ID_KATEGORI_CHILD`);
 
 --
--- Indeks untuk tabel `produk`
+-- Indexes for table `produk`
 --
 ALTER TABLE `produk`
   ADD PRIMARY KEY (`ROW_ID_PRODUK`);
 
 --
--- Indeks untuk tabel `wishlist`
+-- Indexes for table `wishlist`
 --
 ALTER TABLE `wishlist`
   ADD PRIMARY KEY (`ROW_ID_CUSTOMER`,`ROW_ID_PRODUK`),
   ADD KEY `FK_WISHLIST_ROW_PRODUK` (`ROW_ID_PRODUK`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `customer`
+-- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
   MODIFY `ROW_ID_CUSTOMER` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT untuk tabel `htrans`
+-- AUTO_INCREMENT for table `htrans`
 --
 ALTER TABLE `htrans`
   MODIFY `ROW_ID_HTRANS` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT untuk tabel `kategori`
+-- AUTO_INCREMENT for table `kategori`
 --
 ALTER TABLE `kategori`
   MODIFY `ROW_ID_KATEGORI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
--- AUTO_INCREMENT untuk tabel `produk`
+-- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
   MODIFY `ROW_ID_PRODUK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `cart`
+-- Constraints for table `cart`
 --
 ALTER TABLE `cart`
   ADD CONSTRAINT `FK_CART_ROW_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`),
   ADD CONSTRAINT `FK_CART_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
 
 --
--- Ketidakleluasaan untuk tabel `dtrans`
+-- Constraints for table `dtrans`
 --
 ALTER TABLE `dtrans`
   ADD CONSTRAINT `FK_DTRANS_ROW_HTRANS` FOREIGN KEY (`ROW_ID_HTRANS`) REFERENCES `htrans` (`ROW_ID_HTRANS`),
   ADD CONSTRAINT `FK_DTRANS_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
 
 --
--- Ketidakleluasaan untuk tabel `kategori_produk`
+-- Constraints for table `htrans`
+--
+ALTER TABLE `htrans`
+  ADD CONSTRAINT `FK_HTRANS_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`);
+
+--
+-- Constraints for table `kategori_produk`
 --
 ALTER TABLE `kategori_produk`
   ADD CONSTRAINT `FK_KATEGORI_PRODUK_ROW_KAT_CHILD` FOREIGN KEY (`ROW_ID_KATEGORI_CHILD`) REFERENCES `kategori` (`ROW_ID_KATEGORI`),
@@ -528,7 +537,7 @@ ALTER TABLE `kategori_produk`
   ADD CONSTRAINT `FK_KATEGORI_PRODUK_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
 
 --
--- Ketidakleluasaan untuk tabel `wishlist`
+-- Constraints for table `wishlist`
 --
 ALTER TABLE `wishlist`
   ADD CONSTRAINT `FK_WISHLIST_ROW_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`),
