@@ -78,7 +78,7 @@
                                 Invoice Number : <?= $headerTrans['NO_NOTA'] ?>
                             </div>
                             <div>
-                                Nama Customer : <?= $namaCustomer ?>
+                                Customer Name: <?= $namaCustomer ?>
                             </div>
                         </div>
                     </div>       

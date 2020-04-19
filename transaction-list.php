@@ -116,7 +116,7 @@
                         if (count($dataHTrans) <= 0) {
                             ?>
                                 <tr>
-                                    <th colspan="8" class="text-center">NO DATA FOUND</th>
+                                    <th colspan="8" class="text-center">You have not done any transaction</th>
                                 </tr>
                             <?php
                         }

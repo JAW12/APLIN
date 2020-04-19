@@ -4,9 +4,6 @@
     if(isset($_POST['idProduk'])){
         $idProduk = $_POST['idProduk'];
     }
-    else{
-        $idProduk = "9";
-    }
     if(isset($_POST['idCust'])){
         $idCustomer = $_POST['idCust'];
     }
@@ -15,7 +12,7 @@
     }
     $query = "SELECT * FROM PRODUK WHERE ROW_ID_PRODUK=$idProduk";
     $produk = getQueryResultRow($db, $query);
-    $fotoProduk=$produk['LOKASI_FOTO_PRODUK'];
+    $fotoProduk="res/img/produk/".$produk['LOKASI_FOTO_PRODUK'];
     $namaProduk=$produk['NAMA_PRODUK'];
     $hargaProduk=$produk['HARGA_PRODUK'];
     $stokProduk=$produk['STOK_PRODUK'];
@@ -39,13 +36,14 @@
             } catch (Exception $e) {
                 echo $e->getMessage();
             }
-            try{
-                $query = "UPDATE PRODUK SET STOK_PRODUK = :stokBaru WHERE ROW_ID_PRODUK = :id";
-                $db->prepare($query);
-                $stmt->bindValue(":stokBaru", $stokProduk-intval($_POST['jumlahBeliProduk']), PDO::PARAM_INT);
-                $stmt->bindValue(":id", $_POST['idProduk'], PDO::PARAM_INT);
-                $stmt->execute();
-            }catch (Exception $e) {
+            try {
+                $query = "UPDATE PRODUK SET STOK_PRODUK = :jumlahBaru WHERE ROW_ID_PRODUK = :id";
+                $stmt = $db->prepare($query);
+                $stmt->bindValue(":jumlahBaru", intval($stokProduk-intval($_POST['jumlahBeliProduk'])), PDO::PARAM_INT);
+                $stmt->bindValue(":id", $idProduk, PDO::PARAM_INT);
+                $result = $stmt->execute();
+    
+            } catch (Exception $e) {
                 echo $e->getMessage();
             }
             $stokProduk = $stokProduk-intval($_POST['jumlahBeliProduk']);
@@ -80,30 +78,32 @@
         </script>
     </head>
     <body id="page-top">
-        <nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top py-3" id="mainNav">
-            <a class="navbar-brand js-scroll-trigger" href="#page-top">Logo</a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto my-2 my-lg-0 mr-4">
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">Contact Us</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">Products</a></li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0 mr-3">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
-                </form>
-                <a class="btn btn-primary" href="login.php" role="button">Login</a>
-            </div>
-        </nav>
+        <header>
+            <nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top py-3 container" id="mainNav">
+                <a class="navbar-brand js-scroll-trigger" href="#page-top">Logo</a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto my-2 my-lg-0 mr-4">
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">About Us</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">Contact Us</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">Products</a></li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0 mr-3">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                    <a class="btn btn-primary" href="login.php" role="button">Login</a>
+                </div>
+            </nav>
+        </header>
 
         <main>
             <div class="container">
             <div class="row mt-5 mb-5">
                 <div class="col mt-5">
-                    <img src="<?= $fotoProduk?>" width="300px" height="500px"/>
+                    <img src="<?= $fotoProduk?>" width="500px" height="500px"/>
                 </div>
                 <div class="col mt-5">
-                    <h1 class="display-4 font-weight-bold mb-4"><?=$namaProduk?></h1>
+                    <h1 class="display-5 font-weight-bold mb-4"><?=$namaProduk?></h1>
                     <h2 class="mb-4" style="color: grey">Rp. <?=number_format($hargaProduk)?></h2>
                     <form method="POST">
                         <input type="hidden" name="idProduk" value="<?=$idProduk?>">
@@ -111,35 +111,92 @@
                         <div class="input-group mb-3">
                             <input type="text" name="jumlahBeliProduk" class="form-control" placeholder="1" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                                <span class="input-group-text" id="basic-addon2">dari <?=$stokProduk." ".ucfirst("$satuanProduk")?></span>
+                                <span class="input-group-text" id="basic-addon2">of <?=$stokProduk." ".strtolower("$satuanProduk")?></span>
                             </div>
                         </div>
+                        <button type="submit" class="btn btn-info" name="btnWishlist">
+                        Add To Wishlist</button>
                         <button type="submit" class="btn btn-success" name="btnBeli"> <i class="fas fa-shopping-cart"></i>
-                        &nbsp;&nbsp;&nbsp;Beli Sekarang</button>
+                        &nbsp;&nbsp;&nbsp;Buy Now</button>
                     </form>
+                    </br></br>
                 </div>
             </div>
         </main>
-        <div id="tabs">
+        <div id="tabs" class="container">
                 <ul>
-                    <li><a href="#tabs-1">DESKRIPSI PPRODUK</a></li>
-                    <li><a href="#tabs-2">INFORMASI LAINNYA</a></li>
+                    <li><a href="#tabs-1">PRODUCT DESCRIPTION</a></li>
+                    <li><a href="#tabs-2">OTHER INFORMATION</a></li>
                 </ul>
                 <div id="tabs-1">
                     <p><?=$deskripsiProduk?></p>
                 </div>
                 <div id="tabs-2">
-                    <p>Dimensi Kemasan : </br>
+                    <p>Package Dimension : </br>
                     <?= $dimensiKemasan?></p>
-                    <p>Dimensi Produk : </br>
+                    <p>Product Dimension : </br>
                     <?= $dimensiProduk?> </p>
-                    <p>Berat Produk : </br>
+                    <p>Product Weight : </br>
                     <?= $beratProduk?> </p>
                 </div>
-            </div>
-            <div class="text-center my-3">
-                <a class="btn btn-lg btn-dark" href="" role="button">CONTACT US</a>
-            </div>
+        </div>
+        <div class="container">
+        <h3 class="display-5">Similiar Product :</h3>
+            <?php
+                $query = "SELECT * FROM KATEGORI_PRODUK WHERE ROW_ID_PRODUK = $idProduk";
+                $kategoriProduk = getQueryResultRowArrays($db, $query);
+                foreach ($kategoriProduk as $key => $value) {
+                        $kategoriParent=$value['ROW_ID_KATEGORI_PARENT'];
+                        $kategoriChild=$value['ROW_ID_KATEGORI_CHILD'];
+                    }
+                $query = "SELECT * FROM KATEGORI_PRODUK WHERE ROW_ID_PRODUK != $idProduk";
+                $kategoriProduk = getQueryResultRowArrays($db, $query);
+                $ctrId = [];
+                $ctr=0;
+                if(isset($kategoriParent)){
+                    foreach ($kategoriProduk as $key => $value) {
+                        if($value['ROW_ID_KATEGORI_PARENT'] == $kategoriParent && $value['ROW_ID_KATEGORI_CHILD'] == $kategoriChild){
+                                $ctrId[$ctr] = $value['ROW_ID_PRODUK'];
+                                $ctr = $ctr+1;
+                        }
+                    }
+                    $query = "SELECT * FROM PRODUK";
+                    $produk = getQueryResultRowArrays($db, $query);
+                    if($ctr!=""){
+                        foreach ($produk as $key => $value) {
+                            if($ctr>0){
+                                if($value['ROW_ID_PRODUK']==$ctrId[$ctr-1]){
+                                    ?>
+                                    <form method="post">
+                                        <input type="hidden" name="idProduk" value="<?= $value['ROW_ID_PRODUK']?>"/>
+                                        <button type="submit" class="btn btn-link"><img src="<?= "res/img/produk/".$value['LOKASI_FOTO_PRODUK'];?>" width="200px" height="200px"/></button>
+                                    </form>
+                                    <?php
+                                    $ctr = $ctr-1;
+                                }
+                            }
+                            else{
+                                 break;
+                            }
+                        }
+                    }
+                    else{
+                        ?>
+                        <h2 class="display-5">There are no similiar product</h2>
+                        <?php
+                    }
+                }
+            else{
+                ?>
+                <h2 class="display-5">There are no similiar product</h2>
+                <?php
+            }
+            ?>
+        </div>
+        <div class="text-center my-3">
+            <a class="btn btn-lg btn-dark" href="" role="button">CONTACT US</a>
+        </div>
+
         <footer class="bg-dark py-5">
             <div class="container">
                 <div class="medium text-center text-light">
