@@ -1,11 +1,6 @@
 <?php
     include "conn.php";
-
-    // ngambil nama produk dari row pertama
-    // $query = "SELECT NAMA_PRODUK FROM PRODUK";
-    // $nama = getQueryResultRowField($db, $query,"NAMA_PRODUK");
-    // showAlert(strval($nama));
-
+    
     //--- function ----
     function showCardProduk($db){
         $query = "SELECT * FROM PRODUK";
