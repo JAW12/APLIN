@@ -44,22 +44,27 @@
                         <!-- untuk upload file harus ada enctype="multipart/form-data" -->
                         <!-- kalo enctype gak di set maka by default : enctype="application/x-www-form-urlencoded" . 
                         yang dikirimkan kayak url method GET -->
+                        <p class="h5 text-dark">Change Payment Proof Image</p><br/>
+                        <form method="POST" enctype="multipart/form-data" class="text-left">                            
+                            <input type="file" class="p-1 border border-warning rounded" name="file-upload">
+                            <button type="submit" class="btn btn-warning rounded" name="changePaymentProofImage">Upload</button>
+                        </form>
                         
                         <?php
-                            if ($jenisUser == "admin") {
-                                ?>
-                                    <p class="h5 text-dark">Change Payment Proof Image</p><br/>
-                                    <form method="POST" enctype="multipart/form-data" class="text-left">                            
-                                        <input type="file" class="p-1 border border-warning rounded" name="file-upload">
-                                        <button type="submit" class="btn btn-warning rounded" name="changePaymentProofImage">Upload</button>
-                                    </form>
+                            // if ($jenisUser == "admin") {
+                            //     ?>
+                            <!-- //         <p class="h5 text-dark">Change Payment Proof Image</p><br/>
+                            //         <form method="POST" enctype="multipart/form-data" class="text-left">                            
+                            //             <input type="file" class="p-1 border border-warning rounded" name="file-upload">
+                            //             <button type="submit" class="btn btn-warning rounded" name="changePaymentProofImage">Upload</button>
+                            //         </form> -->
                                 <?php
-                            }
-                            else{
-                                ?>
-                                    <p class="h5 text-dark">Payment Proof Image</p><br/>
+                            // }
+                            // else{
+                            //     ?>
+                            <!-- //         <p class="h5 text-dark">Payment Proof Image</p><br/> -->
                                 <?php
-                            }
+                            // }
                         ?>
                         
                     </div>             
@@ -85,7 +90,7 @@
                         </div>         
                     </div>
                     <div class="col-sm-12 col-md-6 mt-1">
-                        <table class="table table-striped table-bordered">
+                        <table class="table table-striped table-bordered border-dark">
                             <thead class="thead-dark text-center">
                                 <th scope="col">#</th>
                                 <th scope="col">Product Name</th>
@@ -122,7 +127,7 @@
                                             <?php
                                         }
                                         ?>
-                                        <tr class="bg-dark text-light">
+                                        <tr class="bg-warning text-dark font-weight-bold">
                                             <td colspan="4" class="text-center">Grand Total</td>
                                             <td class="text-right"><?= number_format($grandTotal) ?></td>
                                         </tr>
