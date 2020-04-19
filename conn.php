@@ -50,3 +50,44 @@ function showAlert($message){
     echo "<script>alert('$message')</script>";
 }
 
+function updateDataSession($idxSession, $data){
+    $_SESSION[$idxSession] = $data;
+}
+
+// function showAlertModal($message){
+//     echo '                 
+//     <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModal" aria-hidden="true">
+//         <div class="modal-dialog modal-dialog-centered" role="document">
+//             <div class="modal-content">
+//                 <div class="modal-header">
+//                     Squee Store Says
+//                 </div>
+//                 <div class="modal-body">
+//                     '.$message.'
+//                 </div>            
+//                 <div class="modal-footer">
+//                     <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+//                 </div>
+//             </div>
+//         </div>
+//     </div>
+//     ';
+//     echo "<script>
+//         $(document).ready(function(){
+//             $('#alertModal').modal('show');
+//         });    
+//     </script>";
+// }
+
+function getDateFormatted($date){
+    try {
+        $hasil = date("F d Y H:i:s", strtotime($date));
+        return $hasil;
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+}
+
+function refreshPage(){
+    header("Refresh:0");
+}

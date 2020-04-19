@@ -1,18 +1,90 @@
 <?php
+    session_start();
     include "conn.php";
+    /** @var PDO $db */ //untuk munculin autocomplete di db
 
-    function showDetailTrans($db, $detailTrans, $headerTrans){
-        $lokasiFoto = "";
-        $lokasiFoto = __DIR__."/res/img/transaksi/".$headerTrans['LOKASI_FOTO_BUKTI_PEMBAYARAN'];
+    //testing 
+    if (isset($_SESSION['jenisUser']) && isset($_SESSION['row_id_user_aktif'])) {
+        $jenisUser = $_SESSION['jenisUser'];
+        $rowIdUserAktif = $_SESSION['row_id_user_aktif'];
+    }
+    else{
+        $jenisUser = "admin";
+        $rowIdUserAktif = -1;
+    }
+
+    if (isset($_POST['tesAdmin'])) {
+        $jenisUser = "admin";
+        $rowIdUserAktif = -1;
+        updateDataSession("jenisUser", $jenisUser);
+        updateDataSession("row_id_user_aktif", $rowIdUserAktif);
+    }
+
+    if (isset($_POST['tesCustomer'])) {
+        $jenisUser = "customer";
+        $rowIdUserAktif = $_POST['tesRowIdUser'];
+        updateDataSession("jenisUser", $jenisUser);
+        updateDataSession("row_id_user_aktif", $rowIdUserAktif);
+        // showAlert("testing");
+    }
+    //end of testing
+
+    function showDetailTrans($db, $headerTrans, $detailTrans, $dataCust, $jenisUser){
+        $lokasiFoto = "res/img/transaksi/no-image.png";
+        if (!empty($headerTrans['LOKASI_FOTO_BUKTI_PEMBAYARAN'])) {
+            $lokasiFoto = "res/img/transaksi/".$headerTrans['LOKASI_FOTO_BUKTI_PEMBAYARAN'];
+        }        
+        $namaCustomer = $dataCust['NAMA_DEPAN_CUSTOMER'] . " " . $dataCust['NAMA_BELAKANG_CUSTOMER'];
+        $namaCustomer = ucwords(strtolower($namaCustomer));
         ?>
             <div class="container my-5">
                 <p class="h1 text-center">Detail Transaction</p>
-                <div class="row mt-5 mb-5">
-                    <div class="col-3 mt-5">
-                        <img src="<?= $lokasiFoto?>" width="500px" height="500px" alt="Payment Proof" class="border"/>
-                        <a href="<?= $lokasiFoto ?>"><?= $lokasiFoto ?></a>
+                <div class="my-0 d-flex flex-wrap justify-content-around">
+                    <div class="col-sm-12 col-md-6 mt-5">
+                        <!-- untuk upload file harus ada enctype="multipart/form-data" -->
+                        <!-- kalo enctype gak di set maka by default : enctype="application/x-www-form-urlencoded" . 
+                        yang dikirimkan kayak url method GET -->
+                        
+                        <?php
+                            if ($jenisUser == "admin") {
+                                ?>
+                                    <p class="h5 text-dark">Change Payment Proof Image</p><br/>
+                                    <form method="POST" enctype="multipart/form-data" class="text-left">                            
+                                        <input type="file" class="p-1 border border-warning rounded" name="file-upload">
+                                        <button type="submit" class="btn btn-warning rounded" name="changePaymentProofImage">Upload</button>
+                                    </form>
+                                <?php
+                            }
+                            else{
+                                ?>
+                                    <p class="h5 text-dark">Payment Proof Image</p><br/>
+                                <?php
+                            }
+                        ?>
+                        
+                    </div>             
+                    <div class="col-sm-12 col-md-6 mt-5">
+                        <p class="h5 text-dark">Transaction Info</p>
+                        <div class="text-dark text-right">
+                            <div>
+                                Date : <?= getDateFormatted($headerTrans['TANGGAL_TRANS']) ?>
+                            </div>
+                            <div>
+                                Invoice Number : <?= $headerTrans['NO_NOTA'] ?>
+                            </div>
+                            <div>
+                                Nama Customer : <?= $namaCustomer ?>
+                            </div>
+                        </div>
+                    </div>       
+                </div>
+                <div class="mt-1 mb-5 d-flex flex-wrap justify-content-around">
+                    <div class="col-sm-12 col-md-6 mt-1 d-flex justify-content-center">
+                        <div class="img-fit-container">
+                            <img src="<?= $lokasiFoto?>" class="img-fit" alt="No Payment Proof Available" class="border"/>
+                        </div>         
                     </div>
-                    <div class="col-9 mt-5">
+                    <div class="col-sm-12 col-md-6 mt-1">
                         <table class="table table-striped table-bordered">
                             <thead class="thead-dark text-center">
                                 <th scope="col">#</th>
@@ -25,30 +97,37 @@
                                 <?php
                                     $ctrNum = 0;
                                     $grandTotal = 0;
-                                    foreach ($detailTrans as $key => $value) {
-                                        $ctrNum++;
-                                        $row_id_produk = $value['ROW_ID_PRODUK'];
-                                        $query = "SELECT NAMA_PRODUK FROM PRODUK WHERE ROW_ID_PRODUK = {$row_id_produk}";
-                                        $namaProduk = getQueryResultRowField($db, $query, "NAMA_PRODUK");
-
-                                        $subtotal = $value['SUBTOTAL'];
-                                        $grandTotal += $subtotal;
+                                    if (count($detailTrans) <= 0) {
                                         ?>
-                                            <tr>
-                                                <th> <?= $ctrNum ?> </th>
-                                                <td> <?= $namaProduk ?> </td>
-                                                <td> <?= $value['QTY_PRODUK'] ?> </td>
-                                                <td> <?= $value['HARGA_PRODUK']?></td>
-                                                <td> <?= $subtotal ?> </td>
-                                            </tr>
+                                            <th colspan="5" class="text-center">NO DATA FOUND</th>
                                         <?php
                                     }
-                                    ?>
+                                    else{
+                                        foreach ($detailTrans as $key => $value) {
+                                            $ctrNum++;
+                                            $row_id_produk = $value['ROW_ID_PRODUK'];
+                                            $query = "SELECT NAMA_PRODUK FROM PRODUK WHERE ROW_ID_PRODUK = {$row_id_produk}";
+                                            $namaProduk = getQueryResultRowField($db, $query, "NAMA_PRODUK");
+    
+                                            $subtotal = $value['SUBTOTAL'];
+                                            $grandTotal += $subtotal;
+                                            ?>
+                                                <tr>
+                                                    <th> <?= $ctrNum ?> </th>
+                                                    <td> <?= $namaProduk ?> </td>
+                                                    <td class="text-center"> <?= $value['QTY_PRODUK'] ?> </td>
+                                                    <td class="text-right"> <?= number_format($value['HARGA_PRODUK']) ?></td>
+                                                    <td class="text-right"> <?= number_format($subtotal) ?> </td>
+                                                </tr>
+                                            <?php
+                                        }
+                                        ?>
                                         <tr class="bg-dark text-light">
                                             <td colspan="4" class="text-center">Grand Total</td>
-                                            <td><?=$grandTotal ?></td>
+                                            <td class="text-right"><?= number_format($grandTotal) ?></td>
                                         </tr>
-                                    <?                                
+                                        <?php
+                                    }                                                              
                                 ?>                            
                             </tbody>
                         </table>
@@ -58,16 +137,89 @@
         <?php
     }
 
-    if (isset($_POST['viewDetail'])) {
-        $row_id_htrans = $_POST['row_id_htrans'];
+    function updateDatabaseFile($db, $lokasiFile, $row_id){
+        /** @var PDO $db */ //untuk munculin autocomplete di db
+        $query = "UPDATE HTRANS SET LOKASI_FOTO_BUKTI_PEMBAYARAN = :lokasi WHERE ROW_ID_HTRANS = :row_id";
+        $stmt = $db->prepare($query);
+        $stmt->bindValue(":lokasi", $lokasiFile);
+        $stmt->bindValue(":row_id", $row_id);
+        $result = $stmt->execute();
+        return $result;
+    }
+
+    function uploadFile($db, $file, $folderTujuan, $namaFileUpload, $row_id){
+        $fileTmp = $file['tmp_name'];
+        $namaAsliFileUpload = $file['name'];
+
+        //upload file sesuai dgn nama bawaan
+        // $destination =  __DIR__."/uploaded-file/".$namaAsliFileUpload;
+
+        //upload file sesuai dgn nama yg diinputkan di form
+        $namaAsliSplit = explode(".",$namaAsliFileUpload);
+        $lastIdx = count($namaAsliSplit) - 1;
+        $extension = $namaAsliSplit[$lastIdx];      
+        
+        $namaCustomFileUpload = $namaFileUpload."." .$extension;
+        $destination =  __DIR__.$folderTujuan.$namaCustomFileUpload;
+
+        $status = move_uploaded_file($fileTmp, $destination);
+
+        if ($status != false) {
+            echo "file berhasil diupload";
+
+            //insert ke db
+            $result = updateDatabaseFile($db, $namaCustomFileUpload, $row_id);
+
+            if ($result) {
+                refreshPage();
+            }
+            else{
+                showAlert("Updating Database Failed");
+            }
+
+        }
+        else{
+           showAlert("Uploading File Failed");
+        }    
+    }
+
+    function setSessionData($db, $row_id_htrans){
         $query = "SELECT * FROM DTRANS WHERE ROW_ID_HTRANS = {$row_id_htrans}";
         $detailTrans = getQueryResultRowArrays($db, $query);     
         $query = "SELECT * FROM HTRANS WHERE ROW_ID_HTRANS = {$row_id_htrans}";
-        $headerTrans = getQueryResultRow($db, $query);           
+        $headerTrans = getQueryResultRow($db, $query);   
+        $query = "SELECT * FROM CUSTOMER WHERE ROW_ID_CUSTOMER = {$headerTrans['ROW_ID_CUSTOMER']}";
+        $dataCust = getQueryResultRow($db, $query);
+                   
+        $dataTrans['row_id_htrans'] = $row_id_htrans;
+        $dataTrans['customer'] = $dataCust;
+        $dataTrans['header'] = $headerTrans;     
+        $dataTrans['detail'] = $detailTrans;
+        updateDataSession('dataTrans', $dataTrans);
     }
-    else{
-        $detailTrans = array();
+
+    if (isset($_POST['viewDetail'])) {
+        setSessionData($db, $_POST['row_id_htrans']);
+    }
+
+    if (isset($_SESSION['dataTrans'])) {
+        $dataTrans = $_SESSION['dataTrans'];       
+        $row_id_htrans = $dataTrans['row_id_htrans']; 
+        $dataCust = $dataTrans['customer'];
+        $headerTrans = $dataTrans['header'];
+        $detailTrans = $dataTrans['detail'];
+    }
+    else{        
+        $row_id_htrans = 0;
+        $dataCust = array();
         $headerTrans = array();
+        $detailTrans = array();
+    }
+    
+    if (isset($_POST['changePaymentProofImage'])) {
+        $row_id_htrans = $headerTrans['ROW_ID_HTRANS'];
+        uploadFile($db, $_FILES['file-upload'], "/res/img/transaksi/", strval( $row_id_htrans), $row_id_htrans);
+        setSessionData($db, $row_id_htrans);   
     }
 ?>
 
@@ -93,6 +245,7 @@
 
         <!-- CSS Sendiri -->
         <link href="style/index.css" rel="stylesheet">
+        <link href="style/general.css" rel="stylesheet">
 
         <!-- JS Sendiri -->
 
@@ -122,9 +275,9 @@
         <main>
             <!-- kalau mau pake space ga ush dicomment -->
             <div class="spaceatas"></div>
-            
+
             <!-- container -> jarak ikut bootstrap, container-fluid -> jarak full width, w-(ukuran) -> sesuai persentase, contoh w-80 -> 80% -->
-            <?php showDetailTrans($db, $detailTrans, $headerTrans) ?>
+            <?php showDetailTrans($db, $headerTrans, $detailTrans, $dataCust, $jenisUser) ?>
 
             <!-- Button Contact Us -->
             <div class="text-center my-3">

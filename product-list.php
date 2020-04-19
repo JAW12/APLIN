@@ -25,17 +25,18 @@
                     <label>Harga</label>
                 </div> -->
                 <div class="col-12">
-                    <div class="row row-cols-1 row-cols-md-4 card-deck">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 card-deck">
                         <?php
                         // echo "<pre>";
                         // print_r($listProduk);
                         // echo "</pre>";
                         foreach ($listProduk as $key => $value) {
+                            $lokasiFotoProduk = "res/img/produk/".$value['LOKASI_FOTO_PRODUK'];
                             ?>
                                 <form method="POST">                            
                                     <div class="card border-0 hover-shadow my-4 p-3" style="width: 18rem;box-sizing: border-box">
                                         <div>
-                                            <img width="256px" height="256px" src="<?= $value['LOKASI_FOTO_PRODUK'] ?>" class="card-img-top" alt="gambar produk">
+                                            <img width="256px" height="256px" src="<?= $lokasiFotoProduk ?>" class="card-img-top" alt="gambar produk">
                                         </div>
                                         <div class="card-body">
                                             <!-- <h5 class="card-title"><?= $value['NAMA_PRODUK'] ?></h5> -->
