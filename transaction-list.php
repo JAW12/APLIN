@@ -116,7 +116,7 @@
                         if (count($dataHTrans) <= 0) {
                             ?>
                                 <tr>
-                                    <th colspan="8">NO DATA FOUND</th>
+                                    <th colspan="8" class="text-center">NO DATA FOUND</th>
                                 </tr>
                             <?php
                         }
@@ -148,12 +148,12 @@
                                 <form method="POST">
                                     <tr>
                                         <input type="hidden" name="row_id_htrans" value='<?= $value['ROW_ID_HTRANS'] ?>'>
-                                        <th scope="row"><?= $ctrNum ?></th>
-                                        <th><?= $value['ROW_ID_HTRANS'] ?></th>
-                                        <td> <?= getDateFormatted($value['TANGGAL_TRANS']) ?> </td>
-                                        <td> <?= $value['NO_NOTA'] ?> </td>
-                                        <td> <?= $namaCustomer ?> </td>
-                                        <td class="text-right"> <?= number_format($value['TOTAL_TRANS']) ?> </td>
+                                        <th scope="row" class="align-middle"><?= $ctrNum ?></th>
+                                        <th class="align-middle"><?= $value['ROW_ID_HTRANS'] ?></th>
+                                        <td class="align-middle"> <?= getDateFormatted($value['TANGGAL_TRANS']) ?> </td>
+                                        <td class="align-middle"> <?= $value['NO_NOTA'] ?> </td>
+                                        <td class="align-middle"> <?= $namaCustomer ?> </td>
+                                        <td class="text-right align-middle"> <?= number_format($value['TOTAL_TRANS']) ?> </td>
                                         <td class="<?= $cl ?> text-center align-middle"> <?= $status_str ?> </td>
                                         <?php    
                                             if ($status_str == "Pending" && $jenisUser != "customer") {
@@ -176,7 +176,7 @@
                                                 $colspan = "";
                                             }
                                             ?>
-                                                <td colspan="<?= $colspan ?>" class="d-flex flex-wrap justify-content-around">
+                                                <td colspan="<?= $colspan ?>" class="d-flex flex-wrap justify-content-around align-middle">
                                                     <button type="submit" class="btn btn-info rounded" name="viewDetail" formaction="transaction-detail.php">
                                                             View Detail
                                                     </button>   
@@ -191,8 +191,8 @@
                             }
                         }
                     ?>        
-                    <tr class="bg-dark text-light text-center">
-                        <td colspan="8">
+                    <tr class="bg-warning text-dark font-weight-bold text-center">
+                        <td colspan="8" class="align-middle">
                             <?php
                                 // echo "Last Updated: ".date("F d Y H:i:s.", 
                                 // filemtime("transaction-list.php"));
