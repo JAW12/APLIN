@@ -1,6 +1,17 @@
-<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
-    <div class="container">
-        <a class="navbar-brand js-scroll-trigger" href="index.php">Logo</a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+<style>
+.bg-light.scrolled {
+    background-color: #f8f9fa !important;
+    transition: background-color 200ms;
+}
+
+.bg-light{
+    background-color: #fff !important;
+    transition: background-color 200ms;
+}
+</style>
+<nav class="navbar navbar-expand-lg navbar-fixed-top fixed-top navbar-light bg-light">
+        <a class="navbar-brand js-scroll-trigger" href="index.php"><img src="res/img/logo.png" style="width: 100px;"></a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto my-2 my-lg-0 mr-4">
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="aboutus.php">About Us</a></li>
@@ -22,6 +33,13 @@
                 <?php
                 }
             ?>
-        </div>
     </div>
 </nav>
+<script>
+$(function () {
+  $(document).scroll(function () {
+    var $nav = $(".navbar");
+    $nav.toggleClass('scrolled', $(this).scrollTop() > $nav.height());
+  });
+});
+</script>

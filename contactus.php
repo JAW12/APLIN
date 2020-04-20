@@ -86,7 +86,7 @@
                     <hr class="col-10 my-5">
                     <div class="col-12 mb-4">
                         <div class="text-center dark-grey-text w-70">
-                            <h1>Give Us a Feedback!</h1>
+                            <h1>Send us a message.</h1>
                             <p class="lead">Do you have any questions? Please do not hesitate to contact us directly. <br> Our team will come back to you within a matter of hours to help you.</p>
 
                         <form id="contact-form" method="post" action="" role="form">
@@ -95,15 +95,15 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="form_name">Firstname</label>
-                                            <input id="form_name" type="text" name="name" class="form-control" placeholder="Please enter your firstname" required="required" data-error="Firstname is required.">
+                                            <label for="form_name">First Name</label>
+                                            <input id="form_name" type="text" name="name" class="form-control" placeholder="John" required="required" data-error="Firstname is required.">
                                             <div class="help-block with-errors"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="form_lastname">Lastname</label>
-                                            <input id="form_lastname" type="text" name="surname" class="form-control" placeholder="Please enter your lastname" required="required" data-error="Lastname is required.">
+                                            <label for="form_lastname">Last Name</label>
+                                            <input id="form_lastname" type="text" name="surname" class="form-control" placeholder="Doe" required="required" data-error="Lastname is required.">
                                             <div class="help-block with-errors"></div>
                                         </div>
                                     </div>
@@ -112,15 +112,14 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="form_email">Email</label>
-                                            <input id="form_email" type="email" name="email" class="form-control" placeholder="Please enter your email" required="required" data-error="Valid email is required.">
+                                            <input id="form_email" type="email" name="email" class="form-control" placeholder="johndoe@gmail.com" required="required" data-error="Valid email is required.">
                                             <div class="help-block with-errors"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="form_need">Please specify your need</label>
+                                            <label for="form_need">Specify your need</label>
                                             <select id="form_need" name="need" class="form-control" required="required" data-error="Please specify your need.">
-                                                <option value="">Please specify your need</option>
                                                 <option value="Request quotation">Request quotation</option>
                                                 <option value="Request order status">Request order status</option>
                                                 <option value="Request copy of an invoice">Request copy of an invoice</option>
@@ -134,7 +133,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="form_message">Message</label>
-                                            <textarea id="form_message" name="message" class="form-control" placeholder="Message for us" rows="4" required="required" data-error="Please, leave us a message."></textarea>
+                                            <textarea id="form_message" name="message" class="form-control" placeholder="Hey can you please help me with ... " rows="4" required="required" data-error="Please, leave us a message."></textarea>
                                             <div class="help-block with-errors"></div>
                                         </div>
                                     </div>
@@ -156,7 +155,7 @@
 
                 <!-- Button Contact Us -->
                 <div class="text-center my-3">
-                <a class="btn btn-lg btn-dark" href="" role="button">CONTACT US</a>
+                <a class="btn btn-lg btn-dark" href="contactus.php" role="button">CONTACT US</a>
                 </div>
             </div>
         </main>
