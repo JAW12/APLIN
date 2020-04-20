@@ -158,12 +158,13 @@
             </tbody>
         </table>
         <form method="POST">
-            <div class="container" style="width: 18rem; margin-top: 2%">
+            <div class="container float-right" style="width: 18rem; margin-top: 2%; margin-right: 6.5%">
                 <input type="hidden" name="grand" value="<?=$grandTotal?>"/>
                 <button class="btn btn-success container text-center" name="btnConfirm">Confirm Purchase</button>
             </div>
         </form>
-
+        <div style="width: 100px; height: 100px">
+        </div>
         <!-- Button Contact Us -->
         <div class="text-center my-3">
             <a class="btn btn-lg btn-dark" href="contactus.php" role="button">CONTACT US</a>
