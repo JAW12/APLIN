@@ -70,6 +70,9 @@
         <script src="js/jQueryUI.js"></script>
         <script type="text/javascript" src="js/datatables.js"></script>
 
+        <!-- CSS Sendiri -->
+        <link href="style/index.css" rel="stylesheet">
+        
         <title>Detail Produk</title>
         <script>
             $( function() {

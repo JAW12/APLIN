@@ -71,20 +71,28 @@
         <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
         <link rel="stylesheet" type="text/css" href="css/datatables.css"/>
         <link href="css/all.css" rel="stylesheet">
-        <link rel="icon" type="image/png" href="res/img/goblin.png" />    
-
+        <link rel="icon" type="image/png" href="res/img/goblin.png" />   
+        
         <!-- JS Library Import -->
         <script src="js/jquery-3.4.1.min.js"></script>
         <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/jQueryUI.js"></script>
         <script type="text/javascript" src="js/datatables.js"></script>
-
+        
+        <style>
+            .footer {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+            }
+        </style>
         <title>Cart</title>
     </head>
     <body id="page-top">
         <!-- Header Section -->
         <?php include("header.php"); ?>
 
+        <main>
         <div class="h1 text-center" style="margin-top: 2%; margin-bottom: 3%">Cart</div>
         <table class="table table-hover table-striped table-bordered container">
             <thead class="thead-dark text-center">
@@ -157,18 +165,19 @@
                 ?>
             </tbody>
         </table>
+        <div class="container text-right">
         <form method="POST">
-            <div class="container float-right" style="width: 18rem; margin-top: 2%; margin-right: 6.5%">
                 <input type="hidden" name="grand" value="<?=$grandTotal?>"/>
-                <button class="btn btn-success container text-center" name="btnConfirm">Confirm Purchase</button>
-            </div>
+                <button class="btn btn-success text-center px-3" name="btnConfirm">Confirm Purchase</button>
         </form>
-        <div style="width: 100px; height: 100px">
         </div>
+        
         <!-- Button Contact Us -->
         <div class="text-center my-3">
             <a class="btn btn-lg btn-dark" href="contactus.php" role="button">CONTACT US</a>
         </div>
+        </main>
+        
 
         <!-- Footer Section -->
         <?php include("footer.php"); ?>

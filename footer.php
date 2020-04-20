@@ -1,4 +1,4 @@
-<footer class="bg-dark py-5">
+<footer class="footer bg-dark py-5">
     <div class="container">
         <div class="medium text-center text-light">
             Copyright ©2020 - Squee Store
