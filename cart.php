@@ -1,5 +1,5 @@
 <?php
-    include "conn.php";
+    include "load.php";
     
     session_start();
     if(isset($_SESSION['regisdtrans'])){
@@ -82,24 +82,10 @@
         <title>Cart</title>
     </head>
     <body id="page-top">
-        <header>
-            <nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top py-3 container" id="mainNav">
-                <a class="navbar-brand js-scroll-trigger" href="#page-top">Logo</a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ml-auto my-2 my-lg-0 mr-4">
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">About Us</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">Contact Us</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">Products</a></li>
-                    </ul>
-                    <form class="form-inline my-2 my-lg-0 mr-3">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-                    <a class="btn btn-primary" href="login.php" role="button">Login</a>
-                </div>
-            </nav>
-        </header>
-        <div class="h1 text-center" style="margin-top: 7%;margin-bottom: 3%">Cart</div>
+        <!-- Header Section -->
+        <?php include("header.php"); ?>
+
+        <div class="h1 text-center" style="margin-top: 2%; margin-bottom: 3%">Cart</div>
         <table class="table table-hover table-striped table-bordered container">
             <thead class="thead-dark text-center">
                 <tr>
@@ -177,5 +163,8 @@
                 <button class="btn btn-success container text-center" name="btnConfirm">Confirm Purchase</button>
             </div>
         </form>
+
+        <!-- Footer Section -->
+        <?php include("footer.php"); ?>
     </body>
 </html>

@@ -1,5 +1,5 @@
 <?php
-    include "conn.php";
+    include "load.php";
 
     if(isset($_POST['idProduk'])){
         $idProduk = $_POST['idProduk'];
@@ -78,23 +78,8 @@
         </script>
     </head>
     <body id="page-top">
-        <header>
-            <nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top py-3 container" id="mainNav">
-                <a class="navbar-brand js-scroll-trigger" href="#page-top">Logo</a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ml-auto my-2 my-lg-0 mr-4">
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">About Us</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">Contact Us</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="">Products</a></li>
-                    </ul>
-                    <form class="form-inline my-2 my-lg-0 mr-3">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-                    <a class="btn btn-primary" href="login.php" role="button">Login</a>
-                </div>
-            </nav>
-        </header>
+        <!-- Header Section -->
+        <?php include("header.php"); ?>
 
         <main>
             <div class="container">
@@ -141,7 +126,7 @@
                 </div>
         </div>
         <div class="container">
-        <h3 class="display-5">Similiar Product :</h3>
+        <h3 class="display-5">Similar Product :</h3>
             <?php
                 $query = "SELECT * FROM KATEGORI_PRODUK WHERE ROW_ID_PRODUK = $idProduk";
                 $kategoriProduk = getQueryResultRowArrays($db, $query);
@@ -182,13 +167,13 @@
                     }
                     else{
                         ?>
-                        <h2 class="display-5">There are no similiar product</h2>
+                        <h2 class="display-5">There are no similar product</h2>
                         <?php
                     }
                 }
             else{
                 ?>
-                <h2 class="display-5">There are no similiar product</h2>
+                <h2 class="display-5">There are no similar product</h2>
                 <?php
             }
             ?>
@@ -197,15 +182,7 @@
             <a class="btn btn-lg btn-dark" href="" role="button">CONTACT US</a>
         </div>
 
-        <footer class="bg-dark py-5">
-            <div class="container">
-                <div class="medium text-center text-light">
-                    Copyright ©2020 - Squee Store
-                </div>
-                <div class="small text-center text-light">
-                    Squee Store berusaha menyediakan berbagai macam peralatan dan perlengkapan bahan bangunan dengan kualitas terjamin dan terjangkau.
-                </div>   
-            </div>
-        </footer>
+        <!-- Footer Section -->
+        <?php include("footer.php"); ?>
     </body>
 </html>

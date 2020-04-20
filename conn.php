@@ -91,3 +91,32 @@ function getDateFormatted($date){
 function refreshPage(){
     header("Refresh:0");
 }
+
+function hashPassword($p, $b){ // true -> cek pake hash, false -> cek ga pake hash
+    if($b == true){
+        return password_hash($p, PASSWORD_DEFAULT);
+    }
+    else{
+        return $p;
+    }
+}
+
+function cekPassword($p1, $p2, $b){ // true -> cek pake hash, false -> cek ga pake hash
+    if($b == true){
+        if(password_verify($p1, $p2)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        if($p1 == $p2){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+}
+

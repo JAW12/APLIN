@@ -34,7 +34,7 @@
         <!-- CSS Sendiri -->
         <link href="style/lrc.css" rel="stylesheet">
 
-        <title>Sign In Page</title>
+        <title>Sign In As Admin Page</title>
     </head>
     <body>
         <div class="limiter">
@@ -63,7 +63,7 @@
                                 </div>
 
                                 <div class="container-login100-form-btn m-t-32 d-flex justify-content-around">
-                                    <button class="login100-form-btn w-75" formaction="cek_login.php?customer">
+                                    <button class="login100-form-btn w-75" formaction="cek_login.php?admin">
                                         Login
                                     </button>
                                 </div>
