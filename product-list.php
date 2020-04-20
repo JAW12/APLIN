@@ -16,7 +16,7 @@
         }
         else{
             ?>
-            <div class="container-fluid px-2 my-3 d-flex justify-content-around">
+            <div class="container-fluid px-2 my-3 mt-5 d-flex justify-content-around">
                 <!-- <div class="col-2">
                     <label>Harga</label>
                 </div> -->
@@ -152,7 +152,9 @@
 
             <section class="w-80">
                 <!-- content start here, silahkan dihapus tes tes nya dibawah kalau sudah mulai-->
-                <?php showCardProduk($db);?>
+                <div>
+                    <?php showCardProduk($db);?>
+                </div>
             </section>
 
             <!-- Button Contact Us -->
