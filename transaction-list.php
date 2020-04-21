@@ -210,12 +210,12 @@
 
     if (isset($_POST['acceptOrder'])) {
         updateTransactionStatus($db, $_POST['row_id_htrans'], 1);
-        showAlert("status has been changed");
+        showAlertModal('bg-success', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Status Has Been Changed</h4>', 'Close', '');
     }
 
     if (isset($_POST['rejectOrder'])) {
         updateTransactionStatus($db, $_POST['row_id_htrans'], 2);
-        showAlert("status has been changed");
+        showAlertModal('bg-success', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Status Has Been Changed</h4>', 'Close', '');
     }
     
 
@@ -248,7 +248,7 @@
                 bottom: 0;
                 width: 100%;
             } */
-            
+
             #judul{
                 padding: 0;
                 padding-top: 5%;

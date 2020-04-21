@@ -71,6 +71,7 @@
 
     function showDetailTrans($db, $headerTrans, $detailTrans, $dataCust, $jenisUser){
         $row_id_htrans = $headerTrans['ROW_ID_HTRANS'];
+        $statusTrans = $headerTrans['STATUS_PEMBAYARAN'];
         $lokasiFoto = "res/img/transaksi/no-image.png";
         if (!empty($headerTrans['LOKASI_FOTO_BUKTI_PEMBAYARAN'])) {
             $lokasiFoto = "res/img/transaksi/".$headerTrans['LOKASI_FOTO_BUKTI_PEMBAYARAN'];
@@ -107,14 +108,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <form method="POST">
-                                    <input type="hidden" name="row_id_htrans" value="<?= $row_id_htrans ?>">
-                                    <button type="submit" class="btn btn-warning rounded float-right" name="lihatReview" formaction="review.php">
-                                        Review Product
-                                    </button>
-                                </form>
-                            </div>
+                            <?php
+                                if ($statusTrans == 1 && $jenisUser == "customer") {
+                                ?>
+                                    <div class="col">
+                                        <form method="POST">
+                                            <input type="hidden" name="row_id_htrans" value="<?= $row_id_htrans ?>">
+                                            <button type="submit" class="btn btn-warning rounded float-right" name="lihatReview" formaction="review.php">
+                                                Review Product
+                                            </button>
+                                        </form>
+                                    </div>
+                                <?php
+                                }
+                            ?>                            
                         </div>
                     </div>       
                 </div>
@@ -157,7 +164,7 @@
         $status = move_uploaded_file($fileTmp, $destination);
 
         if ($status != false) {
-            echo "file berhasil diupload";
+            // echo "file berhasil diupload";
 
             //insert ke db
             $result = updateDatabaseFile($db, $namaCustomFileUpload, $row_id);
@@ -166,12 +173,12 @@
                 refreshPage();
             }
             else{
-                showAlert("Updating Database Failed");
+                showAlertModal('bg-danger', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Updating Database Has Failed</h4>', 'Close', '');
             }
 
         }
         else{
-           showAlert("Uploading File Failed");
+            showAlertModal('bg-danger', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Uploading File Has Failed</h4>', 'Close', '');
         }    
     }
 
