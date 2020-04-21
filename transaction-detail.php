@@ -1,34 +1,76 @@
 <?php
-    include "load.php";
+    include "system/load.php";
     /** @var PDO $db */ //untuk munculin autocomplete di db
 
-    //testing 
-    if (isset($_SESSION['jenisUser']) && isset($_SESSION['row_id_user_aktif'])) {
-        $jenisUser = $_SESSION['jenisUser'];
-        $rowIdUserAktif = $_SESSION['row_id_user_aktif'];
-    }
-    else{
+    //dapetin data
+    cekLogin($db, "", $login);
+
+    if (isset($login)) {
         $jenisUser = "admin";
         $rowIdUserAktif = -1;
+        if ($login['role'] == 1) {
+            $jenisUser = "customer";
+        }
+        
+        if ($jenisUser == "customer") {
+            $dataCustomer = getCustomerData($db, $login['username']);
+            $rowIdUserAktif = $dataCustomer['ROW_ID_CUSTOMER'];
+        }
     }
 
-    if (isset($_POST['tesAdmin'])) {
-        $jenisUser = "admin";
-        $rowIdUserAktif = -1;
-        updateDataSession("jenisUser", $jenisUser);
-        updateDataSession("row_id_user_aktif", $rowIdUserAktif);
-    }
+    function showTableDetailTrans($db, $detailTrans){
+        ?>
+            <table class="table table-striped table-bordered border-dark">
+                <thead class="thead-dark text-center">
+                    <th scope="col">#</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">QTY</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Subtotal</th>
+                </thead>
+                <tbody>
+                    <?php
+                        $ctrNum = 0;
+                        $grandTotal = 0;
+                        if (count($detailTrans) <= 0) {
+                            ?>
+                                <th colspan="5" class="text-center">NO DATA FOUND</th>
+                            <?php
+                        }
+                        else{
+                            foreach ($detailTrans as $key => $value) {
+                                $ctrNum++;
+                                $row_id_produk = $value['ROW_ID_PRODUK'];
+                                $query = "SELECT NAMA_PRODUK FROM PRODUK WHERE ROW_ID_PRODUK = {$row_id_produk}";
+                                $namaProduk = getQueryResultRowField($db, $query, "NAMA_PRODUK");
 
-    if (isset($_POST['tesCustomer'])) {
-        $jenisUser = "customer";
-        $rowIdUserAktif = $_POST['tesRowIdUser'];
-        updateDataSession("jenisUser", $jenisUser);
-        updateDataSession("row_id_user_aktif", $rowIdUserAktif);
-        // showAlert("testing");
+                                $subtotal = $value['SUBTOTAL'];
+                                $grandTotal += $subtotal;
+                                ?>
+                                    <tr>
+                                        <th> <?= $ctrNum ?> </th>
+                                        <td> <?= $namaProduk ?> </td>
+                                        <td class="text-center"> <?= $value['QTY_PRODUK'] ?> </td>
+                                        <td class="text-right"> <?= getSeparatorNumberFormatted($value['HARGA_PRODUK']) ?></td>
+                                        <td class="text-right"> <?= getSeparatorNumberFormatted($subtotal) ?> </td>
+                                    </tr>
+                                <?php
+                            }
+                            ?>
+                            <tr class="bg-warning text-dark font-weight-bold">
+                                <td colspan="4" class="text-center">Grand Total</td>
+                                <td class="text-right"><?= getSeparatorNumberFormatted($grandTotal) ?></td>
+                            </tr>
+                            <?php
+                        }                                                              
+                    ?>                            
+                </tbody>
+            </table>
+        <?php
     }
-    //end of testing
 
     function showDetailTrans($db, $headerTrans, $detailTrans, $dataCust, $jenisUser){
+        $row_id_htrans = $headerTrans['ROW_ID_HTRANS'];
         $lokasiFoto = "res/img/transaksi/no-image.png";
         if (!empty($headerTrans['LOKASI_FOTO_BUKTI_PEMBAYARAN'])) {
             $lokasiFoto = "res/img/transaksi/".$headerTrans['LOKASI_FOTO_BUKTI_PEMBAYARAN'];
@@ -48,36 +90,30 @@
                             <input type="file" class="p-1 border border-warning rounded" name="file-upload">
                             <button type="submit" class="btn btn-warning rounded" name="changePaymentProofImage">Upload</button>
                         </form>
-                        
-                        <?php
-                            // if ($jenisUser == "admin") {
-                            //     ?>
-                            <!-- //         <p class="h5 text-dark">Change Payment Proof Image</p><br/>
-                            //         <form method="POST" enctype="multipart/form-data" class="text-left">                            
-                            //             <input type="file" class="p-1 border border-warning rounded" name="file-upload">
-                            //             <button type="submit" class="btn btn-warning rounded" name="changePaymentProofImage">Upload</button>
-                            //         </form> -->
-                                <?php
-                            // }
-                            // else{
-                            //     ?>
-                            <!-- //         <p class="h5 text-dark">Payment Proof Image</p><br/> -->
-                                <?php
-                            // }
-                        ?>
-                        
                     </div>             
                     <div class="col-sm-12 col-md-6 mt-5">
-                        <p class="h5 text-dark">Transaction Info</p>
-                        <div class="text-dark text-right">
-                            <div>
-                                Date : <?= getDateFormatted($headerTrans['TANGGAL_TRANS']) ?>
+                        <div class="row">
+                            <div class="col">
+                                <p class="h5 text-dark">Transaction Info</p>
+                                <div class="text-dark text-left">
+                                    <div>
+                                        Date : <?= getDateFormatted($headerTrans['TANGGAL_TRANS']) ?>
+                                    </div>
+                                    <div>
+                                        Invoice Number : <?= $headerTrans['NO_NOTA'] ?>
+                                    </div>
+                                    <div>
+                                        Customer Name: <?= $namaCustomer ?>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                Invoice Number : <?= $headerTrans['NO_NOTA'] ?>
-                            </div>
-                            <div>
-                                Customer Name: <?= $namaCustomer ?>
+                            <div class="col">
+                                <form method="POST">
+                                    <input type="hidden" name="row_id_htrans" value="<?= $row_id_htrans ?>">
+                                    <button type="submit" class="btn btn-warning rounded float-right" name="lihatReview" formaction="review.php">
+                                        Review Product
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>       
@@ -89,52 +125,7 @@
                         </div>         
                     </div>
                     <div class="col-sm-12 col-md-6 mt-1">
-                        <table class="table table-striped table-bordered border-dark">
-                            <thead class="thead-dark text-center">
-                                <th scope="col">#</th>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">QTY</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Subtotal</th>
-                            </thead>
-                            <tbody>
-                                <?php
-                                    $ctrNum = 0;
-                                    $grandTotal = 0;
-                                    if (count($detailTrans) <= 0) {
-                                        ?>
-                                            <th colspan="5" class="text-center">NO DATA FOUND</th>
-                                        <?php
-                                    }
-                                    else{
-                                        foreach ($detailTrans as $key => $value) {
-                                            $ctrNum++;
-                                            $row_id_produk = $value['ROW_ID_PRODUK'];
-                                            $query = "SELECT NAMA_PRODUK FROM PRODUK WHERE ROW_ID_PRODUK = {$row_id_produk}";
-                                            $namaProduk = getQueryResultRowField($db, $query, "NAMA_PRODUK");
-    
-                                            $subtotal = $value['SUBTOTAL'];
-                                            $grandTotal += $subtotal;
-                                            ?>
-                                                <tr>
-                                                    <th> <?= $ctrNum ?> </th>
-                                                    <td> <?= $namaProduk ?> </td>
-                                                    <td class="text-center"> <?= $value['QTY_PRODUK'] ?> </td>
-                                                    <td class="text-right"> <?= number_format($value['HARGA_PRODUK']) ?></td>
-                                                    <td class="text-right"> <?= number_format($subtotal) ?> </td>
-                                                </tr>
-                                            <?php
-                                        }
-                                        ?>
-                                        <tr class="bg-warning text-dark font-weight-bold">
-                                            <td colspan="4" class="text-center">Grand Total</td>
-                                            <td class="text-right"><?= number_format($grandTotal) ?></td>
-                                        </tr>
-                                        <?php
-                                    }                                                              
-                                ?>                            
-                            </tbody>
-                        </table>
+                        <?php showTableDetailTrans($db, $detailTrans) ?>
                     </div>
                 </div>
             </div>
@@ -154,9 +145,6 @@
     function uploadFile($db, $file, $folderTujuan, $namaFileUpload, $row_id){
         $fileTmp = $file['tmp_name'];
         $namaAsliFileUpload = $file['name'];
-
-        //upload file sesuai dgn nama bawaan
-        // $destination =  __DIR__."/uploaded-file/".$namaAsliFileUpload;
 
         //upload file sesuai dgn nama yg diinputkan di form
         $namaAsliSplit = explode(".",$namaAsliFileUpload);
@@ -250,10 +238,26 @@
         <!-- CSS Sendiri -->
         <link href="style/index.css" rel="stylesheet">
         <link href="style/general.css" rel="stylesheet">
+        <style>
+            /* .footer {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+            } */
+
+            #judul{
+                padding: 0;
+                padding-top: 5%;
+
+                padding-bottom: 5%;
+                background-repeat:no-repeat;
+                background-size: cover;
+            }
+        </style>
 
         <!-- JS Sendiri -->
 
-        <title>Home</title>
+        <title>Transaction Detail</title>
     </head>
     <body id="page-top">
         <!-- Header Section -->
@@ -262,7 +266,12 @@
         <!-- Main Section -->
         <main>
             <!-- kalau mau pake space ga ush dicomment -->
-            <div class="spaceatas"></div>
+            <!-- <div class="spaceatas"></div> -->
+            <div id="judul" class="col-12 text-center my-5" style="background-image: url('res/img/bg12.jpg');">
+                <h1 class="text-light display-3 font-weight-bold">
+                    Transaction List
+                </h1>
+            </div>
 
             <!-- container -> jarak ikut bootstrap, container-fluid -> jarak full width, w-(ukuran) -> sesuai persentase, contoh w-80 -> 80% -->
             <?php showDetailTrans($db, $headerTrans, $detailTrans, $dataCust, $jenisUser) ?>

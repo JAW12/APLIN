@@ -1,5 +1,5 @@
 <?php
-    include "load.php";
+    include "system/load.php";
 
     if(isset($_POST['idProduk'])){
         $idProduk = $_POST['idProduk'];

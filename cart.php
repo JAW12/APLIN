@@ -1,5 +1,5 @@
 <?php
-    include "load.php";
+    include "system/load.php";
     
     session_start();
     if(isset($_SESSION['regisdtrans'])){

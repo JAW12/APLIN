@@ -1,5 +1,5 @@
 <?php
-include "load.php";
+include "system/load.php";
 if(isset($_GET['customer'])){
     $u = $_POST['username'];
     $p = $_POST['pass'];

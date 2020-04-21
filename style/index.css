@@ -1,4 +1,4 @@
-body{
+body {
     margin: 0;
     padding: 0;
 }
@@ -8,51 +8,58 @@ html {
     min-height: 100%;
 }
 
-.w-10{
+.w-10 {
     max-width: 10%;
     margin: 0 auto;
 }
 
-.w-20{
+.w-20 {
     max-width: 20%;
     margin: 0 auto;
 }
 
-.w-30{
+.w-30 {
     max-width: 30%;
     margin: 0 auto;
 }
 
-.w-40{
+.w-40 {
     max-width: 40%;
     margin: 0 auto;
 }
 
-.w-50{
+.w-50 {
     max-width: 50%;
     margin: 0 auto;
 }
 
-.w-60{
+.w-60 {
     max-width: 60%;
     margin: 0 auto;
 }
 
-.w-70{
+.w-70 {
     max-width: 70%;
     margin: 0 auto;
 }
 
-.w-80{
+.w-80 {
     max-width: 80%;
     margin: 0 auto;
 }
 
-.w-90{
+.w-90 {
     max-width: 90%;
     margin: 0 auto;
 }
 
-.spaceatas{
+.spaceatas {
     margin-top: 5%;
+}
+
+
+/* css tambahan winda */
+
+.text-brown {
+    color: rgb(210, 105, 30)
 }

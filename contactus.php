@@ -1,5 +1,5 @@
 <?php
-    include "load.php";
+    include "system/load.php";
 ?>
 <!doctype html>
 <html>

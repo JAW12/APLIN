@@ -1,5 +1,12 @@
 <?php
     include "system/load.php";
+
+    $row_id_htrans = -1;
+    if (isset($_POST['row_id_htrans'])) {
+        $row_id_htrans = $_POST['row_id_htrans'];
+    }
+
+    
 ?>
 <!doctype html>
 <html>
@@ -25,7 +32,18 @@
         <link href="style/index.css" rel="stylesheet">
 
         <!-- JS Sendiri -->
-        <title>Home</title>
+
+        <title>About Us</title>
+        <style>
+            #judul{
+                padding: 0;
+                padding-top: 5%;
+
+                padding-bottom: 5%;
+                background-repeat:no-repeat;
+                background-size: cover;
+            }
+        </style>
     </head>
     <body id="page-top">
         <!-- Header Section -->
@@ -34,31 +52,11 @@
         <!-- Main Section -->
         <main>
             <!-- kalau mau pake space ga ush dicomment -->
-            <!-- <div class="spaceatas"></div> -->
+            <div class="spaceatas"></div>
             
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-1"></div>
-                    <div id="gambar" class="col-5">
-                        <img src="res/img/bg6.jpg" class="img-fluid" style="width: 100%;height:60%;">
-                    </div>
-                    <div class="col-1"></div>
-                    <div id="gambar" class="col-5">
-                        <img src="res/img/bg7.jpg" class="img-fluid" style="width: 100%;height:60%;">
-                    </div>
-                    <div id="gambar" class="col-5">
-                        <img src="res/img/bg3.jpg" class="img-fluid" style="width: 100%;height:60%;">
-                    </div>
-                    <div id="gambar" class="col-5">
-                        <img src="res/img/bg8.jpg" class="img-fluid" style="width: 100%;height:60%;">
-                    </div>
-                </div>
-            </div>
-            <?php
-                // showModal('Ini judul', 'tes', '');
-                // showAlertModal('bg-danger', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Ooops!</h4><p>Error deh!</p>', 'Close', '');
-            ?>
+            
         </main>
+
         <!-- Footer Section -->
         <?php include("footer.php"); ?>
     </body>

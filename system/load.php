@@ -1,8 +1,10 @@
 <?php 
     session_start();
-    include "conn.php";
+    include  __DIR__ . "/conn.php";
+    include __DIR__ . "/function-library.php";
     
-    function cekLogin($db, $role){
+    $login = array();
+    function cekLogin($db, $role, &$login){
         if(isset($_SESSION['login'])){
             $login = $_SESSION['login'];
         }
@@ -42,6 +44,5 @@
                 }
             }
         }
-        
     }
 ?>

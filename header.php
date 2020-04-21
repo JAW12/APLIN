@@ -20,7 +20,13 @@
         </ul>
         <form class="form-inline my-2 my-lg-0 mr-3" method="GET">
                 <div class="input-group">
-                <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="q">
+                <?php
+                    $keyword = "";
+                    if (isset($_GET['q'])) {
+                        $keyword = $_GET['q'];
+                    }                                
+                ?>
+                <input class="form-control" type="search" placeholder="Search Product" aria-label="Search" name="q" value="<?= $keyword ?>">
                 <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="submit" formaction="product-list.php">
                     <i class="fa fa-search"></i>
@@ -31,7 +37,9 @@
         <?php if (isset($_SESSION['login'])){
             ?>
                 <a class="btn btn-dark text-warning mr-2" style="width: 50px; height: 37px;" href="cart.php" role="button"><i class="fas fa-shopping-cart"></i></a>
-                <a class="btn btn-dark text-warning mr-2" style="width: 50px; height: 37px;" href="wishlist.php" role="button"><i class="fas fa-heart"></i></a>
+                <a class="btn btn-dark text-warning mr-2" style="width: 50px; height: 37px;" href="wishlist.php" role="button"><i class="fas fa-heart"></i></a><a class="btn btn-dark text-warning mr-2" style="width: 50px; height: 37px;" href="transaction-list.php" role="button">
+                    <i class="fas fa-history"></i>
+                </a>
                 <a class="btn btn-danger" style="width: 8%" href="logout.php" role="button">Log Out</a>
             <?php
         }

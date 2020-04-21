@@ -1,33 +1,22 @@
 <?php
-    include "load.php";
+    include "system/load.php";
     /** @var PDO $db Prepared Statement */
 
-    //testing 
-    if (isset($_SESSION['jenisUser']) && isset($_SESSION['row_id_user_aktif'])) {
-        $jenisUser = $_SESSION['jenisUser'];
-        $rowIdUserAktif = $_SESSION['row_id_user_aktif'];
-    }
-    else{
+    cekLogin($db, "", $login);
+
+    if (isset($login)) {
         $jenisUser = "admin";
         $rowIdUserAktif = -1;
+        if ($login['role'] == 1) {
+            $jenisUser = "customer";
+        }
+        
+        if ($jenisUser == "customer") {
+            $dataCustomer = getCustomerData($db, $login['username']);
+            $rowIdUserAktif = $dataCustomer['ROW_ID_CUSTOMER'];
+        }
     }
-
-    if (isset($_POST['tesAdmin'])) {
-        $jenisUser = "admin";
-        $rowIdUserAktif = -1;
-        updateDataSession("jenisUser", $jenisUser);
-        updateDataSession("row_id_user_aktif", $rowIdUserAktif);
-    }
-
-    if (isset($_POST['tesCustomer'])) {
-        $jenisUser = "customer";
-        $rowIdUserAktif = $_POST['tesRowIdUser'];
-        updateDataSession("jenisUser", $jenisUser);
-        updateDataSession("row_id_user_aktif", $rowIdUserAktif);
-        // showAlert("testing");
-    }
-    //end of testing
-
+    
     function getStatusPembayaran($status){
         $status_str = "";
         if ($status == 0) {
@@ -55,7 +44,6 @@
     function getTotalTransaction($dataHTrans){
         $total = 0;
         foreach ($dataHTrans as $key => $value) {
-            //hitung yang accepted
             if ($value['STATUS_PEMBAYARAN'] == 1) {
                 $total += $value['TOTAL_TRANS'];
             }
@@ -82,19 +70,21 @@
                     if ($jenisUser == "customer") {
                         $pesan = "You have spent : ";
                     }
-                    echo $pesan . number_format(getTotalTransaction($dataHTrans));
+                    echo $pesan . getSeparatorNumberFormatted(getTotalTransaction($dataHTrans));
                 ?>
             </div>
             <div class="bg-transparent h5 text-left my-3">
                 <p class="text-secondary"> <?= count($dataHTrans) ?> transactions found</p>
                 <?php
+                    $text = "admin's";
                     if ($jenisUser == "admin") {
-                        ?>
-                            <p class="text-warning"> 
-                                <?= getCountData($dataHTrans, "STATUS_PEMBAYARAN", 0) ?> pending transactions awaiting your approval
-                            </p>
-                        <?php   
+                        $text = "your";
                     }
+                    ?>
+                        <p class="text-warning"> 
+                            <?= getCountData($dataHTrans, "STATUS_PEMBAYARAN", 0) ?> pending transactions awaiting <?= $text ?> approval
+                        </p>
+                    <?php   
                 ?>
             </div>          
             <table class="table table-hover table-striped table-bordered">
@@ -152,7 +142,7 @@
                                         <td class="align-middle"> <?= getDateFormatted($value['TANGGAL_TRANS']) ?> </td>
                                         <td class="align-middle"> <?= $value['NO_NOTA'] ?> </td>
                                         <td class="align-middle"> <?= $namaCustomer ?> </td>
-                                        <td class="text-right align-middle"> <?= number_format($value['TOTAL_TRANS']) ?> </td>
+                                        <td class="text-right align-middle"> <?= getSeparatorNumberFormatted($value['TOTAL_TRANS']) ?> </td>
                                         <td class="<?= $cl ?> text-center align-middle"> <?= $status_str ?> </td>
                                         <?php    
                                             if ($status_str == "Pending" && $jenisUser != "customer") {
@@ -190,15 +180,20 @@
                             }
                         }
                     ?>        
-                    <tr class="bg-warning text-dark font-weight-bold text-center">
+                    <!-- <tr class="bg-warning text-dark font-weight-bold text-center">
                         <td colspan="8" class="align-middle">
                             <?php
                                 // echo "Last Updated: ".date("F d Y H:i:s.", 
                                 // filemtime("transaction-list.php"));
-                                echo "~";
+                                // echo "~";
                             ?>
                         </td>
-                    </tr>            
+                    </tr>         -->
+                    <tr class="bg-dark text-warning font-weight-bold text-center">
+                        <td colspan="8" class="align-middle">
+                            &nbsp;
+                        </td>
+                    </tr>           
                 </tbody>
             </table>
         <?php   
@@ -247,9 +242,25 @@
 
         <!-- CSS Sendiri -->
         <link href="style/index.css" rel="stylesheet">
+        <style>
+            /* .footer {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+            } */
+            
+            #judul{
+                padding: 0;
+                padding-top: 5%;
+
+                padding-bottom: 5%;
+                background-repeat:no-repeat;
+                background-size: cover;
+            }
+        </style>
 
         <!-- JS Sendiri -->
-        <title>Home</title>
+        <title>Transaction Detail</title>
     </head>
     <body id="page-top">
         <!-- Header Section -->
@@ -258,17 +269,13 @@
         <!-- Main Section -->
         <main>
             <!-- kalau mau pake space ga ush dicomment -->
-            <div class="spaceatas"></div>
-
-            <!-- testing -->
-            <div class="container my-5">
-                <form method="POST">
-                    <input type="text" name="tesRowIdUser" class="form-control" placeholder="Row ID Customer">
-                    <button type="submit" name="tesAdmin">Testing Admin</button>
-                    <button type="submit" name="tesCustomer">Testing Customer</button>
-                </form>
+            <!-- <div class="spaceatas"></div> -->
+            <div id="judul" class="col-12 text-center my-5" style="background-image: url('res/img/bg12.jpg');">
+                <h1 class="text-light display-3 font-weight-bold">
+                    Transaction List
+                </h1>
             </div>
-            
+
             <!-- container -> jarak ikut bootstrap, container-fluid -> jarak full width, w-(ukuran) -> sesuai persentase, contoh w-80 -> 80% -->
             <div class="container">
                 <?php showTransactionList($db,$jenisUser, $rowIdUserAktif); ?>
