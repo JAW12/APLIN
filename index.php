@@ -34,24 +34,27 @@
         <!-- Main Section -->
         <main>
             <!-- kalau mau pake space ga ush dicomment -->
-            <div class="spaceatas"></div>
+            <!-- <div class="spaceatas"></div> -->
             
-            <!-- container -> jarak ikut bootstrap, container-fluid -> jarak full width, w-(ukuran) -> sesuai persentase, contoh w-80 -> 80% -->
-            <section class="w-80">
-                <!-- content start here, silahkan dihapus tes tes nya dibawah kalau sudah mulai-->
-                tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes 
-                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-            </section>
-
-            <!-- Button Contact Us -->
-            <div class="text-center my-3">
-                <a class="btn btn-lg btn-dark" href="contactus.php" role="button">CONTACT US</a>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div id="gambar" class="col-5">
+                        <img src="res/img/bg6.jpg" class="img-fluid" style="width: 100%;height:60%;">
+                    </div>
+                    <div class="col-1"></div>
+                    <div id="gambar" class="col-5">
+                        <img src="res/img/bg7.jpg" class="img-fluid" style="width: 100%;height:60%;">
+                    </div>
+                    <div id="gambar" class="col-5">
+                        <img src="res/img/bg3.jpg" class="img-fluid" style="width: 100%;height:60%;">
+                    </div>
+                    <div id="gambar" class="col-5">
+                        <img src="res/img/bg8.jpg" class="img-fluid" style="width: 100%;height:60%;">
+                    </div>
+                </div>
             </div>
         </main>
-
         <!-- Footer Section -->
         <?php include("footer.php"); ?>
     </body>

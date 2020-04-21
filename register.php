@@ -1,3 +1,6 @@
+<?
+?>
+
 <!doctype html>
 <html>
     <head>
@@ -75,13 +78,13 @@
                                 <legend class="col-form-label col-sm-3 pt-0">Gender</legend>
                                 <div class="col-sm-9">
                                     <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
+                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="laki" checked>
                                     <label class="form-check-label" for="gridRadios1">
                                         Laki-Laki
                                     </label>
                                     </div>
                                     <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="perempuan">
                                     <label class="form-check-label" for="gridRadios2">
                                         Perempuan
                                     </label>
@@ -89,7 +92,7 @@
                                 </div>
                                 </div>
                                 <div class="container-login100-form-btn m-t-32 d-flex justify-content-around">
-                                    <button class="login100-form-btn w-75">
+                                    <button class="login100-form-btn w-75" formaction="registeruser.php?user">
                                         Register
                                     </button>
                                 </div>
