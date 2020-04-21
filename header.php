@@ -19,11 +19,19 @@
             <li class="nav-item"><a class="nav-link js-scroll-trigger" href="product-list.php">Products</a></li>
         </ul>
         <form class="form-inline my-2 my-lg-0 mr-3" method="GET">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q">
-            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" formaction="product-list.php">Search</button>
+                <div class="input-group">
+                <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="q">
+                <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit" formaction="product-list.php">
+                    <i class="fa fa-search"></i>
+                </button>            
+                </div>
+            </div>
         </form>
         <?php if (isset($_SESSION['login'])){
             ?>
+                <a class="btn btn-dark text-warning mr-2" style="width: 50px; height: 37px;" href="cart.php" role="button"><i class="fas fa-shopping-cart"></i></a>
+                <a class="btn btn-dark text-warning mr-2" style="width: 50px; height: 37px;" href="wishlist.php" role="button"><i class="fas fa-heart"></i></a>
                 <a class="btn btn-danger" style="width: 8%" href="logout.php" role="button">Log Out</a>
             <?php
         }
