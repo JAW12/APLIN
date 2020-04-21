@@ -136,6 +136,7 @@
         <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/jQueryUI.js"></script>
         <script type="text/javascript" src="js/datatables.js"></script>
+        <script src="script/index.js"></script>
 
         <!-- CSS Sendiri -->
         <link href="style/index.css" rel="stylesheet">
@@ -214,11 +215,11 @@
                             <label class="form-check-label" for="cbAvailableProduct">Available Products</label>
                         </div>
                         <button type="submit" class="btn btn-info mx-3">Filter</button>
-                        <a href="product-list.php" class="btn btn-info mr-3">Reset Filter</a>
+                        <button type="submit" class="btn btn-info mr-3" formaction="product-list.php">Reset Filter</button>
                         <?php
                             if ($jenisUser == "admin") {
                                 ?>
-                                    <a href="master-product.php" class="btn btn-warning mx-3">Master Product</a>
+                                    <button type="submit" class="btn btn-warning mr-3" formaction="master-product.php">Master Product</a>
                                 <?php
                             }
                         ?>

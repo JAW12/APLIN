@@ -38,7 +38,7 @@ function showModal($title, $message, $buttonmessage, $button){
     </div>
     </div>';
     echo "<script>
-        $('#myModal').modal('show');
+        showAlertModal();
     </script>";
 }
 
@@ -143,7 +143,7 @@ function showAlertModal($warna, $icon, $message, $buttonmessage, $button){
         </div>
     </div>';
     echo "<script>
-    $('#alertModal').modal('show');
+        showAlertModal();
     </script>";
 }
 

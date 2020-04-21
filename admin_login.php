@@ -102,5 +102,6 @@
         <script src="vendor/login/countdowntime/countdowntime.js"></script>
         <!--===============================================================================================-->
         <script src="js/login.js"></script>
+        <script src="script/index.js"></script>
     </body>
 </html>

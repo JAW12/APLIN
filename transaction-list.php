@@ -210,14 +210,15 @@
 
     if (isset($_POST['acceptOrder'])) {
         updateTransactionStatus($db, $_POST['row_id_htrans'], 1);
-        showAlertModal('bg-success', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Status Has Been Changed</h4>', 'Close', '');
+        refreshPage();
+        // showAlertModal('bg-success', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Status Has Been Changed</h4>', 'Close', '');
     }
 
     if (isset($_POST['rejectOrder'])) {
         updateTransactionStatus($db, $_POST['row_id_htrans'], 2);
-        showAlertModal('bg-success', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Status Has Been Changed</h4>', 'Close', '');
+        refreshPage();
+        // showAlertModal('bg-success', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Status Has Been Changed</h4>', 'Close', '');
     }
-    
 
 ?>
 
@@ -239,6 +240,7 @@
         <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/jQueryUI.js"></script>
         <script type="text/javascript" src="js/datatables.js"></script>
+        <script src="script/index.js"></script>
 
         <!-- CSS Sendiri -->
         <link href="style/index.css" rel="stylesheet">
@@ -289,5 +291,16 @@
 
         <!-- Footer Section -->
         <?php include ("footer.php"); ?>
+
+        <?php
+            if (isset($_POST['acceptOrder'])) {
+                showAlertModal('bg-success', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Status Has Been Changed</h4>', 'Close', '');
+            }
+        
+            if (isset($_POST['rejectOrder'])) {
+                showAlertModal('bg-success', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Status Has Been Changed</h4>', 'Close', '');
+            }
+            
+        ?>
     </body>
 </html>

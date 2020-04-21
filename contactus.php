@@ -20,6 +20,7 @@
         <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/jQueryUI.js"></script>
         <script type="text/javascript" src="js/datatables.js"></script>
+        <script src="script/index.js"></script>
 
         <!-- CSS Sendiri -->
         <link href="style/index.css" rel="stylesheet">
