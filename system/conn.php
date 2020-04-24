@@ -45,6 +45,16 @@ function getQueryResultRowArrays($db, $query){
     }    
 }
 
+function executeNonQuery($db, $query){
+    try {
+        $stmt = $db->prepare($query);
+        $result = $stmt->execute();
+        return true;
+    } catch (Exception $e) {
+        return false;
+    }    
+}
+
 function getCustomerData($db, $username){
     try {
         $query = "SELECT * FROM CUSTOMER WHERE USERNAME = '{$username}'";

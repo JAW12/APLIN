@@ -236,11 +236,6 @@
                     ?>
                 </div>
             </section>
-
-            <!-- Button Contact Us -->
-            <div class="text-center my-3">
-                <a class="btn btn-lg btn-dark" href="contactus.php" role="button">CONTACT US</a>
-            </div>
         </main>
 
         <!-- Footer Section -->

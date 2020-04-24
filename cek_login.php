@@ -10,6 +10,7 @@ if(isset($_GET['customer'])){
         echo $p . ' ' . $user['PASSWORD'];
         if(cekPassword($p, $user['PASSWORD'], false)){ // true => hash, false => gapake
             updateDataSession('login', array(
+                "row_id_customer" => $user["ROW_ID_CUSTOMER"],
                 "username" => $u,
                 "password" => hashPassword($p, false), // true => hash, false => gapake
                 "role" => 1

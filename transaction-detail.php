@@ -284,10 +284,6 @@
             <!-- container -> jarak ikut bootstrap, container-fluid -> jarak full width, w-(ukuran) -> sesuai persentase, contoh w-80 -> 80% -->
             <?php showDetailTrans($db, $headerTrans, $detailTrans, $dataCust, $jenisUser) ?>
 
-            <!-- Button Contact Us -->
-            <div class="text-center my-3">
-                <a class="btn btn-lg btn-dark" href="contactus.php" role="button">CONTACT US</a>
-            </div>
         </main>
 
         <!-- Footer Section -->

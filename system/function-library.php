@@ -21,7 +21,7 @@ function showModal($title, $message, $buttonmessage, $button){
     // $buttonmessage utk nentuin teks button nya mau apa
     // $button utk klo ada tambahan button (opsional)    
 
-    echo '<div id="myModal" class="modal fade" role="dialog">
+    echo '<div id="myModal" class="modal fade">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -38,7 +38,7 @@ function showModal($title, $message, $buttonmessage, $button){
     </div>
     </div>';
     echo "<script>
-        showAlertModal();
+        showModal();
     </script>";
 }
 
@@ -125,7 +125,7 @@ function showAlertModal($warna, $icon, $message, $buttonmessage, $button){
         }
         </style>';
 
-    echo '<div id="alertModal" class="modal fade">
+    echo '<div id="alertModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="alertModal" aria-hidden="true">
         <div class="modal-dialog modal-confirm text-center">
             <div class="modal-content">
                 <div class="modal-header ' . $warna . '">
