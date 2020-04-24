@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 24, 2020 at 02:01 PM
+-- Generation Time: Apr 24, 2020 at 02:04 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.4
 
@@ -435,8 +435,8 @@ CREATE TABLE `review_produk` (
 --
 
 INSERT INTO `review_produk` (`ROW_ID_REVIEW`, `ROW_ID_CUSTOMER`, `ROW_ID_HTRANS`, `ROW_ID_PRODUK`, `WAKTU_REVIEW`, `KONTEN_REVIEW`, `BINTANG_REVIEW`) VALUES
-(0, 1, 13, 13, '2020-04-24 18:51:56', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ligula lectus, condimentum ut auctor id, vestibulum eget elit. Proin pretium eleifend odio, in interdum sem. Suspendisse bibendum libero sem, ac dignissim lectus sollicitudin ut. Aenean libero lacus, rutrum quis finibus eu, tempus id nunc. Aliquam fringilla neque quam. Donec ornare felis mauris, quis ultricies ex venenatis quis. Etiam rutrum, augue quis interdum interdum, libero tortor mollis nunc, non tempus mauris velit nec dolor. Donec blandit posuere egestas. Donec mauris tortor, tempus nec dictum quis, pellentesque semper orci. Vivamus ac odio consectetur, elementum libero ut, dignissim augue. Nam elementum, risus sed ultricies vestibulum, nunc velit tempor lectus, a aliquam nunc nisl ac elit. Aenean varius dictum nisl a pulvinar. Aliquam iaculis viverra porttitor. Maecenas at arcu id elit vulputate maximus in eget metus.\r\n\r\nDonec at pellentesque erat. In hac habitasse platea dictumst. Donec fermentum libero ex, id cursus sem hendrerit ac. Duis eget leo lectus. Pellentesque malesuada odio mi, interdum commodo augue mattis nec. Donec at malesuada diam, ut suscipit sem. Maecenas viverra lorem nibh, id feugiat nibh varius et. Curabitur at risus ac mi faucibus lacinia sed finibus justo. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam et hendrerit quam. Phasellus vitae felis sit amet turpis efficitur dapibus sed vel libero. Duis at auctor nisi. In sit amet cursus eros. Proin fringilla, erat pretium lobortis ullamcorper, ligula metus dictum velit, a consequat turpis erat eu dolor. Donec posuere mattis neque sed ultricies.\r\n\r\nCras a pulvinar quam, congue dictum sapien. Nulla cursus mi augue, vel lacinia quam ornare blandit. Etiam bibendum eros nisl, in efficitur neque mollis sit amet. Vivamus vitae enim eget odio ultricies viverra. Fusce vel ex quis tortor consectetur fringilla. In non nibh orci. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam imperdiet sed lacus at rutrum. Mauris sit amet nisl a est scelerisque consectetur eu quis enim. Sed fermentum luctus velit et scelerisque.\r\n\r\nCras est elit, bibendum eu libero ut, tempus laoreet velit. Fusce id egestas eros. Etiam nec tellus sit amet tortor placerat hendrerit. Quisque id massa at lectus dapibus mattis. Maecenas sem nibh, tempus sit amet dictum eu, molestie congue odio. Duis finibus, libero non facilisis dapibus, ante justo lobortis risus, non rhoncus diam leo a mauris. Sed congue tellus vitae eleifend semper. Integer rutrum porttitor neque et interdum. Phasellus ornare ac erat id ultrices. Pellentesque et libero aliquet, tempor orci et, eleifend tellus. Vestibulum scelerisque, nunc in posuere iaculis, arcu enim tempus tellus, nec tincidunt turpis lacus et turpis. Ut ultricies scelerisque condimentum.\r\n\r\nSed sed lectus pulvinar urna facilisis porta. Vivamus porta urna nisi. Etiam tristique sapien non magna aliquam, in consectetur dui dapibus. Sed maximus ornare nisi, sed auctor augue faucibus eget. Pellentesque nec blandit purus, in laoreet nunc. Phasellus a purus ut eros pulvinar molestie nec eu nisi. Duis interdum sagittis metus, quis rutrum ante pretium at. Vestibulum ut iaculis ipsum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus a velit purus. Aliquam erat volutpat. Aenean id dignissim velit. Nam consectetur elit eu velit porttitor tristique.', 3),
-(0, 1, 11, 11, '2020-04-24 18:52:31', 'tangga e uapik tenan gilak!', 5);
+(1, 1, 13, 13, '2020-04-24 18:51:56', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ligula lectus, condimentum ut auctor id, vestibulum eget elit. Proin pretium eleifend odio, in interdum sem. Suspendisse bibendum libero sem, ac dignissim lectus sollicitudin ut. Aenean libero lacus, rutrum quis finibus eu, tempus id nunc. Aliquam fringilla neque quam. Donec ornare felis mauris, quis ultricies ex venenatis quis. Etiam rutrum, augue quis interdum interdum, libero tortor mollis nunc, non tempus mauris velit nec dolor. Donec blandit posuere egestas. Donec mauris tortor, tempus nec dictum quis, pellentesque semper orci. Vivamus ac odio consectetur, elementum libero ut, dignissim augue. Nam elementum, risus sed ultricies vestibulum, nunc velit tempor lectus, a aliquam nunc nisl ac elit. Aenean varius dictum nisl a pulvinar. Aliquam iaculis viverra porttitor. Maecenas at arcu id elit vulputate maximus in eget metus.\r\n\r\nDonec at pellentesque erat. In hac habitasse platea dictumst. Donec fermentum libero ex, id cursus sem hendrerit ac. Duis eget leo lectus. Pellentesque malesuada odio mi, interdum commodo augue mattis nec. Donec at malesuada diam, ut suscipit sem. Maecenas viverra lorem nibh, id feugiat nibh varius et. Curabitur at risus ac mi faucibus lacinia sed finibus justo. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam et hendrerit quam. Phasellus vitae felis sit amet turpis efficitur dapibus sed vel libero. Duis at auctor nisi. In sit amet cursus eros. Proin fringilla, erat pretium lobortis ullamcorper, ligula metus dictum velit, a consequat turpis erat eu dolor. Donec posuere mattis neque sed ultricies.\r\n\r\nCras a pulvinar quam, congue dictum sapien. Nulla cursus mi augue, vel lacinia quam ornare blandit. Etiam bibendum eros nisl, in efficitur neque mollis sit amet. Vivamus vitae enim eget odio ultricies viverra. Fusce vel ex quis tortor consectetur fringilla. In non nibh orci. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam imperdiet sed lacus at rutrum. Mauris sit amet nisl a est scelerisque consectetur eu quis enim. Sed fermentum luctus velit et scelerisque.\r\n\r\nCras est elit, bibendum eu libero ut, tempus laoreet velit. Fusce id egestas eros. Etiam nec tellus sit amet tortor placerat hendrerit. Quisque id massa at lectus dapibus mattis. Maecenas sem nibh, tempus sit amet dictum eu, molestie congue odio. Duis finibus, libero non facilisis dapibus, ante justo lobortis risus, non rhoncus diam leo a mauris. Sed congue tellus vitae eleifend semper. Integer rutrum porttitor neque et interdum. Phasellus ornare ac erat id ultrices. Pellentesque et libero aliquet, tempor orci et, eleifend tellus. Vestibulum scelerisque, nunc in posuere iaculis, arcu enim tempus tellus, nec tincidunt turpis lacus et turpis. Ut ultricies scelerisque condimentum.\r\n\r\nSed sed lectus pulvinar urna facilisis porta. Vivamus porta urna nisi. Etiam tristique sapien non magna aliquam, in consectetur dui dapibus. Sed maximus ornare nisi, sed auctor augue faucibus eget. Pellentesque nec blandit purus, in laoreet nunc. Phasellus a purus ut eros pulvinar molestie nec eu nisi. Duis interdum sagittis metus, quis rutrum ante pretium at. Vestibulum ut iaculis ipsum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus a velit purus. Aliquam erat volutpat. Aenean id dignissim velit. Nam consectetur elit eu velit porttitor tristique.', 3),
+(2, 1, 11, 11, '2020-04-24 18:52:31', 'tangga e uapik tenan gilak!', 5);
 
 -- --------------------------------------------------------
 
@@ -504,6 +504,12 @@ ALTER TABLE `customer`
   ADD UNIQUE KEY `unique_customer_email` (`EMAIL`);
 
 --
+-- Indexes for table `review_produk`
+--
+ALTER TABLE `review_produk`
+  ADD PRIMARY KEY (`ROW_ID_REVIEW`);
+
+--
 -- Indexes for table `verifikasi_email`
 --
 ALTER TABLE `verifikasi_email`
@@ -519,6 +525,12 @@ ALTER TABLE `verifikasi_email`
 --
 ALTER TABLE `customer`
   MODIFY `ROW_ID_CUSTOMER` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `review_produk`
+--
+ALTER TABLE `review_produk`
+  MODIFY `ROW_ID_REVIEW` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `verifikasi_email`
