@@ -45,4 +45,14 @@
             }
         }
     }
+
+    function getDataLogin(){
+        if(isset($_SESSION['login'])){
+            $login = $_SESSION['login'];
+            return $login;
+        }
+        else{
+            return false;
+        }
+    }
 ?>

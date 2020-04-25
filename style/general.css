@@ -12,3 +12,11 @@
     padding: 0px;
     margin: 0px;
 }
+
+.img-fit-thumbnail {
+    /* display: block; */
+    max-width: 100px;
+    max-height: 100px;
+    width: auto;
+    height: auto;
+}

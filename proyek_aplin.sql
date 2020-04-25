@@ -1,14 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 24, 2020 at 02:04 PM
+-- Generation Time: Apr 25, 2020 at 08:46 PM
 -- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.4
+-- PHP Version: 7.4.1
 
-SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -21,14 +21,11 @@ SET time_zone = "+00:00";
 --
 -- Database: `proyek_aplin`
 --
-CREATE DATABASE IF NOT EXISTS `proyek_aplin` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `proyek_aplin`;
 
 DELIMITER $$
 --
 -- Functions
 --
-DROP FUNCTION IF EXISTS `F_HELLO`$$
 CREATE DEFINER=`root`@`localhost` FUNCTION `F_HELLO` (`PESAN` VARCHAR(20)) RETURNS TEXT CHARSET utf8 BEGIN
 	RETURN PESAN;
 END$$
@@ -41,7 +38,6 @@ DELIMITER ;
 -- Table structure for table `cart`
 --
 
-DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart` (
   `ROW_ID_CUSTOMER` int(11) NOT NULL,
   `ROW_ID_PRODUK` int(11) NOT NULL,
@@ -58,6 +54,7 @@ INSERT INTO `cart` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`, `QTY`) VALUES
 (6, 3, 50),
 (6, 6, 10),
 (6, 7, 1),
+(6, 8, 0),
 (6, 9, 50),
 (6, 10, 0),
 (7, 6, 2),
@@ -79,7 +76,6 @@ INSERT INTO `cart` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`, `QTY`) VALUES
 -- Table structure for table `customer`
 --
 
-DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer` (
   `ROW_ID_CUSTOMER` int(11) NOT NULL,
   `USERNAME` varchar(20) NOT NULL,
@@ -115,7 +111,6 @@ INSERT INTO `customer` (`ROW_ID_CUSTOMER`, `USERNAME`, `PASSWORD`, `EMAIL`, `NAM
 -- Table structure for table `dtrans`
 --
 
-DROP TABLE IF EXISTS `dtrans`;
 CREATE TABLE `dtrans` (
   `ROW_ID_HTRANS` int(11) NOT NULL,
   `ROW_ID_PRODUK` int(11) NOT NULL,
@@ -152,7 +147,6 @@ INSERT INTO `dtrans` (`ROW_ID_HTRANS`, `ROW_ID_PRODUK`, `QTY_PRODUK`, `HARGA_PRO
 --
 -- Triggers `dtrans`
 --
-DROP TRIGGER IF EXISTS `afterInsert_dtrans_check`;
 DELIMITER $$
 CREATE TRIGGER `afterInsert_dtrans_check` AFTER INSERT ON `dtrans` FOR EACH ROW BEGIN
 SET @total = 0;
@@ -168,7 +162,6 @@ UPDATE htrans SET TOTAL_TRANS = @total WHERE ROW_ID_HTRANS = NEW.ROW_ID_HTRANS;
 END
 $$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `afterUpdate_dtrans_check`;
 DELIMITER $$
 CREATE TRIGGER `afterUpdate_dtrans_check` AFTER UPDATE ON `dtrans` FOR EACH ROW BEGIN
 SET @total = 0;
@@ -187,7 +180,6 @@ UPDATE produk SET STOK_PRODUK = STOK_PRODUK - @qtyBeli WHERE ROW_ID_PRODUK = NEW
 END
 $$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `beforeInsert_dtrans_check`;
 DELIMITER $$
 CREATE TRIGGER `beforeInsert_dtrans_check` BEFORE INSERT ON `dtrans` FOR EACH ROW BEGIN
 SET @harga = 0;
@@ -205,7 +197,6 @@ DELIMITER ;
 -- Table structure for table `htrans`
 --
 
-DROP TABLE IF EXISTS `htrans`;
 CREATE TABLE `htrans` (
   `ROW_ID_HTRANS` int(11) NOT NULL,
   `ROW_ID_CUSTOMER` int(11) NOT NULL,
@@ -222,16 +213,12 @@ CREATE TABLE `htrans` (
 
 INSERT INTO `htrans` (`ROW_ID_HTRANS`, `ROW_ID_CUSTOMER`, `TANGGAL_TRANS`, `NO_NOTA`, `TOTAL_TRANS`, `STATUS_PEMBAYARAN`, `LOKASI_FOTO_BUKTI_PEMBAYARAN`) VALUES
 (1, 1, '2020-02-20 02:33:56', '2020022000001', 5604815, 2, '1.jpg'),
-(2, 1, '2020-03-18 02:35:55', '2020031800001', 0, 1, '2.jpg'),
 (3, 1, '2020-04-14 02:36:31', '2020041400001', 4644000, 1, '3.jpg'),
 (4, 1, '2020-04-16 02:01:01', '2020041600001', 8687000, 1, '4.jpg'),
-(5, 2, '2020-04-17 02:01:44', '2020041700001', 0, 1, ''),
 (6, 2, '2020-04-17 02:02:04', '2020041700002', 1145082, 1, ''),
 (7, 2, '2020-04-17 02:02:25', '2020041700003', 3000000, 2, ''),
 (8, 2, '2020-04-17 02:02:38', '2020041700004', 3423000, 1, '8.jpg'),
-(11, 5, '2020-04-17 02:03:42', '2020041700005', 0, 1, ''),
 (12, 5, '2020-04-17 02:03:54', '2020041700006', 5805000, 1, ''),
-(13, 5, '2020-04-17 02:04:03', '2020041700007', 0, 2, ''),
 (14, 5, '2020-04-17 02:04:16', '2020041700008', 195605, 1, ''),
 (15, 5, '2020-04-17 02:04:28', '2020041700009', 2112800, 1, ''),
 (16, 5, '2020-04-17 02:04:39', '2020041700010', 19311000, 2, ''),
@@ -241,7 +228,6 @@ INSERT INTO `htrans` (`ROW_ID_HTRANS`, `ROW_ID_CUSTOMER`, `TANGGAL_TRANS`, `NO_N
 --
 -- Triggers `htrans`
 --
-DROP TRIGGER IF EXISTS `beforeInsert_htrans_check`;
 DELIMITER $$
 CREATE TRIGGER `beforeInsert_htrans_check` BEFORE INSERT ON `htrans` FOR EACH ROW BEGIN
 	SET @prefixNota = '';
@@ -259,7 +245,6 @@ DELIMITER ;
 -- Table structure for table `kategori`
 --
 
-DROP TABLE IF EXISTS `kategori`;
 CREATE TABLE `kategori` (
   `ROW_ID_KATEGORI` int(11) NOT NULL,
   `ID_KATEGORI` varchar(5) DEFAULT NULL,
@@ -292,7 +277,6 @@ INSERT INTO `kategori` (`ROW_ID_KATEGORI`, `ID_KATEGORI`, `NAMA_KATEGORI`, `STAT
 --
 -- Triggers `kategori`
 --
-DROP TRIGGER IF EXISTS `beforeInsert_kategori_check`;
 DELIMITER $$
 CREATE TRIGGER `beforeInsert_kategori_check` BEFORE INSERT ON `kategori` FOR EACH ROW BEGIN
 	SET @ctr = 0;
@@ -323,7 +307,6 @@ DELIMITER ;
 -- Table structure for table `kategori_produk`
 --
 
-DROP TABLE IF EXISTS `kategori_produk`;
 CREATE TABLE `kategori_produk` (
   `ROW_ID_PRODUK` int(11) NOT NULL,
   `ROW_ID_KATEGORI_PARENT` int(11) NOT NULL,
@@ -352,7 +335,6 @@ INSERT INTO `kategori_produk` (`ROW_ID_PRODUK`, `ROW_ID_KATEGORI_PARENT`, `ROW_I
 -- Table structure for table `produk`
 --
 
-DROP TABLE IF EXISTS `produk`;
 CREATE TABLE `produk` (
   `ROW_ID_PRODUK` int(11) NOT NULL,
   `ID_PRODUK` varchar(5) DEFAULT NULL,
@@ -388,7 +370,6 @@ INSERT INTO `produk` (`ROW_ID_PRODUK`, `ID_PRODUK`, `NAMA_PRODUK`, `STATUS_AKTIF
 --
 -- Triggers `produk`
 --
-DROP TRIGGER IF EXISTS `beforeInsert_produk_check`;
 DELIMITER $$
 CREATE TRIGGER `beforeInsert_produk_check` BEFORE INSERT ON `produk` FOR EACH ROW BEGIN
 	SET @ctr = 0;
@@ -419,7 +400,6 @@ DELIMITER ;
 -- Table structure for table `review_produk`
 --
 
-DROP TABLE IF EXISTS `review_produk`;
 CREATE TABLE `review_produk` (
   `ROW_ID_REVIEW` int(11) NOT NULL,
   `ROW_ID_CUSTOMER` int(11) NOT NULL,
@@ -444,7 +424,6 @@ INSERT INTO `review_produk` (`ROW_ID_REVIEW`, `ROW_ID_CUSTOMER`, `ROW_ID_HTRANS`
 -- Table structure for table `verifikasi_email`
 --
 
-DROP TABLE IF EXISTS `verifikasi_email`;
 CREATE TABLE `verifikasi_email` (
   `ROW_ID_VERIFIKASI` int(11) NOT NULL,
   `ROW_ID_CUSTOMER` int(11) NOT NULL,
@@ -460,7 +439,6 @@ CREATE TABLE `verifikasi_email` (
 -- Table structure for table `wishlist`
 --
 
-DROP TABLE IF EXISTS `wishlist`;
 CREATE TABLE `wishlist` (
   `ROW_ID_CUSTOMER` int(11) NOT NULL,
   `ROW_ID_PRODUK` int(11) NOT NULL
@@ -504,6 +482,37 @@ ALTER TABLE `customer`
   ADD UNIQUE KEY `unique_customer_email` (`EMAIL`);
 
 --
+-- Indexes for table `dtrans`
+--
+ALTER TABLE `dtrans`
+  ADD PRIMARY KEY (`ROW_ID_HTRANS`,`ROW_ID_PRODUK`);
+
+--
+-- Indexes for table `htrans`
+--
+ALTER TABLE `htrans`
+  ADD PRIMARY KEY (`ROW_ID_HTRANS`),
+  ADD KEY `FK_HTRANS_CUSTOMER` (`ROW_ID_CUSTOMER`);
+
+--
+-- Indexes for table `kategori`
+--
+ALTER TABLE `kategori`
+  ADD PRIMARY KEY (`ROW_ID_KATEGORI`);
+
+--
+-- Indexes for table `kategori_produk`
+--
+ALTER TABLE `kategori_produk`
+  ADD PRIMARY KEY (`ROW_ID_PRODUK`,`ROW_ID_KATEGORI_PARENT`,`ROW_ID_KATEGORI_CHILD`);
+
+--
+-- Indexes for table `produk`
+--
+ALTER TABLE `produk`
+  ADD PRIMARY KEY (`ROW_ID_PRODUK`);
+
+--
 -- Indexes for table `review_produk`
 --
 ALTER TABLE `review_produk`
@@ -517,6 +526,12 @@ ALTER TABLE `verifikasi_email`
   ADD KEY `FK_VERIFIKASI_CUSTOMER` (`ROW_ID_CUSTOMER`);
 
 --
+-- Indexes for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  ADD PRIMARY KEY (`ROW_ID_CUSTOMER`,`ROW_ID_PRODUK`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -525,6 +540,24 @@ ALTER TABLE `verifikasi_email`
 --
 ALTER TABLE `customer`
   MODIFY `ROW_ID_CUSTOMER` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `htrans`
+--
+ALTER TABLE `htrans`
+  MODIFY `ROW_ID_HTRANS` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `kategori`
+--
+ALTER TABLE `kategori`
+  MODIFY `ROW_ID_KATEGORI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT for table `produk`
+--
+ALTER TABLE `produk`
+  MODIFY `ROW_ID_PRODUK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `review_produk`
@@ -543,11 +576,16 @@ ALTER TABLE `verifikasi_email`
 --
 
 --
+-- Constraints for table `htrans`
+--
+ALTER TABLE `htrans`
+  ADD CONSTRAINT `FK_HTRANS_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`);
+
+--
 -- Constraints for table `verifikasi_email`
 --
 ALTER TABLE `verifikasi_email`
   ADD CONSTRAINT `FK_VERIFIKASI_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`);
-SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,9 +1,10 @@
 <?php
     include "system/load.php";
 
-    cekLogin($db, "", $login);
+    $login = getDataLogin();
 
-    if (isset($login)) {
+    $jenisUser = "";
+    if (isset($login) && is_array($login)) {
         $jenisUser = "admin";
         $rowIdUserAktif = -1;
         if ($login['role'] == 1) {
@@ -184,10 +185,6 @@
                 </h1>
             </div>
 
-            <!-- <div class="spaceatas">
-                <br/>
-            </div> -->
-            
             <!-- filter -->
             <div class="container-fluid my-2">
                 <div class="container-fluid my-2 d-flex flex-nowrap justify-content-around">

@@ -51,50 +51,101 @@
         return $total;
     }
 
-    function showTransactionList($db, $jenisUser, $row_id_cust){
+    function getDataHtrans($db, $jenisUser, $row_id_cust){
         $query = "SELECT * FROM HTRANS";
         $condition = "";
         $order = " ORDER BY STATUS_PEMBAYARAN ASC, NO_NOTA ASC";
         if ($jenisUser == "customer") {
             $condition = " WHERE ROW_ID_CUSTOMER = '{$row_id_cust}'";
         }
+        if (isset($_GET['q']) && !empty($_GET['q'])) {
+            $keyword = $_GET['q'];
+            if ($condition != "") {
+                $condition .= " AND ";
+            }
+            $condition .=  " NO_NOTA LIKE '%{$_GET['q']}%'";
+        }
+        if (isset($_GET['min']) && !empty($_GET['min'])) {
+            $min = $_GET['min'];
+            if ($condition != "") {
+                $condition .= " AND ";
+            }
+            $condition .=  " TOTAL_TRANS >= $min";
+        }
+        if (isset($_GET['max']) && !empty($_GET['max'])) {
+            $max = $_GET['max'];
+            if ($condition != "") {
+                $condition .= " AND ";
+            }
+            $condition .=  " TOTAL_TRANS <= $max";
+        }
+        if (isset($_GET['status']) && !empty($_GET['status']) && $_GET['status'] != "3") {
+            $status = $_GET['status'];
+            if ($status == "pending") {
+                $status = 0;
+            }
+            if ($condition != "") {
+                $condition .= " AND ";
+            }
+            $condition .=  " STATUS_PEMBAYARAN = $status";
+        }
+
         $query = $query . $condition . $order;
 
         $dataHTrans = getQueryResultRowArrays($db, $query);
+        return $dataHTrans;
+    }
 
+    function showOverviewTransaction($dataHTrans, $jenisUser){
         ?>
-            <div class="h1 text-center">Transaction List</div>
-            <div class="h3 text-right text-success my-3">
-                <?php
-                    $pesan = "Total income : ";
-                    if ($jenisUser == "customer") {
-                        $pesan = "You have spent : ";
-                    }
-                    echo $pesan . getSeparatorNumberFormatted(getTotalTransaction($dataHTrans));
-                ?>
-            </div>
-            <div class="bg-transparent h5 text-left my-3">
-                <p class="text-secondary"> <?= count($dataHTrans) ?> transactions found</p>
-                <?php
-                    $text = "admin's";
-                    if ($jenisUser == "admin") {
-                        $text = "your";
-                    }
+            <!-- <div class="h1 text-center">Transaction List</div> -->
+            <div class="container-fluid mb-2 mt-4">
+                <div class="h3 text-right text-success mt-5 mb-2">
+                    <?php
+                        $pesan = "Total income : ";
+                        if ($jenisUser == "customer") {
+                            $pesan = "You have spent : ";
+                        }
+                        echo $pesan . getSeparatorNumberFormatted(getTotalTransaction($dataHTrans));
                     ?>
-                        <p class="text-warning"> 
-                            <?= getCountData($dataHTrans, "STATUS_PEMBAYARAN", 0) ?> pending transactions awaiting <?= $text ?> approval
-                        </p>
-                    <?php   
-                ?>
-            </div>          
+                </div>
+                <div class="bg-transparent h5 text-left my-3">
+                    <p class="text-secondary"> <?= count($dataHTrans) ?> transactions found</p>
+                    <?php
+                        $text = "admin's";
+                        if ($jenisUser == "admin") {
+                            $text = "your";
+                        }
+                        ?>
+                            <p class="text-warning"> 
+                                <?= getCountData($dataHTrans, "STATUS_PEMBAYARAN", 0) ?> pending transactions awaiting <?= $text ?> approval
+                            </p>
+                        <?php   
+                    ?>
+                </div>    
+            </div>      
+        <?php
+    }
+
+    function showTransactionList($db, $jenisUser, $row_id_cust, $dataHTrans){
+        ?>
+        <div class="container-fluid my-2">
             <table class="table table-hover table-striped table-bordered">
                 <thead class="thead-dark text-center">
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Row ID</th>
+                        <?php
+                            if ($jenisUser == "admin") {
+                                echo '<th scope="col">Row ID</th>';
+                            }
+                        ?>
                         <th scope="col">Date</th>
                         <th scope="col">Invoice Number</th>                        
-                        <th scope="col">Customer</th>                        
+                        <?php
+                            if ($jenisUser == "admin") {
+                                echo '<th scope="col">Customer</th>';
+                            }
+                        ?>
                         <th scope="col">Total</th>       
                         <th scope="col">Status</th>
                         <th scope="col">Action</th>
@@ -102,10 +153,19 @@
                 </thead>
                 <tbody>
                     <?php
+                        $totalCol = 8;
+                        if ($jenisUser == "customer") {
+                            $totalCol = 6;
+                        }
                         if (count($dataHTrans) <= 0) {
                             ?>
                                 <tr>
-                                    <th colspan="8" class="text-center">You have not done any transaction</th>
+                                    <th colspan="<?= $totalCol ?>" class="text-center">
+                                        <span class="text-dark">You haven't done any transaction yet</span> <br/>
+                                        <a class="btn btn-warning text-dark rounded mx-2 my-2" href="product-list.php" target="_blank">
+                                            start shopping now
+                                        </a>
+                                    </th>
                                 </tr>
                             <?php
                         }
@@ -137,11 +197,23 @@
                                 <form method="POST">
                                     <tr>
                                         <input type="hidden" name="row_id_htrans" value='<?= $value['ROW_ID_HTRANS'] ?>'>
-                                        <th scope="row" class="align-middle"><?= $ctrNum ?></th>
-                                        <th class="align-middle"><?= $value['ROW_ID_HTRANS'] ?></th>
+                                        <th scope="row" class="text-center align-middle"><?= $ctrNum ?></th>
+                                        <?php
+                                            if ($jenisUser == "admin") {
+                                                ?>
+                                                    <th class="text-center align-middle"><?= $value['ROW_ID_HTRANS'] ?></th>
+                                                <?php
+                                            }
+                                        ?>                                        
                                         <td class="align-middle"> <?= getDateFormatted($value['TANGGAL_TRANS']) ?> </td>
                                         <td class="align-middle"> <?= $value['NO_NOTA'] ?> </td>
-                                        <td class="align-middle"> <?= $namaCustomer ?> </td>
+                                        <?php
+                                            if ($jenisUser == "admin") {
+                                                ?>
+                                                    <td class="align-middle"> <?= $namaCustomer ?> </td>
+                                                <?php
+                                            }
+                                        ?>
                                         <td class="text-right align-middle"> <?= getSeparatorNumberFormatted($value['TOTAL_TRANS']) ?> </td>
                                         <td class="<?= $cl ?> text-center align-middle"> <?= $status_str ?> </td>
                                         <?php    
@@ -180,22 +252,14 @@
                             }
                         }
                     ?>        
-                    <!-- <tr class="bg-warning text-dark font-weight-bold text-center">
-                        <td colspan="8" class="align-middle">
-                            <?php
-                                // echo "Last Updated: ".date("F d Y H:i:s.", 
-                                // filemtime("transaction-list.php"));
-                                // echo "~";
-                            ?>
-                        </td>
-                    </tr>         -->
                     <tr class="bg-dark text-warning font-weight-bold text-center">
-                        <td colspan="8" class="align-middle">
+                        <td colspan="<?= $totalCol ?>" class="align-middle">
                             &nbsp;
                         </td>
                     </tr>           
                 </tbody>
             </table>
+        </div>
         <?php   
     }
 
@@ -235,15 +299,10 @@
         <link href="css/all.css" rel="stylesheet">
         <link rel="icon" type="image/png" href="res/img/goblin.png" />    
          
-        <!-- JS Library Import -->
-        <script src="js/jquery-3.4.1.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/jQueryUI.js"></script>
-        <script type="text/javascript" src="js/datatables.js"></script>
-        <script src="script/index.js"></script>
-
         <!-- CSS Sendiri -->
         <link href="style/index.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/datepicker.css">
+
         <style>
             /* .footer {
                 position: absolute;
@@ -278,14 +337,65 @@
                 </h1>
             </div>
 
-            <!-- container -> jarak ikut bootstrap, container-fluid -> jarak full width, w-(ukuran) -> sesuai persentase, contoh w-80 -> 80% -->
-            <div class="container">
-                <?php showTransactionList($db,$jenisUser, $rowIdUserAktif); ?>
+            <!-- filter -->
+            <div class="container-fluid mt-2 mb-4">
+                <div class="container-fluid my-4 d-flex flex-nowrap justify-content-around">
+                    <form method="GET" class="form-inline">
+                        <?php
+                            $keyword = ""; $min = "" ; $max = ""; $checkedStatus = "";
+                            if (isset($_GET['q']) && !empty($_GET['q'])) {
+                                $keyword = $_GET['q'];
+                            }
+                            if (isset($_GET['min']) && !empty($_GET['min'])) {
+                                $min = $_GET['min'];
+                            }
+                            if (isset($_GET['max']) && !empty($_GET['max'])) {
+                                $max = $_GET['max'];
+                            }
+                            if (isset($_GET['status'])) {
+                                $status = $_GET['status'];
+                            }
+                        ?>
+                        <input type="number" class="form-control mx-2" placeholder="Invoice Number" name="q" value="<?= $keyword ?>">
+                        <input type="number" class="form-control mx-2" placeholder="Minimum Total" name="min" value="<?= $min ?>">
+                        <input type="number" class="form-control mx-2" placeholder="Maximum Total" name="max" value="<?= $max ?>">
+                        <select class="form-control" name="status" id="status">
+                            <option value="3">All</option>
+                            <option value="pending">Pending</option>
+                            <option value="1">Accepted</option>
+                            <option value="2">Rejected</option>
+                        </select>
+
+                        <button type="submit" class="btn btn-info mx-3">Filter</button>
+                        <a class="btn btn-info mr-3" href="transaction-list.php">Reset Filter</a>
+                    </form>    
+                </div>
+            </div>
+
+            <!-- content -->
+            <div class="container my-4">
+                <?php 
+                    $dataHTrans = getDataHtrans($db, $jenisUser, $rowIdUserAktif);
+                    showOverviewTransaction($dataHTrans, $jenisUser);
+                    showTransactionList($db,$jenisUser, $rowIdUserAktif, $dataHTrans); 
+                ?>
             </div>
         </main>
 
         <!-- Footer Section -->
         <?php include ("footer.php"); ?>
+
+        <!-- JS Library Import -->
+        <script src="js/jquery-3.4.1.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/jQueryUI.js"></script>
+        <script type="text/javascript" src="js/datatables.js"></script>
+        <script src="script/index.js"></script>
+        <script>
+            function setValueStatus(value){
+                $("#status").val(value);
+            }
+        </script>
 
         <?php
             if (isset($_POST['acceptOrder'])) {
@@ -295,7 +405,12 @@
             if (isset($_POST['rejectOrder'])) {
                 showAlertModal('bg-success', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Status Has Been Changed</h4>', 'Close', '');
             }
-            
+
+            if (isset($_GET['status'])) {
+                $status = $_GET['status'];
+                echo "<script>setValueStatus({$status})</script>";
+            }
         ?>
     </body>
+    
 </html>

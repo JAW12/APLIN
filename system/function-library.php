@@ -186,7 +186,7 @@ function cekPassword($p1, $p2, $b){ // true -> cek pake hash, false -> cek ga pa
 // function untuk format data
 function getDateFormatted($date){
     try {
-        $hasil = date("F d Y H:i:s", strtotime($date));
+        $hasil = date("F d, Y H:i:s", strtotime($date));
         return $hasil;
     } catch (Exception $e) {
         echo $e->getMessage();

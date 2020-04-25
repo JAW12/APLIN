@@ -24,7 +24,7 @@
                 <thead class="thead-dark text-center">
                     <th scope="col">#</th>
                     <th scope="col">Product Name</th>
-                    <th scope="col">QTY</th>
+                    <th scope="col">Qty</th>
                     <th scope="col">Price</th>
                     <th scope="col">Subtotal</th>
                 </thead>
@@ -69,6 +69,74 @@
         <?php
     }
 
+    function getStatusString($status){
+        $status_set = array();
+        if ($status == 0) {
+            $cl = "text-danger";
+            $str = "Pending";
+        }
+        else if ($status == 1) {
+            $cl = "text-success";
+            $str = "Accepted";
+        }
+        else if ($status == 2) {
+            $cl = "text-danger";
+            $str = "Rejected";
+        }
+        $status_set['warna'] = $cl;
+        $status_set['value'] = $str;
+        return $status_set;
+    }
+
+    function showHeaderInvoice($headerTrans, $namaCustomer){
+        ?>
+            <div class="container my-2">
+                <div class="row">
+                    <?php 
+                        $status_set =  getStatusString(intval($headerTrans['STATUS_PEMBAYARAN']));
+                        $cl = $status_set['warna'];
+                        $val = $status_set['value'];
+                    ?>
+                    <div class="col text-right h4 <?= $cl ?>">
+                        <?= $val ?>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p class="h5 my-2">Customer Name</p>
+                    </div>
+                    <div class="col">
+                        <p class="h5 my-2"> : <?= $namaCustomer ?></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p class="h5 my-2">Invoice Number</p>
+                    </div>
+                    <div class="col">
+                        <p class="h5 my-2"> : <?= $headerTrans["NO_NOTA"] ?></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p class="h5 my-2">Order Date</p>
+                    </div>
+                    <div class="col">
+                        <p class="h5 my-2"> : <?= getDateFormatted($headerTrans['TANGGAL_TRANS']) ?> </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p class="h5 my-2">Total Transaction</p>
+                    </div>
+                    <div class="col">
+                        <p class="h5 my-2"> : Rp.  <?= getSeparatorNumberFormatted($headerTrans['TOTAL_TRANS']) ?></p>
+                    </div>
+                </div>
+            </div>
+        <?php
+    }
+
     function showDetailTrans($db, $headerTrans, $detailTrans, $dataCust, $jenisUser){
         $row_id_htrans = $headerTrans['ROW_ID_HTRANS'];
         $statusTrans = $headerTrans['STATUS_PEMBAYARAN'];
@@ -78,52 +146,36 @@
         }        
         $namaCustomer = $dataCust['NAMA_DEPAN_CUSTOMER'] . " " . $dataCust['NAMA_BELAKANG_CUSTOMER'];
         $namaCustomer = ucwords(strtolower($namaCustomer));
+        $invoice = $headerTrans['NO_NOTA'];
         ?>
             <div class="container my-5">
-                <p class="h1 text-center">Detail Transaction</p>
+                <?php showHeaderInvoice($headerTrans, $namaCustomer) ?>
                 <div class="my-0 d-flex flex-wrap justify-content-around">
-                    <div class="col-sm-12 col-md-6 mt-5">
-                        <!-- untuk upload file harus ada enctype="multipart/form-data" -->
-                        <!-- kalo enctype gak di set maka by default : enctype="application/x-www-form-urlencoded" . 
-                        yang dikirimkan kayak url method GET -->
+                    <div class="col-sm-12 col-md-6 mt-5 py-2">
                         <p class="h5 text-dark">Change Payment Proof Image</p><br/>
                         <form method="POST" enctype="multipart/form-data" class="text-left">                            
                             <input type="file" class="p-1 border border-warning rounded" name="file-upload">
                             <button type="submit" class="btn btn-warning rounded" name="changePaymentProofImage">Upload</button>
                         </form>
                     </div>             
-                    <div class="col-sm-12 col-md-6 mt-5">
-                        <div class="row">
-                            <div class="col">
-                                <p class="h5 text-dark">Transaction Info</p>
-                                <div class="text-dark text-left">
-                                    <div>
-                                        Date : <?= getDateFormatted($headerTrans['TANGGAL_TRANS']) ?>
-                                    </div>
-                                    <div>
-                                        Invoice Number : <?= $headerTrans['NO_NOTA'] ?>
-                                    </div>
-                                    <div>
-                                        Customer Name: <?= $namaCustomer ?>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="col-sm-12 col-md-6 mt-5 py-2">
+                        <p class="h5 text-dark mb-4">Order Detail</p>
+                        <?php
+                            if ($statusTrans == 1 && $jenisUser == "customer") {
+                            ?>
+                                <form method="POST" class="form-inline float-right mt-1">
+                                    <input type="hidden" name="row_id_htrans" value="<?= $row_id_htrans ?>">
+                                    <button type="submit" class="btn btn-warning text-dark rounded mx-2" 
+                                            name="lihatReview" formaction="review.php">
+                                        Review Product
+                                    </button>
+                                    <a class="btn btn-warning text-dark rounded mx-2" target="_blank" href="generate-invoice.php?invoice=<?=$invoice?>">
+                                        View Invoice
+                                    </a>
+                                </form>
                             <?php
-                                if ($statusTrans == 1 && $jenisUser == "customer") {
-                                ?>
-                                    <div class="col">
-                                        <form method="POST">
-                                            <input type="hidden" name="row_id_htrans" value="<?= $row_id_htrans ?>">
-                                            <button type="submit" class="btn btn-warning rounded float-right" name="lihatReview" formaction="review.php">
-                                                Review Product
-                                            </button>
-                                        </form>
-                                    </div>
-                                <?php
-                                }
-                            ?>                            
-                        </div>
-                    </div>       
+                            }
+                        ?>            
                 </div>
                 <div class="mt-1 mb-5 d-flex flex-wrap justify-content-around">
                     <div class="col-sm-12 col-md-6 mt-1 d-flex justify-content-center">
@@ -277,16 +329,49 @@
             <!-- <div class="spaceatas"></div> -->
             <div id="judul" class="col-12 text-center my-5" style="background-image: url('res/img/bg12.jpg');">
                 <h1 class="text-light display-3 font-weight-bold">
-                    Transaction List
+                    Transaction Detail
                 </h1>
             </div>
 
-            <!-- container -> jarak ikut bootstrap, container-fluid -> jarak full width, w-(ukuran) -> sesuai persentase, contoh w-80 -> 80% -->
             <?php showDetailTrans($db, $headerTrans, $detailTrans, $dataCust, $jenisUser) ?>
 
         </main>
 
         <!-- Footer Section -->
         <?php include ("footer.php"); ?>
+
+        <script>
+            function printHTML(html){
+                var printContents = html;
+                var originalContents = document.body.innerHTML;
+
+                document.body.innerHTML = printContents;
+
+                window.print();
+
+                document.body.innerHTML = originalContents;
+            }
+
+            function printInvoice(btn, divName){
+                let row_id_htrans = $(btn).attr("row_id_htrans");
+                $.ajax({
+                    method : "POST",
+                    url : "generate-invoice.php",
+                    data : {
+                        print_invoice : "true",
+                        row_id_htrans : row_id_htrans
+                    },
+                    success : function(res){
+                        printHTML(res);
+                    }
+                });
+            }
+
+            $(document).on("click", "#btnPrint", function(){
+                // printDiv("printableArea");
+                printInvoice(this, "printableArea");
+                console.log(this);
+            });
+        </script>
     </body>
 </html>
