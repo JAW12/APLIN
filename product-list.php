@@ -212,7 +212,7 @@
                             <label class="form-check-label" for="cbAvailableProduct">Available Products</label>
                         </div>
                         <button type="submit" class="btn btn-info mx-3">Filter</button>
-                        <button type="submit" class="btn btn-info mr-3" formaction="product-list.php">Reset Filter</button>
+                        <a class="btn btn-info mr-3" href="product-list.php">Reset Filter</a>
                         <?php
                             if ($jenisUser == "admin") {
                                 ?>
