@@ -94,9 +94,7 @@
                                         <button class="btn btn-primary w-100 rounded my-2" name="lihatDetail" formaction="product-detail.php">View Detail</button>    
                                         <?php
                                             if ($jenisUser == "customer") {
-                                                ?>
-                                                    <button class="btn btn-warning w-100 rounded my-2" name="addToWishlist" formaction="wishlist.php">Add to Wishlist</button> 
-                                                <?php
+                                                echo "<button type='button' class='btn btn-warning w-100 rounded my-2' name='addToWishlist' onclick=addtowish('".$value['ROW_ID_PRODUK']."') formaction='wishlist.php'>Add to Wishlist</button>"; 
                                             }
                                         ?>
                                     </div>
@@ -116,8 +114,18 @@
     if (isset($_POST['showBarang'])) {
         $showBarang = true;
     }
-    
 ?>
+
+<script language='javascript'>
+function addtowish(idproduk) {
+    $.post("addtowish.php", 
+        { idproduk: idproduk },
+        function(result) {
+            alert(result); 
+        }
+    );
+}
+</script>
 
 <!doctype html>
 <html>

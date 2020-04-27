@@ -1,6 +1,3 @@
-<?
-?>
-
 <!doctype html>
 <html>
     <head>
@@ -51,8 +48,13 @@
                         <div class="text-center mt-5">
                             <img src="res/img/logo.png" class="card-img mx-auto w-50 h-50" alt="...">
                         </div>
-                        <div class="card-body" style="box-sizing: border-box">                        
-                            <form class="login100-form validate-form p-b-33 p-t-5">
+                        <div class="card-body" style="box-sizing: border-box">   
+                            <?php 
+                                if(isset($_GET['saved'])) {
+                                    echo "<h4 style='color:red;'>Registrasi sukses</h4>"; 
+                                }
+                            ?>
+                            <form class="login100-form validate-form p-b-33 p-t-5" method="post">
                                 <div class="wrap-input100 validate-input" data-validate="Enter Username">
                                     <input class="input100" type="text" name="username" placeholder="Username">
                                     <span class="focus-input100" data-placeholder="&#xe82a;"></span>
@@ -92,7 +94,7 @@
                                 </div>
                                 </div>
                                 <div class="container-login100-form-btn m-t-32 d-flex justify-content-around">
-                                    <button class="login100-form-btn w-75" formaction="registeruser.php?user">
+                                    <button type='submit' class="login100-form-btn w-75" formaction="registeruser.php?user">
                                         Register
                                     </button>
                                 </div>
