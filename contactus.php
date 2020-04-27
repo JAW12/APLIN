@@ -1,5 +1,6 @@
 <?php
     include "system/load.php";
+    /** @var PDO $db */ //untuk munculin autocomplete di db
 ?>
 <!doctype html>
 <html>
@@ -140,6 +141,10 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                <div id="alertContact" class="col-12 mt-2"></div>
+
+                                </div>
+                                <div class="row">
                                     <div class="col-md-2">
                                         <p class="text-danger">
                                             <strong>*</strong> All fields are required.
@@ -175,5 +180,36 @@
         <!-- <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
         </script> -->
+
+        <script>
+            $(function(){
+                $("#contact-form").submit(function(e){
+                    e.preventDefault();
+
+                    $.ajax({
+                        method: "post",
+                        url: "contact.php",
+                        data: $("#contact-form").serialize(),
+                        success: function(res){
+                            if(res.includes("Message has been sent!")){
+                                $("#alertContact").html('<div class="alert alert-success">Email Berhasil Dikirim!</div>');
+                                // showAlertModal('bg-success', '<i class="fas fa-check"></i>', '<h4>Yay!</h4><p>Email Berhasil Dikirim!</p>', 'Close', '');
+                            }
+                            else{
+                                $("#alertContact").html('<div class="alert alert-danger">Email Gagal Dikirim!</div>');
+                                // showAlertModal('bg-danger', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Ooops!</h4><p>Email Gagal Dikirim!</p>', 'Close', '');
+                            }
+                            $(':input','#contact-form')
+                                .not(':button, :submit, :reset, :hidden')
+                                .val('')
+                                .prop('checked', false)
+                                .prop('selected', false);
+
+                                $("#form_need").val("Request quotation");           
+                        }
+                    });
+                });
+            });
+        </script>
     </body>
 </html>

@@ -207,3 +207,68 @@ function printPre($data){
     print_r($data);
     echo "</pre>";
 }
+
+include(__DIR__."/mailer/Exception.php");
+include(__DIR__."/mailer/SMTP.php");
+include(__DIR__."/mailer/PHPMailer.php");
+
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+
+function generateCode($panjang){
+    $result = '';
+    $dictionary = array_merge(range(1,9), range("a", "z"));
+    // Ambil sejumlah kebutuhan dari user!
+    for($i = 0; $i < $panjang; $i++){
+        $result .= $dictionary[mt_rand(0, count($dictionary) - 1)];
+    }
+
+    return $result;
+}
+
+function uniqueCodeEmail(){
+    // @see https://www.php.net/manual/en/language.variables.scope.php
+    /** @var PDO $db AutoComplete PDO */
+    global $db;
+    $count = -1;
+    do{
+        $result = generateCode(20);
+        $query = "SELECT COUNT(*) FROM confirm_email WHERE code = '$result'";
+        $count = $db->query($query)->fetch(PDO::FETCH_ASSOC)["jumlah"];        
+    } while($count > 0);
+    
+    return $result;
+}
+
+function sendEmail($to, $subject, $body){
+    // Instantiation and passing `true` enables exceptions
+    $mail = new PHPMailer(true);
+
+    try {
+        //Server settings
+        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
+        $mail->isSMTP();                                            // Send using SMTP
+        $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
+        $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+        $mail->Username   = 'hendrapogobiru@gmail.com';                     // SMTP username
+        $mail->Password   = 'hendra123';                               // SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+        $mail->Port       = 587;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+
+        //Recipients
+        $mail->setFrom('hendrapogobiru@gmail.com', 'Auto Reply SqueeStore');
+        $mail->addAddress($to, 'User');     // Add a recipient
+
+        // Content
+        $mail->isHTML(true);                                  // Set email format to HTML
+        $mail->Subject = $subject;
+        $mail->Body    = $body;
+        $mail->AltBody = $body;
+
+        $mail->send();
+        echo "Message has been sent!";
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
+}
