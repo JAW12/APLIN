@@ -64,3 +64,13 @@ function getCustomerData($db, $username){
         echo $e->getMessage(); //tanda panah pada php = tanda titik pada java/C#/dll
     }    
 }
+
+function getCustomerName($db, $id){
+    try {
+        $query = "SELECT concat(NAMA_DEPAN_CUSTOMER,' ',NAMA_BELAKANG_CUSTOMER) AS 'NAME' FROM CUSTOMER WHERE ROW_ID_CUSTOMER = '{$id}'";
+        $result = getQueryResultRowArrays($db, $query);
+        return $result;
+    } catch (Exception $e) {
+        echo $e->getMessage(); //tanda panah pada php = tanda titik pada java/C#/dll
+    }    
+}

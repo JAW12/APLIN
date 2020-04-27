@@ -15,6 +15,16 @@ function showAlertDiv($message){
     <?php
 }
 
+function showInfoDiv($message){
+    ?>
+        <div class="container">
+            <div class="alert alert-info font-weight-bold" role="alert" style="color: purple">
+                <i class="far fa-check-circle"></i> &nbsp; <?= $message ?>
+            </div>
+        </div>
+    <?php
+}
+
 function showModal($title, $message, $buttonmessage, $button){
     // $title utk nentuin titlenya
     // $message utk nentuin isinya mau apa

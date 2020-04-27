@@ -1,55 +1,17 @@
 <?php
-    include "system/load.php";
+include "system/load.php";
 
-    if(isset($_POST['idProduk'])){
-        $idProduk = $_POST['idProduk'];
-    }
-    if(isset($_POST['idCust'])){
-        $idCustomer = $_POST['idCust'];
-    }
-    else{
-        $idCustomer = "6";
-    }
-    $query = "SELECT * FROM PRODUK WHERE ROW_ID_PRODUK=$idProduk";
-    $produk = getQueryResultRow($db, $query);
-    $fotoProduk="res/img/produk/".$produk['LOKASI_FOTO_PRODUK'];
-    $namaProduk=$produk['NAMA_PRODUK'];
-    $hargaProduk=$produk['HARGA_PRODUK'];
-    $stokProduk=$produk['STOK_PRODUK'];
-    $deskripsiProduk=$produk['DESKRIPSI_PRODUK'];
-    $dimensiKemasan=$produk['DIMENSI_KEMASAN'];
-    $dimensiProduk=$produk['DIMENSI_PRODUK'];
-    $beratProduk=$produk['BERAT_PRODUK'];
-    $satuanProduk=$produk['SATUAN_PRODUK'];
-    if(isset($_POST['btnBeli'])){
-        if($_POST['jumlahBeliProduk']>$stokProduk){
-            echo "<script>alert('Maaf stok tidak mencukupi');</script>";
-        }
-        else{
-            try {
-                $query = "INSERT INTO CART VALUES(:idCust, :idProduk, :qty)";
-                $stmt = $db->prepare($query);
-                $stmt->bindValue(":idCust", $_POST['idCust'], PDO::PARAM_INT);
-                $stmt->bindValue(":idProduk", $_POST['idProduk'], PDO::PARAM_INT);
-                $stmt->bindValue(":qty", $_POST['jumlahBeliProduk'], PDO::PARAM_INT);
-                $result = $stmt->execute();
-            } catch (Exception $e) {
-                echo $e->getMessage();
-            }
-            try {
-                $query = "UPDATE PRODUK SET STOK_PRODUK = :jumlahBaru WHERE ROW_ID_PRODUK = :id";
-                $stmt = $db->prepare($query);
-                $stmt->bindValue(":jumlahBaru", intval($stokProduk-intval($_POST['jumlahBeliProduk'])), PDO::PARAM_INT);
-                $stmt->bindValue(":id", $idProduk, PDO::PARAM_INT);
-                $result = $stmt->execute();
-    
-            } catch (Exception $e) {
-                echo $e->getMessage();
-            }
-            $stokProduk = $stokProduk-intval($_POST['jumlahBeliProduk']);
-            echo "<script>alert('Pembelian sukses');</script>";
-        }
-    }
+if(!isset($_POST['idProduk'])){
+    header("location: product-list.php");
+}
+session_start();
+$jenisUser = "";
+if($_SESSION['login']['username'] == "admin"){
+    $jenisUser = "admin";
+}
+else{
+    $jenisUser = "customer";
+}
 ?>
 <!doctype html>
 <html>
@@ -82,33 +44,125 @@
         </script>
     </head>
     <body id="page-top">
+        <div class="spaceatas"></br></br></div>
         <!-- Header Section -->
-        <?php include("header.php"); ?>
+        <?php include("header.php");
 
+        if(isset($_POST['idProduk'])){
+            $idProduk = $_POST['idProduk'];
+        }
+        if(isset($_SESSION['login'])&&  $jenisUser == "customer"){
+            $idCustomer = $_SESSION['login']['row_id_customer'];
+        }
+        $query = "SELECT * FROM PRODUK WHERE ROW_ID_PRODUK=$idProduk";
+        $produk = getQueryResultRow($db, $query);
+        $fotoProduk="res/img/produk/".$produk['LOKASI_FOTO_PRODUK'];
+        $namaProduk=$produk['NAMA_PRODUK'];
+        $hargaProduk=$produk['HARGA_PRODUK'];
+        $stokProduk=$produk['STOK_PRODUK'];
+        $deskripsiProduk=$produk['DESKRIPSI_PRODUK'];
+        $dimensiKemasan=$produk['DIMENSI_KEMASAN'];
+        $dimensiProduk=$produk['DIMENSI_PRODUK'];
+        $beratProduk=$produk['BERAT_PRODUK'];
+        $satuanProduk=$produk['SATUAN_PRODUK'];
+        if(isset($_POST['btnBeli'])){
+            if($_POST['jumlahBeliProduk'] > $stokProduk && $_POST['jumlahBeliProduk'] > 0){
+                showAlertDiv('The amount you requested is currently unavailable');
+            }
+            else{
+                try {
+                    $query = "INSERT INTO CART VALUES(:idCust, :idProduk, :qty)";
+                    $stmt = $db->prepare($query);
+                    $stmt->bindValue(":idCust", $idCustomer, PDO::PARAM_INT);
+                    $stmt->bindValue(":idProduk", $_POST['idProduk'], PDO::PARAM_INT);
+                    $stmt->bindValue(":qty", $_POST['jumlahBeliProduk'], PDO::PARAM_INT);
+                    $result = $stmt->execute();
+                } catch (Exception $e) {
+                    echo $e->getMessage();
+                }
+                showInfoDiv('Success adding to cart');
+            }
+        }
+        ?>
         <main>
             <div class="container">
-            <div class="row mt-5 mb-5">
-                <div class="col mt-5">
+            <div class="row mt-3 mb-5">
+                <div class="col">
                     <img src="<?= $fotoProduk?>" width="500px" height="500px"/>
                 </div>
                 <div class="col mt-5">
                     <h1 class="display-5 font-weight-bold mb-4"><?=$namaProduk?></h1>
-                    <h2 class="mb-4" style="color: grey">Rp. <?=number_format($hargaProduk)?></h2>
-                    <form method="POST">
+                    <h2 class="mb-4" style="color: grey">Rp. <?=number_format($hargaProduk, 0, ',', '.')?></h2>
+                    <?php
+                    if ($jenisUser == "admin") {
+                        ?>
+                        <form method="POST">
                         <input type="hidden" name="idProduk" value="<?=$idProduk?>">
-                        <input type="hidden" name="idCust" value="<?=$idCustomer?>">
-                        <div class="input-group mb-3">
-                            <input type="text" name="jumlahBeliProduk" class="form-control" placeholder="1" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <span class="input-group-text" id="basic-addon2">of <?=$stokProduk." ".strtolower("$satuanProduk")?></span>
+                            <button type="submit" class="btn btn-warning mr-3" formaction="master-product.php">Master Product</button>
+                        </form>
+                        <?php
+                    }
+                    else{
+                        ?>
+                        <form method="POST">
+                            <input type="hidden" name="idProduk" value="<?=$idProduk?>">
+                            <input type="hidden" name="idCust" value="<?=$idCustomer?>">
+                            <div class="input-group mb-3">
+                                <input type="number" name="jumlahBeliProduk" class="form-control" placeholder="1" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon2">of <?=$stokProduk." ".strtolower("$satuanProduk")?></span>
+                                </div>
                             </div>
+                            <button type="submit" class="btn btn-info" name="btnWishlist">
+                            Add To Wishlist</button>
+                            <button type="submit" class="btn btn-success" name="btnBeli"> <i class="fas fa-shopping-cart"></i>
+                            &nbsp;&nbsp;&nbsp;Buy Now</button>
+                        </form>
+                        <?php
+                    }
+                    $query = "SELECT * FROM REVIEW_PRODUK WHERE ROW_ID_PRODUK=$idProduk";
+                    $review = getQueryResultRowArrays($db, $query);
+                    $temp=-1;
+                    foreach ($review as $key => $value) {
+                        if($temp<$value['BINTANG_REVIEW']){
+                            $temp = $value['BINTANG_REVIEW'];
+                            $waktu = $value['WAKTU_REVIEW'];
+                            $namaCust = getCustomerName($db,$value['ROW_ID_CUSTOMER']);
+                            $isi = $value['KONTEN_REVIEW'];
+                            $idReview = $value['ROW_ID_PRODUK'];
+                        }
+                    }
+                    ?>
+                    <h3 class="display-5 mt-4">Product Review (<?= count($review)?>):</h3>
+                    <?php
+                    if(count($review)==0){
+                        ?>
+                        <h2 class="mb-4">This product does not have a review yet</h2>
+                        <?php
+                    }
+                    else{
+                        ?>
+                        <div class="float-right">
+                        <?php
+                        for ($i=0; $i < $temp; $i++) {
+                            echo "<i class='fas fa-star' style='color: orange'></i>";
+                        }
+                        ?>
                         </div>
-                        <button type="submit" class="btn btn-info" name="btnWishlist">
-                        Add To Wishlist</button>
-                        <button type="submit" class="btn btn-success" name="btnBeli"> <i class="fas fa-shopping-cart"></i>
-                        &nbsp;&nbsp;&nbsp;Buy Now</button>
-                    </form>
-                    </br></br>
+                        <?=$namaCust[0]['NAME']?> &nbsp;&nbsp;<?=$waktu?>
+                        <div class="mt-3" style="width: 100%; height: 150px; overflow-y: scroll;">
+                            <?php
+                            echo $isi;
+                            ?>
+                        </div>
+                        <form method="POST">
+                            <input type="hidden" name="idProduk" value="<?= $idReview ?>">
+                            <input type="hidden" name="namaProduk" value="<?=$namaProduk?>">
+                            <button type="submit" class="btn text-center form-control" style="background-color: orange" name="btnBeli" formaction="showReview.php">See All Other Reviews</button>
+                        </form>
+                        <?php
+                    }
+                    ?>
                 </div>
             </div>
         </main>
@@ -135,9 +189,9 @@
                 $query = "SELECT * FROM KATEGORI_PRODUK WHERE ROW_ID_PRODUK = $idProduk";
                 $kategoriProduk = getQueryResultRowArrays($db, $query);
                 foreach ($kategoriProduk as $key => $value) {
-                        $kategoriParent=$value['ROW_ID_KATEGORI_PARENT'];
-                        $kategoriChild=$value['ROW_ID_KATEGORI_CHILD'];
-                    }
+                    $kategoriParent=$value['ROW_ID_KATEGORI_PARENT'];
+                    $kategoriChild=$value['ROW_ID_KATEGORI_CHILD'];
+                }
                 $query = "SELECT * FROM KATEGORI_PRODUK WHERE ROW_ID_PRODUK != $idProduk";
                 $kategoriProduk = getQueryResultRowArrays($db, $query);
                 $ctrId = [];

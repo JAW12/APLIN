@@ -1,3 +1,19 @@
+<?php
+include "system/load.php";
+
+$jenisUser = "";
+if (isset($login) && is_array($login)) {
+    $jenisUser = "admin";
+    $rowIdUserAktif = -1;
+    if ($login['role'] == 1) {
+        $jenisUser = "customer";
+    }
+    
+    if ($jenisUser == "customer") {
+        header("location: login.php");
+    }
+}
+?>
 <!doctype html>
 <html>
     <head>
@@ -24,32 +40,86 @@
 
         <!-- JS Sendiri -->
 
-        <title>Home</title>
+        <title>Master Product</title>
     </head>
     <body id="page-top">
         <!-- Header Section -->
-        <?php include("header.php"); ?>
+        <?php include("header.php"); 
+        if(isset($_POST['idProduk'])){
+            $query = "SELECT * FROM PRODUK WHERE ROW_ID_PRODUK=$_POST[idProduk]";
+            $produk = getQueryResultRow($db,$query);
+            $namaProduk=$produk['NAMA_PRODUK'];
+            $hargaProduk=$produk['HARGA_PRODUK'];
+            $dimensiKemasan=$produk['DIMENSI_KEMASAN'];
+            $dimensiProduk=$produk['DIMENSI_PRODUK'];
+            $beratProduk=$produk['BERAT_PRODUK'];
+            $satuanProduk=$produk['SATUAN_PRODUK'];
+            $deskripsiProduk=$produk['DESKRIPSI_PRODUK'];
+            $fotoProduk=$produk['LOKASI_FOTO_PRODUK'];
+            $stokProduk=$produk['STOK_PRODUK'];
+        }
+        ?>
 
         <!-- Main Section -->
         <main>
             
             <!-- container -> jarak ikut bootstrap, container-fluid -> jarak full width, w-(ukuran) -> sesuai persentase, contoh w-80 -> 80% -->
             <section class="w-80">
-                <!-- content start here, silahkan dihapus tes tes nya dibawah kalau sudah mulai-->
-                tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes tes 
-                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                <div class="h1 text-center" style="margin-top: 2%; margin-bottom: 3%">Master Product</div>
+                <form id="formInsert" class="container">
+                    Product Name : </br>
+                    <input type="text" class="form-control" name="productName" value="<?= isset($_POST['idProduk']) ? $namaProduk : "" ?>" /></br>
+                    Product Price : </br>
+                    <input type="number" class="form-control" name="productPrice" value="<?= isset($_POST['idProduk']) ? $hargaProduk : "" ?>" /></br>
+                    <?php
+                    if(isset($_POST['idProduk'])){
+                        echo "<input type=hidden name='cek' value='$_POST[idProduk]'/>";
+                        ?>
+                        Product Status : </br>
+                        <input type="radio" name="productStatus" value="1" checked>
+                        <label >Active</label><br>
+                        <input type="radio" name="productStatus" value="0">
+                        <label>Inactive</label><br>
+                        <?php
+                    }
+                    ?>
+                    Package Dimension : </br>
+                    <input type="text" class="form-control" name="productPackageDimension" value="<?= isset($_POST['idProduk']) ? $dimensiKemasan : "" ?>" /></br>
+                    Product Dimension : </br>
+                    <input type="text" class="form-control" name="productDimension" value="<?= isset($_POST['idProduk']) ? $dimensiProduk : "" ?>" /></br>
+                    Product Weight : </br>
+                    <input type="text" class="form-control" name="productWeight" value="<?= isset($_POST['idProduk']) ? $beratProduk : "" ?>" /></br>
+                    Product Units : </br>
+                    <input type="text" class="form-control" name="productUnit" value="<?= isset($_POST['idProduk']) ? $satuanProduk : "" ?>" /></br>
+                    Product Description : </br>
+                    <textarea class="form-control" name="productDescription" rows="6" value="<?= isset($_POST['idProduk']) ? $deskripsiProduk : "" ?>"><?= isset($_POST['idProduk']) ? $deskripsiProduk : "" ?></textarea></br>
+                    Product Image : </br>
+                    <input type="file" class="form-control-file" name="productImage" value="<?= isset($_POST['idProduk']) ? $fotoProduk : "" ?>"></br>
+                    Product Stock : </br>
+                    <input type="number" class="form-control" name="productStock" value="<?= isset($_POST['idProduk']) ? $stokProduk : "" ?>" /></br>
+                    </br>
+                    <button type="submit" class="btn btn-success"><?= isset($_POST['idProduk']) ? "Edit Product" : "Add Product" ?></button>
+                </form>
             </section>
-
-            <!-- Button Contact Us -->
-            <div class="text-center my-3">
-            <a class="btn btn-lg btn-dark" href="contactus.php" role="button">CONTACT US</a>
-            </div>
         </main>
 
         <!-- Footer Section -->
         <?php include("footer.php"); ?>
     </body>
 </html>
+<script>
+    $(function(){
+        $("#formInsert").submit(function(e){
+            e.preventDefault();
+
+            $.ajax({
+                method: "post",
+                url: "ajax-master-product.php",
+                data : $("#formInsert").serialize(),
+                success : function(res){
+                    alert(res);
+                }
+            })
+        });
+    });
+</script>
