@@ -6,11 +6,13 @@ if(!isset($_POST['idProduk'])){
 }
 session_start();
 $jenisUser = "";
-if($_SESSION['login']['username'] == "admin"){
-    $jenisUser = "admin";
-}
-else{
-    $jenisUser = "customer";
+if(isset($_SESSION['login'])){
+    if($_SESSION['login']['username'] == "admin"){
+        $jenisUser = "admin";
+    }
+    else{
+        $jenisUser = "customer";
+    }
 }
 ?>
 <!doctype html>

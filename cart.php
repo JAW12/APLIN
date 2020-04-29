@@ -24,11 +24,25 @@
 
         <!-- CSS Sendiri -->
         <link href="style/index.css" rel="stylesheet">
-        
+        <style>
+            #judul{
+                padding: 0;
+                padding-top: 5%;
+
+                padding-bottom: 5%;
+                background-repeat:no-repeat;
+                background-size: cover;
+            }
+        </style>
         <title>Cart</title>
     </head>
     <body id="page-top">
-    <div class="spaceatas"></br></br></div>
+        <div class="spaceatas"></div>
+        <div id="judul" class="col-12 text-center my-5" style="background-image: url('res/img/bg12.jpg');">
+            <h1 class="text-light display-3 font-weight-bold">
+                Cart
+            </h1>
+        </div>
         <!-- Header Section -->
         <?php include("header.php"); 
             if(isset($_SESSION['regisdtrans'])){
@@ -58,39 +72,24 @@
             if(isset($_POST['btnConfirm'])){
                 try {
                     $db->beginTransaction();
-                    $query = "INSERT INTO HTRANS VALUES('',:idCust,:tanggal, '', :total, :status, '')";
+                    $query = "INSERT INTO HTRANS VALUES('',:idCust,:tanggal, '', '', :status, '')";
                     $stmt = $db->prepare($query);
                     $stmt->bindValue(":idCust", $idCustomer, PDO::PARAM_INT);
                     date_default_timezone_set('asia/jakarta');
                     $stmt->bindValue(":tanggal",date('Y-m-d H:i:s'), PDO::PARAM_STR);
-                    $stmt->bindValue(":total", $grandTotal, PDO::PARAM_INT);
                     $stmt->bindValue(":status", 0, PDO::PARAM_INT);
                     $result = $stmt->execute();
                     if($result){
                         $rowIdHtrans = $db->lastInsertId();
                         foreach ($registerdtrans as $key => $value) {
-                            $query = "INSERT INTO DTRANS VALUES(:htrans, :idProduk, :qty, :hargaProduk, :subtotal)";
+                            $query = "INSERT INTO DTRANS VALUES(:htrans, :idProduk, :qty, '', '')";
                             $stmt = $db->prepare($query);
                             $stmt->bindValue(":htrans", $rowIdHtrans, PDO::PARAM_INT);
                             $stmt->bindValue(":idProduk", $value['id'], PDO::PARAM_INT);
                             $stmt->bindValue(":qty", $value['qty'], PDO::PARAM_INT);
-                            $stmt->bindValue(":hargaProduk", $value['harga'], PDO::PARAM_INT);
-                            $stmt->bindValue(":subtotal", $value['subtotal'], PDO::PARAM_INT);
                             $result = $stmt->execute();
-                            try {
-                                $query = "SELECT * FROM PRODUK WHERE ROW_ID_PRODUK=$value[id]";
-                                $produk = getQueryResultRow($db, $query);
-                                $query = "UPDATE PRODUK SET STOK_PRODUK = :jumlahBaru WHERE ROW_ID_PRODUK = :id";
-                                $stmt = $db->prepare($query);
-                                $stmt->bindValue(":jumlahBaru", intval(intval($produk['STOK_PRODUK'])-intval($value['qty'])), PDO::PARAM_INT);
-                                $stmt->bindValue(":id", $value['id'], PDO::PARAM_INT);
-                                $result = $stmt->execute();
-                                
-                            } catch (Exception $e) {
-                                echo $e->getMessage();
-                            }
                         }
-                        $_SESSION['regisdtrans'] = [];
+                        unset($_SESSION['regisdtrans']);
                     }
                     showInfoDiv("Purchase Confirmed");
                     try {
@@ -105,10 +104,10 @@
                 } catch (Exception $e) {
                     echo $e->getMessage();
                 }
+                $_SESSION['regisdtrans'] = [];
             }
         ?>
         <main>
-        <div class="h1 text-center" style="margin-top: 2%; margin-bottom: 3%">Cart</div>
         <table class="table table-hover table-striped table-bordered container">
             <thead class="thead-dark text-center">
                 <tr>
@@ -128,7 +127,12 @@
                     if (count($cartData) <= 0) {
                         ?>
                             <tr>
-                                <td colspan="7" class="text-center display-3">Your cart is empty</td>
+                                <th colspan="7" class="text-center">
+                                    <span class="text-dark">You don't have any item in your cart yet</span> <br/>
+                                    <a class="btn btn-warning text-dark rounded mx-2 my-2" href="product-list.php">
+                                        Start shopping now
+                                    </a>
+                                </th>
                             </tr>
                         <?php
                     }
@@ -170,7 +174,7 @@
                                     <td style="text-align: center;"><button class="btn btn-danger" name="btnDelete">Delete Item</button></td>
                                 </form>
                                 <?php
-                                $grandTotal = $grandTotal + $hargaItem;
+                                $grandTotal = $grandTotal + $subtotalItem;
                                 echo "</tr>";
                             }
                             ?>

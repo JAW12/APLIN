@@ -38,7 +38,7 @@ if(!isset($_POST['idProduk'])){
             <div class="h1 text-center" style="margin-top: 2%; margin-bottom: 3%">All Reviews</div>
             <div class="container text-center">
                 <?php
-                    $query = "SELECT * FROM REVIEW_PRODUK WHERE ROW_ID_PRODUK=$_POST[idProduk]";
+                    $query = "SELECT * FROM REVIEW_PRODUK WHERE ROW_ID_PRODUK=$_POST[idProduk] ORDER BY BINTANG_REVIEW";
                     $review = getQueryResultRowArrays($db, $query);
                     foreach ($review as $key => $value) {
                         $temp = $value['BINTANG_REVIEW'];
