@@ -13,64 +13,6 @@ if (isset($login) && is_array($login)) {
         header("location: login.php");
     }
 }
-if(isset($_POST['btnSubmit'])){
-    if(isset($_POST['cek'])){
-        try {
-            $query = "UPDATE PRODUK SET NAMA_PRODUK = :nama, STATUS_AKTIF_PRODUK = :status, HARGA_PRODUK = :harga, DIMENSI_KEMASAN = :dimensikemasan, DIMENSI_PRODUK = :dimensiproduk, BERAT_PRODUK = :berat, SATUAN_PRODUK = :satuan, DESKRIPSI_PRODUK = :deskripsi, STOK_PRODUK = :stok WHERE ROW_ID_PRODUK = :id";
-            $stmt = $db->prepare($query);
-            $stmt->bindValue(":nama", $_POST['productName'], PDO::PARAM_STR);
-            $stmt->bindValue(":status", $_POST['productStatus'], PDO::PARAM_STR);
-            $stmt->bindValue(":harga", $_POST['productPrice'], PDO::PARAM_INT);
-            $stmt->bindValue(":dimensikemasan", $_POST['productPackageDimension'], PDO::PARAM_STR);
-            $stmt->bindValue(":dimensiproduk", $_POST['productDimension'], PDO::PARAM_STR);
-            $stmt->bindValue(":berat", $_POST['productWeight'], PDO::PARAM_STR);
-            $stmt->bindValue(":satuan", $_POST['productUnit'], PDO::PARAM_STR);
-            $stmt->bindValue(":deskripsi", $_POST['productDescription'], PDO::PARAM_LOB);
-            $stmt->bindValue(":stok", $_POST['productStock'], PDO::PARAM_INT);
-            $stmt->bindValue(":id", $_POST['cek'], PDO::PARAM_INT);
-            $result = $stmt->execute();
-        } catch (Exception $e) {
-            echo $e->getMessage();
-        }
-        try{
-            $query = "SELECT ROW_ID_PRODUK AS 'ID' FROM PRODUK WHERE NAMA_PRODUK =  '$_POST[productName]'";
-            $productId = getQueryResultRowArrays($db, $query);
-            $namaAsliSplit = explode(".",$namaAsliFileUpload);
-            $lastIdx = count($namaAsliSplit) - 1;
-            $extension = $namaAsliSplit[$lastIdx];      
-            $namaCustomFileUpload = $productId[0]['ID']."." .$extension;
-            $query = "UPDATE PRODUK SET LOKASI_FOTO_PRODUK = :lokasi WHERE ID_PRODUK = :id";
-            $stmt = $db->prepare($query);
-            $stmt->bindValue(":lokasi", $namaCustomFileUpload);
-            $stmt->bindValue(":id", $productId[0]['ID']);
-            $result = $stmt->execute();
-            echo "Successful editing product";
-        } catch (Exception $e){
-            echo $e->getMessage();
-        }
-    }
-    else{
-        try{
-            $query = "INSERT INTO PRODUK VALUES('','', :nama, :status, :harga, :dimensikemasan, :dimensiproduk, :berat, :satuan, :deskripsi, '', :stok)";
-            $stmt = $db->prepare($query);
-            $stmt->bindValue(":nama", $_POST['productName'], PDO::PARAM_STR);
-            $stmt->bindValue(":status", 1, PDO::PARAM_STR);
-            $stmt->bindValue(":harga", intval($_POST['productPrice']), PDO::PARAM_INT);
-            $stmt->bindValue(":dimensikemasan", $_POST['productPackageDimension'], PDO::PARAM_STR);
-            $stmt->bindValue(":dimensiproduk", $_POST['productDimension'], PDO::PARAM_STR);
-            $stmt->bindValue(":berat", $_POST['productWeight'], PDO::PARAM_STR);
-            $stmt->bindValue(":satuan", $_POST['productUnit'], PDO::PARAM_STR);
-            $stmt->bindValue(":deskripsi", $_POST['productDescription'], PDO::PARAM_STR);
-            $stmt->bindValue(":stok", intval($_POST['productStock']), PDO::PARAM_INT);
-            $result = $stmt->execute();
-        }catch (Exception $e) {
-            echo $e->getMessage();
-        }
-        $query = "SELECT ROW_ID_PRODUK AS 'ROW', ID_PRODUK AS 'ID' FROM PRODUK WHERE NAMA_PRODUK =  '$_POST[productName]'";
-        $productId = getQueryResultRowArrays($db, $query);
-        uploadFile($db, $_FILES['productImage'], "/res/img/produk/", $productId[0]['ID'], $productId[0]['ROW']);
-    }
-}
 ?>
 <!doctype html>
 <html>
@@ -142,10 +84,20 @@ if(isset($_POST['btnSubmit'])){
                 $stmt->bindValue(":id", $rowID);
                 $result = $stmt->execute();
                 if ($result) {
-                    echo "Successful registering product";
+                    if(isset($_POST['cek'])){
+                        showInfoDiv("Successful updating product");
+                    }
+                    else{
+                        showInfoDiv("Successful registering product");
+                    }
                 }
                 else{
-                    echo "Failed registering product";
+                    if(isset($_POST['cek'])){
+                        showInfoDiv("Failed updating product");
+                    }
+                    else{
+                        showInfoDiv("Failed registering product");
+                    }
                 }
         
             }
@@ -165,6 +117,51 @@ if(isset($_POST['btnSubmit'])){
             $deskripsiProduk=$produk['DESKRIPSI_PRODUK'];
             $fotoProduk=$produk['LOKASI_FOTO_PRODUK'];
             $stokProduk=$produk['STOK_PRODUK'];
+        }
+        if(isset($_POST['btnSubmit'])){
+            if(isset($_POST['cek'])){
+                try {
+                    $query = "UPDATE PRODUK SET NAMA_PRODUK = :nama, STATUS_AKTIF_PRODUK = :status, HARGA_PRODUK = :harga, DIMENSI_KEMASAN = :dimensikemasan, DIMENSI_PRODUK = :dimensiproduk, BERAT_PRODUK = :berat, SATUAN_PRODUK = :satuan, DESKRIPSI_PRODUK = :deskripsi, STOK_PRODUK = :stok WHERE ROW_ID_PRODUK = :id";
+                    $stmt = $db->prepare($query);
+                    $stmt->bindValue(":nama", $_POST['productName'], PDO::PARAM_STR);
+                    $stmt->bindValue(":status", $_POST['productStatus'], PDO::PARAM_STR);
+                    $stmt->bindValue(":harga", $_POST['productPrice'], PDO::PARAM_INT);
+                    $stmt->bindValue(":dimensikemasan", $_POST['productPackageDimension'], PDO::PARAM_STR);
+                    $stmt->bindValue(":dimensiproduk", $_POST['productDimension'], PDO::PARAM_STR);
+                    $stmt->bindValue(":berat", $_POST['productWeight'], PDO::PARAM_STR);
+                    $stmt->bindValue(":satuan", $_POST['productUnit'], PDO::PARAM_STR);
+                    $stmt->bindValue(":deskripsi", $_POST['productDescription'], PDO::PARAM_LOB);
+                    $stmt->bindValue(":stok", $_POST['productStock'], PDO::PARAM_INT);
+                    $stmt->bindValue(":id", $_POST['cek'], PDO::PARAM_INT);
+                    $result = $stmt->execute();
+                } catch (Exception $e) {
+                    echo $e->getMessage();
+                }
+                $query = "SELECT ROW_ID_PRODUK AS 'ROW', ID_PRODUK AS 'ID' FROM PRODUK WHERE NAMA_PRODUK =  '$_POST[productName]'";
+                $productId = getQueryResultRowArrays($db, $query);
+                uploadFile($db, $_FILES['productImage'], "/res/img/produk/", $productId[0]['ID'], $productId[0]['ROW']);
+            }
+            else if(!isset($_POST['cek'])){
+                try{
+                    $query = "INSERT INTO PRODUK VALUES('','', :nama, :status, :harga, :dimensikemasan, :dimensiproduk, :berat, :satuan, :deskripsi, '', :stok)";
+                    $stmt = $db->prepare($query);
+                    $stmt->bindValue(":nama", $_POST['productName'], PDO::PARAM_STR);
+                    $stmt->bindValue(":status", 1, PDO::PARAM_STR);
+                    $stmt->bindValue(":harga", intval($_POST['productPrice']), PDO::PARAM_INT);
+                    $stmt->bindValue(":dimensikemasan", $_POST['productPackageDimension'], PDO::PARAM_STR);
+                    $stmt->bindValue(":dimensiproduk", $_POST['productDimension'], PDO::PARAM_STR);
+                    $stmt->bindValue(":berat", $_POST['productWeight'], PDO::PARAM_STR);
+                    $stmt->bindValue(":satuan", $_POST['productUnit'], PDO::PARAM_STR);
+                    $stmt->bindValue(":deskripsi", $_POST['productDescription'], PDO::PARAM_STR);
+                    $stmt->bindValue(":stok", intval($_POST['productStock']), PDO::PARAM_INT);
+                    $result = $stmt->execute();
+                }catch (Exception $e) {
+                    echo $e->getMessage();
+                }
+                $query = "SELECT ROW_ID_PRODUK AS 'ROW', ID_PRODUK AS 'ID' FROM PRODUK WHERE NAMA_PRODUK =  '$_POST[productName]'";
+                $productId = getQueryResultRowArrays($db, $query);
+                uploadFile($db, $_FILES['productImage'], "/res/img/produk/", $productId[0]['ID'], $productId[0]['ROW']);
+            }
         }
         ?>
 
