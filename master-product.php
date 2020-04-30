@@ -33,13 +33,13 @@ if(isset($_POST['btnSubmit'])){
             echo $e->getMessage();
         }
         try{
-            $query = "SELECT ID_PRODUK AS 'ID' FROM PRODUK WHERE NAMA_PRODUK =  '$_POST[productName]'";
+            $query = "SELECT ROW_ID_PRODUK AS 'ID' FROM PRODUK WHERE NAMA_PRODUK =  '$_POST[productName]'";
             $productId = getQueryResultRowArrays($db, $query);
             $namaAsliSplit = explode(".",$namaAsliFileUpload);
             $lastIdx = count($namaAsliSplit) - 1;
             $extension = $namaAsliSplit[$lastIdx];      
             $namaCustomFileUpload = $productId[0]['ID']."." .$extension;
-            $query = "UPDATE PRODUK SET LOKASI_FOTO_PRODUK = :lokasi WHERE ROW_ID_PRODUK = :id";
+            $query = "UPDATE PRODUK SET LOKASI_FOTO_PRODUK = :lokasi WHERE ID_PRODUK = :id";
             $stmt = $db->prepare($query);
             $stmt->bindValue(":lokasi", $namaCustomFileUpload);
             $stmt->bindValue(":id", $productId[0]['ID']);
@@ -66,9 +66,9 @@ if(isset($_POST['btnSubmit'])){
         }catch (Exception $e) {
             echo $e->getMessage();
         }
-        $query = "SELECT ID_PRODUK AS 'ID' FROM PRODUK WHERE NAMA_PRODUK =  '$_POST[productName]'";
+        $query = "SELECT ROW_ID_PRODUK AS 'ROW', ID_PRODUK AS 'ID' FROM PRODUK WHERE NAMA_PRODUK =  '$_POST[productName]'";
         $productId = getQueryResultRowArrays($db, $query);
-        uploadFile($db, $_FILES['productImage'], "/res/img/produk/", $productId[0]['ID']);
+        uploadFile($db, $_FILES['productImage'], "/res/img/produk/", $productId[0]['ID'], $productId[0]['ROW']);
     }
 }
 ?>
@@ -118,7 +118,7 @@ if(isset($_POST['btnSubmit'])){
             </h1>
         </div>
         <?php include("header.php");
-        function uploadFile($db, $file, $folderTujuan, $namaFileUpload){
+        function uploadFile($db, $file, $folderTujuan, $namaFileUpload, $rowID){
             $fileTmp = $file['tmp_name'];
             $namaAsliFileUpload = $file['name'];
         
@@ -139,7 +139,7 @@ if(isset($_POST['btnSubmit'])){
                 $query = "UPDATE PRODUK SET LOKASI_FOTO_PRODUK = :lokasi WHERE ROW_ID_PRODUK = :id";
                 $stmt = $db->prepare($query);
                 $stmt->bindValue(":lokasi", $namaCustomFileUpload);
-                $stmt->bindValue(":id", $namaFileUpload);
+                $stmt->bindValue(":id", $rowID);
                 $result = $stmt->execute();
                 if ($result) {
                     echo "Successful registering product";
