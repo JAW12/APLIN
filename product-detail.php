@@ -100,7 +100,7 @@ if(isset($_SESSION['login'])){
                         ?>
                         <form method="POST">
                         <input type="hidden" name="idProduk" value="<?=$idProduk?>">
-                            <button type="submit" class="btn btn-warning mr-3" formaction="master-product.php">Master Product</button>
+                            <button type="submit" class="btn btn-warning mr-3" formaction="master-product.php">Edit Product</button>
                         </form>
                         <?php
                     }

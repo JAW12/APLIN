@@ -108,15 +108,29 @@ if (isset($login) && is_array($login)) {
         if(isset($_POST['idProduk'])){
             $query = "SELECT * FROM PRODUK WHERE ROW_ID_PRODUK=$_POST[idProduk]";
             $produk = getQueryResultRow($db,$query);
-            $namaProduk=$produk['NAMA_PRODUK'];
-            $hargaProduk=$produk['HARGA_PRODUK'];
-            $dimensiKemasan=$produk['DIMENSI_KEMASAN'];
-            $dimensiProduk=$produk['DIMENSI_PRODUK'];
-            $beratProduk=$produk['BERAT_PRODUK'];
-            $satuanProduk=$produk['SATUAN_PRODUK'];
-            $deskripsiProduk=$produk['DESKRIPSI_PRODUK'];
-            $fotoProduk=$produk['LOKASI_FOTO_PRODUK'];
-            $stokProduk=$produk['STOK_PRODUK'];
+            $namaProduk = $produk['NAMA_PRODUK'];
+            $hargaProduk = $produk['HARGA_PRODUK'];
+            $dimensiKemasan = $produk['DIMENSI_KEMASAN'];
+            $dimensiProduk = $produk['DIMENSI_PRODUK'];
+            $beratProduk = $produk['BERAT_PRODUK'];
+            $satuanProduk = $produk['SATUAN_PRODUK'];
+            $deskripsiProduk = $produk['DESKRIPSI_PRODUK'];
+            $fotoProduk = $produk['LOKASI_FOTO_PRODUK'];
+            $stokProduk = $produk['STOK_PRODUK'];
+            $query = "SELECT ROW_ID_KATEGORI_PARENT FROM KATEGORI_PRODUK WHERE ROW_ID_PRODUK=$_POST[idProduk]";
+            $categoryParentEdit = getQueryResultRowField($db,$query,"ROW_ID_KATEGORI_PARENT");
+            $query = "SELECT ROW_ID_KATEGORI_CHILD FROM KATEGORI_PRODUK WHERE ROW_ID_PRODUK=$_POST[idProduk]";
+            $categoryChildEdit = getQueryResultRowField($db,$query,"ROW_ID_KATEGORI_CHILD");
+            $query = "SELECT * FROM KATEGORI WHERE STATUS_PARENT = '1' AND ROW_ID_KATEGORI != $categoryParentEdit";
+            $categoryParent = getQueryResultRowArrays($db,$query);
+            $query = "SELECT * FROM KATEGORI WHERE STATUS_PARENT = '0' AND ROW_ID_KATEGORI != $categoryChildEdit";
+            $categoryChild = getQueryResultRowArrays($db,$query);
+        }
+        else{
+            $query = "SELECT * FROM KATEGORI WHERE STATUS_PARENT = '1'";
+            $categoryParent = getQueryResultRowArrays($db,$query);
+            $query = "SELECT * FROM KATEGORI WHERE STATUS_PARENT = '0'";
+            $categoryChild = getQueryResultRowArrays($db,$query);
         }
         if(isset($_POST['btnSubmit'])){
             if(isset($_POST['cek'])){
@@ -140,6 +154,16 @@ if (isset($login) && is_array($login)) {
                 $query = "SELECT ROW_ID_PRODUK AS 'ROW', ID_PRODUK AS 'ID' FROM PRODUK WHERE NAMA_PRODUK =  '$_POST[productName]'";
                 $productId = getQueryResultRowArrays($db, $query);
                 uploadFile($db, $_FILES['productImage'], "/res/img/produk/", $productId[0]['ID'], $productId[0]['ROW']);
+                try {
+                    $query = "UPDATE KATEGORI_PRODUK SET ROW_ID_KATEGORI_PARENT = :parent, ROW_ID_KATEGORI_CHILD = :child WHERE ROW_ID_PRODUK = :id";
+                    $stmt = $db->prepare($query);
+                    $stmt->bindValue(":parent", $_POST['productParentCategory'], PDO::PARAM_STR);
+                    $stmt->bindValue(":child", $_POST['productChildCategory'], PDO::PARAM_STR);
+                    $stmt->bindValue(":id", $_POST['cek'], PDO::PARAM_INT);
+                    $result = $stmt->execute();
+                } catch (Exception $e) {
+                    echo $e->getMessage();
+                }
             }
             else if(!isset($_POST['cek'])){
                 try{
@@ -161,6 +185,16 @@ if (isset($login) && is_array($login)) {
                 $query = "SELECT ROW_ID_PRODUK AS 'ROW', ID_PRODUK AS 'ID' FROM PRODUK WHERE NAMA_PRODUK =  '$_POST[productName]'";
                 $productId = getQueryResultRowArrays($db, $query);
                 uploadFile($db, $_FILES['productImage'], "/res/img/produk/", $productId[0]['ID'], $productId[0]['ROW']);
+                try {
+                    $query = "INSERT INTO KATEGORI_PRODUK VALUES(:id, :parent, :child)";
+                    $stmt = $db->prepare($query);
+                    $stmt->bindValue(":id", $_POST['cek'], PDO::PARAM_INT);
+                    $stmt->bindValue(":parent", $_POST['productParentCategory'], PDO::PARAM_INT);
+                    $stmt->bindValue(":child", $_POST['productChildCategory'], PDO::PARAM_INT);
+                    $result = $stmt->execute();
+                } catch (Exception $e) {
+                    echo $e->getMessage();
+                }
             }
         }
         ?>
@@ -175,6 +209,33 @@ if (isset($login) && is_array($login)) {
                     <input type="text" class="form-control" name="productName" value="<?= isset($_POST['idProduk']) ? $namaProduk : "" ?>" /></br>
                     Product Price : </br>
                     <input type="number" class="form-control" name="productPrice" value="<?= isset($_POST['idProduk']) ? $hargaProduk : "" ?>" /></br>
+                    Product Parent Category : </br>
+                    <select class="form-control" name="productParentCategory">
+                    <?php
+                    if (isset($_POST['idProduk'])){
+                        $query = "SELECT * FROM KATEGORI WHERE ROW_ID_KATEGORI = $categoryParentEdit";
+                        $categoryParentSelected = getQueryResultRow($db,$query);
+                        echo "<option value='$categoryParentSelected[ROW_ID_KATEGORI]'>$categoryParentSelected[NAMA_KATEGORI]</option>";
+                    }
+                    foreach ($categoryParent as $key => $value) {
+                        echo "<option value='$value[ROW_ID_KATEGORI]'>$value[NAMA_KATEGORI]</option>";
+                    }
+                    ?>
+                    </select>
+                    </br>
+                    Product Child Category : </br>
+                    <select class="form-control" name="productChildCategory"></br>
+                    <?php
+                    if (isset($_POST['idProduk'])){
+                        $query = "SELECT * FROM KATEGORI WHERE ROW_ID_KATEGORI = $categoryChildEdit";
+                        $categoryChildSelected = getQueryResultRow($db,$query);
+                        echo "<option value='$categoryChildSelected[ROW_ID_KATEGORI]'>$categoryChildSelected[NAMA_KATEGORI]</option>";
+                    }
+                    foreach ($categoryChild as $key => $value) {
+                        echo "<option value='$value[ROW_ID_KATEGORI]'>$value[NAMA_KATEGORI]</option>";
+                    }
+                    ?>
+                    </select></br>
                     <?php
                     if(isset($_POST['idProduk'])){
                         echo "<input type=hidden name='cek' value='$_POST[idProduk]'/>";

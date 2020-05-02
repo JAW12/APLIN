@@ -224,7 +224,7 @@ function addtowish(idproduk) {
                         <?php
                             if ($jenisUser == "admin") {
                                 ?>
-                                    <button type="submit" class="btn btn-warning mr-3" formaction="master-product.php">Master Product</a>
+                                    <button type="submit" class="btn btn-warning mr-3" formaction="master-product.php">Add Product</a>
                                 <?php
                             }
                         ?>

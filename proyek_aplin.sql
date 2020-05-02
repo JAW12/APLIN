@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 25, 2020 at 08:46 PM
+-- Generation Time: May 02, 2020 at 11:40 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `proyek_aplin`
 --
+CREATE DATABASE IF NOT EXISTS `proyek_aplin` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `proyek_aplin`;
 
 DELIMITER $$
 --
@@ -250,14 +252,14 @@ CREATE TABLE `kategori` (
   `ID_KATEGORI` varchar(5) DEFAULT NULL,
   `NAMA_KATEGORI` varchar(30) NOT NULL,
   `STATUS_AKTIF_KATEGORI` varchar(1) NOT NULL COMMENT '1=aktif, 0= tidak aktif',
-  `STATUS_MUNCUL` varchar(1) DEFAULT '0' COMMENT '1=muncul, 0= ga muncul - default nya ga muncul'
+  `STATUS_PARENT` varchar(1) DEFAULT '0' COMMENT '1=parent, 0= bukan parent - default nya bukan parent'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `kategori`
 --
 
-INSERT INTO `kategori` (`ROW_ID_KATEGORI`, `ID_KATEGORI`, `NAMA_KATEGORI`, `STATUS_AKTIF_KATEGORI`, `STATUS_MUNCUL`) VALUES
+INSERT INTO `kategori` (`ROW_ID_KATEGORI`, `ID_KATEGORI`, `NAMA_KATEGORI`, `STATUS_AKTIF_KATEGORI`, `STATUS_PARENT`) VALUES
 (1, 'BT001', 'BATH TUB', '1', '0'),
 (2, 'WA001', 'WASTAFEL', '0', '0'),
 (3, 'TI001', 'TILES', '1', '0'),
