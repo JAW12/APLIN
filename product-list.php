@@ -121,7 +121,12 @@ function addtowish(idproduk) {
     $.post("addtowish.php", 
         { idproduk: idproduk },
         function(result) {
-            alert(result); 
+            if(result=="berhasil"){
+               alert('Success adding to WishList');
+            }
+            else{
+                alert('Item Already in WishList');
+            }
         }
     );
 }

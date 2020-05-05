@@ -115,8 +115,7 @@ if(isset($_SESSION['login'])){
                                     <span class="input-group-text" id="basic-addon2">of <?=$stokProduk." ".strtolower("$satuanProduk")?></span>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-info" name="btnWishlist">
-                            Add To Wishlist</button>
+                            <button type='button' class='btn btn-warning w-100 rounded my-2' name='addToWishlist' onclick=addtowish('<?=$idProduk?>') formaction='wishlist.php'>Add to Wishlist</button>; 
                             <button type="submit" class="btn btn-success" name="btnBeli"> <i class="fas fa-shopping-cart"></i>
                             &nbsp;&nbsp;&nbsp;Buy Now</button>
                         </form>
@@ -242,3 +241,18 @@ if(isset($_SESSION['login'])){
         <?php include("footer.php"); ?>
     </body>
 </html>
+<script language='javascript'>
+function addtowish(idproduk) {
+    $.post("addtowish.php", 
+        { idproduk: idproduk },
+        function(result) {
+            if(result=="berhasil"){
+               alert('Success adding to WishList');
+            }
+            else{
+                alert('Item Already in WishList');
+            }
+        }
+    );
+}
+</script>

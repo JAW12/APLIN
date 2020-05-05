@@ -96,11 +96,11 @@
                                         <button class="btn btn-primary w-100 rounded my-2" name="lihatDetail" formaction="product-detail.php">View Detail</button>    
                                         <?php
                                             if ($jenisUser == "customer") {
-                                                //echo "<button type='button' class='btn btn-warning w-100 rounded my-2' name='addToWishlist' onclick=addtowish('".$value['ROW_ID_PRODUK']."') formaction='wishlist.php'>Add to Wishlist</button>"; 
+                                                echo "<button type='button' class='btn btn-danger w-100 rounded my-2' name='DeleteWishlist' onclick=deletewishlist('".$value['ROW_ID_PRODUK']."') formaction='wishlist.php'>Delete Wishlist</button>"; 
                                             }
                                         ?>
                                     </div>
-                                </div>              
+                                </div>            
                             </form>                        
                         <?php
                     }
@@ -119,11 +119,11 @@
 ?>
 
 <script language='javascript'>
-function addtowish(idproduk) {
-    $.post("addtowish.php", 
+function deletewishlist(idproduk) {
+    $.post("deletewish.php", 
         { idproduk: idproduk },
         function(result) {
-            alert(result); 
+            window.location = "wishlist.php";
         }
     );
 }
@@ -223,13 +223,6 @@ function addtowish(idproduk) {
                         </div>
                         <button type="submit" class="btn btn-info mx-3">Filter</button>
                         <a class="btn btn-info mr-3" href="product-list.php">Reset Filter</a>
-                        <?php
-                            if ($jenisUser == "admin") {
-                                ?>
-                                    <button type="submit" class="btn btn-warning mr-3" formaction="master-product.php">Master Product</a>
-                                <?php
-                            }
-                        ?>
                     </form>    
                 </div>
             </div>
@@ -237,6 +230,7 @@ function addtowish(idproduk) {
             <section class="w-80">
                 <!-- content start here, silahkan dihapus tes tes nya dibawah kalau sudah mulai-->
                 <div class="container-fluid">
+                    
                     <?php 
                         $listProduk = getListProduk($db);
                         showCardProduk($db, $jenisUser, $listProduk);

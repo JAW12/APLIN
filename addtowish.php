@@ -10,5 +10,8 @@
     if($wish == false){
         $query = "INSERT INTO WISHLIST VALUES('".$login['row_id_customer']."', '$idproduk')";
         $berhasil = executeNonQuery($db, $query);   
+        echo"berhasil";
+    }else{
+        echo"sudah ada";
     }
 ?>

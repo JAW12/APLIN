@@ -27,8 +27,18 @@
 
         <!-- JS Sendiri -->
         <title>Home</title>
+        <style>
+        .col-6:hover{
+            transform: scale(1.2);
+            transition: 2s linear;
+        }
+        .col-12:hover{
+            transform: scale(1.2);
+            transition: 2s linear;
+        }
+        </style>
     </head>
-    <body id="page-top">
+    <body>
         <!-- Header Section -->
         <?php include("header.php"); ?>
 
@@ -39,19 +49,17 @@
             
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-1"></div>
-                    <div id="gambar" class="col-5">
-                        <img src="res/img/bg6.jpg" class="img-fluid" style="width: 100%;height:60%;">
+                    <div name="gambar1" class="col-12">
+                        <img src="res/img/bg14.jpg" style="width: 100%;height:500px;">
                     </div>
-                    <div class="col-1"></div>
-                    <div id="gambar" class="col-5">
-                        <img src="res/img/bg7.jpg" class="img-fluid" style="width: 100%;height:60%;">
+                    <div id="gambar2" class="col-6">
+                        <img src="res/img/bg15.jpg" style="width: 100%;height:600px;">
                     </div>
-                    <div id="gambar" class="col-5">
-                        <img src="res/img/bg3.jpg" class="img-fluid" style="width: 100%;height:60%;">
+                    <div id="gambar3" class="col-6">
+                        <img src="res/img/bg16.jpg" style="width: 100%;height:600px;">
                     </div>
-                    <div id="gambar" class="col-5">
-                        <img src="res/img/bg8.jpg" class="img-fluid" style="width: 100%;height:60%;">
+                    <div id="gambar4" class="col-12">
+                        <img src="res/img/bg17.jpg" style="width: 100%;height:500px;">
                     </div>
                 </div>
             </div>
