@@ -15,8 +15,16 @@
     else {
         $gende="P";
     }
-    $query = "INSERT INTO CUSTOMER VALUES('0','$username', '$pass', '$email', '$fistname', '$lastname', '$gende')";
-    $berhasil = executeNonQuery($db, $query);
+    $query1 = "SELECT * FROM CUSTOMER where  USERNAME = '$username'";
+    $wish = getQueryResultRow($db, $query1);
+    if($wish == false){
+        $query = "INSERT INTO CUSTOMER VALUES('0','$username', '$pass', '$email', '$fistname', '$lastname', '$gende')";
+        $berhasil = executeNonQuery($db, $query);
+        header("location:register.php?saved=1");
+    }else{
+        header("location:register.php?notsaved=2");
+    }
+   
 
-    header("location:register.php?saved=1");
+    
 ?>

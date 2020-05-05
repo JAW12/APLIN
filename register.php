@@ -52,6 +52,8 @@
                             <?php 
                                 if(isset($_GET['saved'])) {
                                     echo "<h4 style='color:red;'>Registrasi sukses</h4>"; 
+                                }else if(isset($_GET['notsaved'])) {
+                                    echo "<h4 style='color:red;'>Username harus unik</h4>";  
                                 }
                             ?>
                             <form class="login100-form validate-form p-b-33 p-t-5" method="post">
