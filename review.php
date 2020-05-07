@@ -17,23 +17,36 @@
         }
     }
 
-    $row_id_htrans = -1;
-    if (isset($_POST['row_id_htrans'])) {
-        $row_id_htrans = $_POST['row_id_htrans'];
-        // showAlert($row_id_htrans);
+    //tambahan winda
+    if (isset($_GET['invoice']) && !empty($_GET['invoice'])) {
+        $invnum = $_GET['invoice'];
+        $query = "SELECT * FROM HTRANS WHERE NO_NOTA = {$invnum}";
+        $headerTrans = getQueryResultRow($db, $query);
+
+        $row_id_htrans = $headerTrans['ROW_ID_HTRANS'];
+        $query = "SELECT * FROM DTRANS WHERE ROW_ID_HTRANS = {$row_id_htrans}";
+        $detailTrans = getQueryResultRowArrays($db, $query);     
+        $query = "SELECT * FROM CUSTOMER WHERE ROW_ID_CUSTOMER = {$headerTrans['ROW_ID_CUSTOMER']}";
+        $dataCust = getQueryResultRow($db, $query);
     }
 
-    if (isset($_SESSION['dataTrans'])) {
-        $dataTrans = $_SESSION['dataTrans'];       
-        $row_id_htrans = $dataTrans['row_id_htrans']; 
-        $detailTrans = $dataTrans['detail'];
-    }
-    else{        
-        $row_id_htrans = 0;
-        $dataCust = array();
-        $headerTrans = array();
-        $detailTrans = array();
-    }
+    // $row_id_htrans = -1;
+    // if (isset($_GET['row_id_htrans'])) {
+    //     $row_id_htrans = $_POST['row_id_htrans'];
+    //     showAlert($row_id_htrans);
+    // }
+
+    // if (isset($_SESSION['dataTrans'])) {
+    //     $dataTrans = $_SESSION['dataTrans'];       
+    //     $row_id_htrans = $dataTrans['row_id_htrans']; 
+    //     $detailTrans = $dataTrans['detail'];
+    // }
+    // else{        
+    //     $row_id_htrans = 0;
+    //     $dataCust = array();
+    //     $headerTrans = array();
+    //     $detailTrans = array();
+    // }
 
     function showReviewTable($db, $detailTrans){
         ?>

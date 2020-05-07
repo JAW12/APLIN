@@ -165,10 +165,9 @@
                             ?>
                                 <form method="POST" class="form-inline float-right mt-1">
                                     <input type="hidden" name="row_id_htrans" value="<?= $row_id_htrans ?>">
-                                    <button type="submit" class="btn btn-warning text-dark rounded mx-2" 
-                                            name="lihatReview" formaction="review.php">
+                                    <a class="btn btn-warning text-dark rounded mx-2" href="review.php?invoice=<?=$invoice?>">
                                         Review Product
-                                    </button>
+                                    </a>
                                     <a class="btn btn-warning text-dark rounded mx-2" target="_blank" href="generate-invoice.php?invoice=<?=$invoice?>">
                                         View Invoice
                                     </a>
@@ -336,9 +335,9 @@
                     success : function(res){
                         let lokasiFoto = "res/img/transaksi/no-image.png";
                         if (res != "-") {
-                            lokasiFoto = res;
+                            lokasiFoto = "res/img/transaksi/" + res;
                         }
-                        $("#paymentProofContainer").attr("src", "res/img/transaksi/" + lokasiFoto);
+                        $("#paymentProofContainer").attr("src", lokasiFoto);
                     }
                 });
             }
