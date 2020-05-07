@@ -1,5 +1,6 @@
 <?php
     include "system/load.php";
+     /** @var PDO $db Prepared Statement */
 
     $login = getDataLogin();
 
@@ -16,120 +17,73 @@
             $rowIdUserAktif = $dataCustomer['ROW_ID_CUSTOMER'];
         }
     }
-    
-    //--- function ----
-    function getListProduk($db){
-        $query = "SELECT * FROM PRODUK";
-        $condition = "";
-        if (isset($_GET['q']) && !empty($_GET['q'])) {
-            $condition = $condition . " LOWER(NAMA_PRODUK) LIKE '%{$_GET['q']}%'";
-        }
-        if (isset($_GET['min']) && !empty($_GET['min'])) {
-            $value = $_GET['min'];
-            if ($condition != "") {
-                $condition = $condition . " AND ";
-            } 
-            $condition = $condition . " HARGA_PRODUK >= $value ";
-        }
-        if (isset($_GET['max']) && !empty($_GET['max'])) {
-            $value = $_GET['max'];
-            if ($condition != "") {
-                $condition = $condition . " AND ";
-            } 
-            $condition = $condition ." HARGA_PRODUK <= $value ";
-        }
-        if (isset($_GET['availableProduct']) && $_GET['availableProduct'] == "true") {
-            if ($condition != "") {
-                $condition = $condition . " AND ";
-            } 
-            $condition = $condition . " STOK_PRODUK > 0 ";
-        }
-        if ($condition != "") {
-            $query = $query . " WHERE ";
-        }
-        $query = $query . $condition;
-        $listProduk = getQueryResultRowArrays($db, $query);
-        return $listProduk;
+
+    function getParentCategories($db){
+        $query = "SELECT * FROM KATEGORI WHERE STATUS_AKTIF_KATEGORI = 1 AND STATUS_PARENT = 1";
+        $dataCategory = getQueryResultRowArrays($db, $query);
+        return $dataCategory;
     }
 
-    function showCardProduk($db, $jenisUser, $listProduk){
-        if ($listProduk == false) {
-            showAlertDiv("We can't find products matching the selection");
-        }
-        else{
+    function getChildrenCategories($db, $row_id_parent){
+        $query = "SELECT * FROM KATEGORI WHERE STATUS_AKTIF_KATEGORI = 1 AND ROW_ID_KATEGORI_PARENT = {$row_id_parent}";
+        $dataCategory = getQueryResultRowArrays($db, $query);
+        return $dataCategory;
+    }
+
+    function showCategoryList($db){
+        $dataParent = getParentCategories($db);
+        $ctrChildren = 0;
+        foreach ($dataParent as $key => $value) {
+            $row_id_parent = $value['ROW_ID_KATEGORI'];
+            $nama_parent = ucwords(strtolower($value['NAMA_KATEGORI']));
             ?>
-            <div class="container-fluid px-1 my-3 mt-5 pl-1">
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 card-deck">
-                    <?php
-                    foreach ($listProduk as $key => $value) {
-                        $lokasiFotoProduk = "res/img/produk/".$value['LOKASI_FOTO_PRODUK'];
-                        $cl = "";
-                        $text = "&nbsp;";
-                        if (intval($value['STOK_PRODUK']) <= 0) {
-                            $text = "Out of Stock";
-                            $cl = "grayscale";
-                        }
-                        ?>
-                            <form method="POST">                            
-                                <div class="card border-0 hover-shadow my-4 p-3" style="width: 18rem;box-sizing: border-box">
-                                    <div>
-                                        <img width="256px" height="256px" src="<?= $lokasiFotoProduk ?>" class="card-img-top <?= $cl ?>" alt="gambar produk">
-                                    </div>
-                                    <div class="card-body">
-                                        <!-- <h5 class="card-title"><?= $value['NAMA_PRODUK'] ?></h5> -->
-                                        <p class="card-text">
-                                            <?php echo "<p class='font-weight-bold text-danger text-right'> $text </p>" ?>
-                                            <p class="font-weight-bold text-left">
-                                                Rp. <?= getSeparatorNumberFormatted($value['HARGA_PRODUK']) ?>
-                                            </p><br/>
-                                            <p>
-                                                <button class="btn btn-link text-left text-dark text-decoration-none" style="width : 230px;height:100px;" name="lihatDetail" formaction="product-detail.php">
-                                                    <?= $value['NAMA_PRODUK'] ?>
-                                                </button>                                                 
-                                            </p>
-                                        </p>                            
-                                    </div>
-                                    <div class="card-button p-2 d-flex flex-wrap justify-content-around my-2 mt-n1">
-                                        <input type="hidden" name="idProduk" value="<?= $value['ROW_ID_PRODUK'] ?>">
-                                        <button class="btn btn-primary w-100 rounded my-2" name="lihatDetail" formaction="product-detail.php">View Detail</button>    
-                                        <?php
-                                            if ($jenisUser == "customer") {
-                                                echo "<button type='button' class='btn btn-warning w-100 rounded my-2' name='addToWishlist' onclick=addtowish('".$value['ROW_ID_PRODUK']."') formaction='wishlist.php'>Add to Wishlist</button>"; 
-                                            }
-                                        ?>
-                                    </div>
-                                </div>              
-                            </form>                        
+                <div class="row ml-1">
+                    <div class="col">
+                        <div class="form-inline">
+                            <input class="form-check-input" type="checkbox" value='<?= $row_id_parent ?>' name="category_parent[<?= $key ?>]">
+                            <label class="form-check-label"><?= $nama_parent ?></label>
+                        </div>
                         <?php
-                    }
-                    ?>                  
-                </div>    
-            </div>
+                            $dataChildren = getChildrenCategories($db, $row_id_parent);
+                            if (is_array($dataChildren) && count($dataChildren) > 0) {
+                                foreach ($dataChildren as $key => $value) {
+                                    $row_id_child = $value['ROW_ID_KATEGORI'];
+                                    $nama_child = ucwords(strtolower($value['NAMA_KATEGORI']));                                    
+                                    ?>
+                                        <div class="row child-category ml-3">
+                                            <div class="col float-left">
+                                                <div class="form-inline">
+                                                    <input class="form-check-input" type="checkbox" value='<?= $row_id_parent ?>' name="category_child[<?= $ctrChildren ?>]">
+                                                    <label class="form-check-label"><?= $nama_child ?></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php
+                                    $ctrChildren++;
+                                }
+                            }
+                        ?>
+                    </div>
+                </div>
             <?php
         }
-    }
-
-    //---- form php ----
-    $showBarang = false;
-    if (isset($_POST['showBarang'])) {
-        $showBarang = true;
     }
 ?>
 
 <script language='javascript'>
-function addtowish(idproduk) {
-    $.post("addtowish.php", 
-        { idproduk: idproduk },
-        function(result) {
-            if(result=="berhasil"){
-               alert('Success adding to WishList');
+    function addtowish(idproduk) {
+        $.post("addtowish.php", 
+            { idproduk: idproduk },
+            function(result) {
+                if(result=="berhasil"){
+                alert('Success adding to WishList');
+                }
+                else{
+                    alert('Item Already in WishList');
+                }
             }
-            else{
-                alert('Item Already in WishList');
-            }
-        }
-    );
-}
+        );
+    }
 </script>
 
 <!doctype html>
@@ -144,14 +98,7 @@ function addtowish(idproduk) {
         <link rel="stylesheet" type="text/css" href="css/datatables.css"/>
         <link href="css/all.css" rel="stylesheet">
         <link rel="icon" type="image/png" href="res/img/goblin.png" />    
-
-        <!-- JS Library Import -->
-        <script src="js/jquery-3.4.1.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/jQueryUI.js"></script>
-        <script type="text/javascript" src="js/datatables.js"></script>
-        <script src="script/index.js"></script>
-
+        
         <!-- CSS Sendiri -->
         <link href="style/index.css" rel="stylesheet">
         <style>
@@ -179,7 +126,6 @@ function addtowish(idproduk) {
                 background-repeat:no-repeat;
                 background-size: cover;
             }
-
         </style>
 
         <!-- JS Sendiri -->
@@ -191,64 +137,186 @@ function addtowish(idproduk) {
 
         <!-- Main Section -->
         <main>
-            <!-- kalau mau pake space ga ush dicomment -->
             <div id="judul" class="col-12 text-center my-5" style="background-image: url('res/img/bg9.jpg');">
                 <h1 class="text-light display-3 font-weight-bold">
                     Product List
                 </h1>
             </div>
 
-            <!-- filter -->
-            <div class="container-fluid my-2">
-                <div class="container-fluid my-2 d-flex flex-nowrap justify-content-around">
-                    <form method="GET" class="form-inline">
-                        <?php
-                            $keyword = ""; $min = "" ; $max = ""; $checkedStatus = "";
-                            if (isset($_GET['q']) && !empty($_GET['q'])) {
-                                $keyword = $_GET['q'];
-                            }
-                            if (isset($_GET['min']) && !empty($_GET['min'])) {
-                                $min = $_GET['min'];
-                            }
-                            if (isset($_GET['max']) && !empty($_GET['max'])) {
-                                $max = $_GET['max'];
-                            }
-                            if (isset($_GET['availableProduct']) && $_GET['availableProduct'] == "true") {
-                                $checkedStatus = "checked";
-                            }
-                        ?>
-                        <input type="text" class="form-control mx-2" placeholder="Product Name" name="q" value="<?= $keyword ?>">
-                        <input type="number" class="form-control mx-2" placeholder="Minimum Price" name="min" value="<?= $min ?>">
-                        <input type="number" class="form-control mx-2" placeholder="Maximum Price" name="max" value="<?= $max ?>">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="cbAvailableProduct" value="true" name="availableProduct" <?= $checkedStatus ?>>
-                            <label class="form-check-label" for="cbAvailableProduct">Available Products</label>
-                        </div>
-                        <button type="submit" class="btn btn-info mx-3">Filter</button>
-                        <a class="btn btn-info mr-3" href="product-list.php">Reset Filter</a>
-                        <?php
-                            if ($jenisUser == "admin") {
-                                ?>
-                                    <button type="submit" class="btn btn-warning mr-3" formaction="master-product.php">Add Product</a>
+            <div class="row d-flex justify-content-around">
+                <!-- filter -->
+                <div class="col-2">                    
+                    <div class="container-fluid w-100">
+                        <div class="container my-4 d-flex justify-content-around flex-wrap">
+                            <form method="GET" class="form-inline mr-2 ml-5" id="formFilter" style="width: 100%">
+                                <input type="hidden" name="viewProduct">
                                 <?php
-                            }
-                        ?>
-                    </form>    
-                </div>
-            </div>
+                                    $class_hr = "border border-dark w-100 mb-2";
+                                    $keyword = ""; $min = "" ; $max = ""; $checkedStatus = "";
+                                    if (isset($_GET['q']) && !empty($_GET['q'])) {
+                                        $keyword = $_GET['q'];
+                                    }
+                                    if (isset($_GET['min']) && !empty($_GET['min'])) {
+                                        $min = $_GET['min'];
+                                    }
+                                    if (isset($_GET['max']) && !empty($_GET['max'])) {
+                                        $max = $_GET['max'];
+                                    }
+                                    if (isset($_GET['availableProduct']) && $_GET['availableProduct'] == "true") {
+                                        $checkedStatus = "checked";
+                                    }
+                                ?>
+                                
+                                <div class="my-2 align-middle" style="width: 100%">
+                                    <div class="form-inline">
+                                        <button type="button" class="btn btn-light rounded-circle mr-2 btn-angle">
+                                            <i class="fas fa-angle-up"></i>
+                                        </button>
+                                        <span class="font-weight-bold font-italic">Availability</span>
+                                    </div>
+                                    
+                                    <div class="container-filter w-100">
+                                        <div class="form-inline mx-2 w-100">
+                                            <input class="form-check-input" type="checkbox" id="cbAvailableProduct" value="true" name="availableProduct" <?= $checkedStatus ?>>
+                                            <label class="form-check-label" for="cbAvailableProduct">Available Products</label>
+                                        </div>
+                                    </div>                                    
+                                </div>
+                                <hr class="<?= $class_hr ?>">
+                                <div class="my-2 align-middle w-100">
+                                    <div class="form-inline">
+                                        <button type="button" class="btn btn-light rounded-circle mr-2 btn-angle">
+                                            <i class="fas fa-angle-up"></i>
+                                        </button>
+                                        <div class="font-weight-bold font-italic text-left">Product Name</div>
+                                    </div>
 
-            <section class="w-80">
-                <!-- content start here, silahkan dihapus tes tes nya dibawah kalau sudah mulai-->
-                <div class="container-fluid">
-                    <?php 
-                        $listProduk = getListProduk($db);
-                        showCardProduk($db, $jenisUser, $listProduk);
-                    ?>
+                                    <div class="container-filter">
+                                        <input type="text" class="form-control mx-2" placeholder="Product Name" name="q" value="<?= $keyword ?>">
+                                    </div>
+                                </div>
+                                <hr class="<?= $class_hr ?>">
+                                <div class="my-2 align-middle w-100">
+                                    <div class="form-inline">
+                                        <button type="button" class="btn btn-light rounded-circle mr-2 btn-angle">
+                                            <i class="fas fa-angle-up"></i>
+                                        </button>
+                                        <span class="font-weight-bold font-italic mr-4">Price Range</span>
+                                    </div>
+                                                                        
+                                    <div class="container-filter">
+                                        <input type="number" class="form-control mx-2 my-2" placeholder="Minimum Price" name="min" value="<?= $min ?>">
+                                        <input type="number" class="form-control mx-2 my-2" placeholder="Maximum Price" name="max" value="<?= $max ?>">
+                                    </div>
+                                </div>
+                                <hr class="<?= $class_hr ?>">
+                                <div class="my-2 align-middle w-100">
+                                    <div class="form-inline">
+                                        <button type="button" class="btn btn-light rounded-circle mr-2 btn-angle">
+                                            <i class="fas fa-angle-up"></i>
+                                        </button>
+                                        <span class="font-weight-bold font-italic">Product Category</span>
+                                    </div>
+                                    
+                                    <div class="container-filter text-left mt-1">
+                                        <?php showCategoryList($db) ?>
+                                    </div>                                    
+                                </div>
+                                <hr class="<?= $class_hr ?>">
+                                <div class="my-1 justify-content-around">                                    
+                                    <button type="button" class="btn btn-info w-100 my-2" id="btnReset">Reset Filter</button>
+                                    <?php
+                                        if ($jenisUser == "admin") {
+                                            ?>
+                                                <button type="submit" class="btn btn-warning w-100 my-2" formaction="master-product.php">Add Product</a>
+                                            <?php
+                                        }
+                                    ?>
+                                </div>
+                                
+                            </form>    
+                        </div>
+                    </div>
                 </div>
-            </section>
+                <!-- product list -->
+                <div class="col">
+                    <div class="container-fluid" id="containerProductList">
+                        
+                    </div>
+                </div>
+            </div>            
         </main>
 
         <!-- Footer Section -->
         <?php include ("footer.php"); ?>
+
+        <!-- JS Library Import -->
+        <script src="js/jquery-3.4.1.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/jQueryUI.js"></script>
+        <script type="text/javascript" src="js/datatables.js"></script>
+        <script src="script/index.js"></script>
+        <script>
+            function loadProductList(){
+                $.ajax({
+                    method : "POST",
+                    url : "ajax-product-list.php",
+                    data : $("#formFilter").serialize(),
+                    success : function(res){
+                        $("#containerProductList").html(res);
+                    }
+                });
+            }
+
+            function resetFilter(){
+                $("#formFilter input").val("");
+            }
+
+            $("#formFilter input").change(function(){
+                loadProductList();
+            });
+
+            $("#formFilter .btn-angle").click(function(){
+                let containerFields = $(this).parent().siblings(".container-filter");
+                let icon = $(this).children();
+                
+                
+               
+
+                //slide toggle fields
+                $(containerFields).slideToggle(200, "linear");
+
+                //ubah icon
+                console.log(icon);
+                if ($(icon).hasClass("fa-angle-down")) {
+                    $(icon).removeClass("fa-angle-down");
+                    $(icon).addClass("fa-angle-up");
+                }
+                else if ($(icon).hasClass("fa-angle-up")) {
+                    $(icon).removeClass("fa-angle-up");
+                    $(icon).addClass("fa-angle-down");
+                }
+            })
+
+            $("#btnReset").click(function(){
+                resetFilter();
+                loadProductList();
+            })
+
+            $("#formFilter").submit(function(e){
+                e.preventDefault();
+                loadProductList();
+            })
+
+            $(document).ready(function(){
+                //load untuk pertama kali
+                loadProductList();
+
+                //data akan diperbarui setiap 1 menit sekali
+                setInterval(() => {
+                    loadProductList();
+                }, 60 * 1000);
+            });
+        </script>
     </body>
 </html>

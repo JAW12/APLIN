@@ -182,7 +182,7 @@
         <main>
             <div class="container-fluid mb-2 mt-4">
                 <div class="container text-right" style="max-width: 80%; box-sizing: border-box;">
-                    <button type="button" class="btn btn-warning text-dark rounded mr-0" id="btnPrint">
+                    <button type="button" class="btn btn-dark text-warning rounded mr-0" id="btnPrint">
                         Print Invoice
                     </button>
                 </div>

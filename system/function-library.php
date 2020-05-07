@@ -282,3 +282,13 @@ function sendEmail($to, $subject, $body){
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
 }
+
+function getCurrentDate(){
+    date_default_timezone_set('asia/jakarta');
+    return date('Y-m-d');
+}
+
+function getCurrentDateTime(){
+    date_default_timezone_set('asia/jakarta');
+    return date('Y-m-d H:i:s');
+}

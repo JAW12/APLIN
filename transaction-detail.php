@@ -72,7 +72,7 @@
     function getStatusString($status){
         $status_set = array();
         if ($status == 0) {
-            $cl = "text-danger";
+            $cl = "text-warning";
             $str = "Pending";
         }
         else if ($status == 1) {
@@ -180,7 +180,7 @@
                 <div class="mt-1 mb-5 d-flex flex-wrap justify-content-around">
                     <div class="col-sm-12 col-md-6 mt-1 d-flex justify-content-center">
                         <div class="img-fit-container">
-                            <img src="<?= $lokasiFoto?>" class="img-fit" alt="No Payment Proof Available" class="border"/>
+                            <img id="paymentProofContainer" src="<?= $lokasiFoto?>" class="img-fit" alt="No Payment Proof Available" class="border"/>
                         </div>         
                     </div>
                     <div class="col-sm-12 col-md-6 mt-1">
@@ -234,43 +234,26 @@
         }    
     }
 
-    function setSessionData($db, $row_id_htrans){
+    if (isset($_GET['invoice']) && !empty($_GET['invoice'])) {
+        $invnum = $_GET['invoice'];
+        $query = "SELECT * FROM HTRANS WHERE NO_NOTA = {$invnum}";
+        $headerTrans = getQueryResultRow($db, $query);
+
+        $row_id_htrans = $headerTrans['ROW_ID_HTRANS'];
         $query = "SELECT * FROM DTRANS WHERE ROW_ID_HTRANS = {$row_id_htrans}";
         $detailTrans = getQueryResultRowArrays($db, $query);     
-        $query = "SELECT * FROM HTRANS WHERE ROW_ID_HTRANS = {$row_id_htrans}";
-        $headerTrans = getQueryResultRow($db, $query);   
         $query = "SELECT * FROM CUSTOMER WHERE ROW_ID_CUSTOMER = {$headerTrans['ROW_ID_CUSTOMER']}";
         $dataCust = getQueryResultRow($db, $query);
-                   
-        $dataTrans['row_id_htrans'] = $row_id_htrans;
-        $dataTrans['customer'] = $dataCust;
-        $dataTrans['header'] = $headerTrans;     
-        $dataTrans['detail'] = $detailTrans;
-        updateDataSession('dataTrans', $dataTrans);
-    }
-
-    if (isset($_POST['viewDetail'])) {
-        setSessionData($db, $_POST['row_id_htrans']);
-    }
-
-    if (isset($_SESSION['dataTrans'])) {
-        $dataTrans = $_SESSION['dataTrans'];       
-        $row_id_htrans = $dataTrans['row_id_htrans']; 
-        $dataCust = $dataTrans['customer'];
-        $headerTrans = $dataTrans['header'];
-        $detailTrans = $dataTrans['detail'];
-    }
-    else{        
+    }else{        
         $row_id_htrans = 0;
         $dataCust = array();
         $headerTrans = array();
         $detailTrans = array();
     }
-    
+
     if (isset($_POST['changePaymentProofImage'])) {
         $row_id_htrans = $headerTrans['ROW_ID_HTRANS'];
         uploadFile($db, $_FILES['file-upload'], "/res/img/transaksi/", strval( $row_id_htrans), $row_id_htrans);
-        setSessionData($db, $row_id_htrans);   
     }
 ?>
 
@@ -327,6 +310,8 @@
         <main>
             <!-- kalau mau pake space ga ush dicomment -->
             <!-- <div class="spaceatas"></div> -->
+            <input type="hidden" id="invnumHolder" value="<?= $invnum ?>">
+
             <div id="judul" class="col-12 text-center my-5" style="background-image: url('res/img/bg12.jpg');">
                 <h1 class="text-light display-3 font-weight-bold">
                     Transaction Detail
@@ -341,36 +326,27 @@
         <?php include ("footer.php"); ?>
 
         <script>
-            function printHTML(html){
-                var printContents = html;
-                var originalContents = document.body.innerHTML;
-
-                document.body.innerHTML = printContents;
-
-                window.print();
-
-                document.body.innerHTML = originalContents;
-            }
-
-            function printInvoice(btn, divName){
-                let row_id_htrans = $(btn).attr("row_id_htrans");
+            function getPaymentProofImage(){
                 $.ajax({
                     method : "POST",
-                    url : "generate-invoice.php",
+                    url : "ajax-transaction-detail.php",
                     data : {
-                        print_invoice : "true",
-                        row_id_htrans : row_id_htrans
+                        invnum : $("#invnumHolder").val()
                     },
                     success : function(res){
-                        printHTML(res);
+                        let lokasiFoto = "res/img/transaksi/no-image.png";
+                        if (res != "-") {
+                            lokasiFoto = res;
+                        }
+                        $("#paymentProofContainer").attr("src", "res/img/transaksi/" + lokasiFoto);
                     }
                 });
             }
 
-            $(document).on("click", "#btnPrint", function(){
-                // printDiv("printableArea");
-                printInvoice(this, "printableArea");
-                console.log(this);
+            $(document).ready(function(){
+                setInterval(() => {
+                    getPaymentProofImage();
+                }, 1000);
             });
         </script>
     </body>

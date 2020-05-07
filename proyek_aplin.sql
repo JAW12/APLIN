@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 02, 2020 at 11:40 AM
+-- Generation Time: May 07, 2020 at 07:54 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `proyek_aplin`
 --
-CREATE DATABASE IF NOT EXISTS `proyek_aplin` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `proyek_aplin`;
 
 DELIMITER $$
 --
@@ -51,8 +49,6 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`, `QTY`) VALUES
-(2, 3, 1),
-(5, 6, 30),
 (6, 3, 50),
 (6, 6, 10),
 (6, 7, 1),
@@ -144,7 +140,26 @@ INSERT INTO `dtrans` (`ROW_ID_HTRANS`, `ROW_ID_PRODUK`, `QTY_PRODUK`, `HARGA_PRO
 (18, 6, 10, 1500000, 15000000),
 (18, 7, 1, 259000, 259000),
 (18, 9, 50, 1056400, 52820000),
-(18, 10, 0, 381694, 0);
+(18, 10, 0, 381694, 0),
+(19, 10, 2, 381694, 763388),
+(20, 7, 3, 259000, 777000),
+(20, 8, 4, 1593150, 6372600),
+(20, 10, 0, 381694, 0),
+(21, 11, 4, 1161000, 4644000),
+(21, 14, 4, 489000, 1956000),
+(22, 13, 45, 4099000, 184455000),
+(22, 14, 5, 489000, 2445000),
+(23, 3, 1, 472500, 472500),
+(23, 8, 996, 1593150, 1586777400),
+(23, 10, 5, 381694, 1908470),
+(23, 13, 245, 4099000, 1004255000),
+(23, 16, 4, 1169000, 4676000),
+(24, 6, 30, 1500000, 45000000),
+(24, 8, 15, 1593150, 23897250),
+(25, 7, 94, 259000, 24346000),
+(25, 10, 5, 381694, 1908470),
+(25, 16, 4, 1169000, 4676000),
+(26, 10, 3895, 381694, 1486698130);
 
 --
 -- Triggers `dtrans`
@@ -156,8 +171,6 @@ SET @qtyBeli = NEW.QTY_PRODUK;
 SET @harga = NEW.HARGA_PRODUK;
 
 SELECT SUM(SUBTOTAL) INTO @total FROM dtrans WHERE ROW_ID_HTRANS = NEW.ROW_ID_HTRANS;
-
-UPDATE produk SET STOK_PRODUK = STOK_PRODUK - @qtyBeli WHERE ROW_ID_PRODUK = NEW.ROW_ID_PRODUK;
 
 UPDATE htrans SET TOTAL_TRANS = @total WHERE ROW_ID_HTRANS = NEW.ROW_ID_HTRANS;
 
@@ -225,7 +238,15 @@ INSERT INTO `htrans` (`ROW_ID_HTRANS`, `ROW_ID_CUSTOMER`, `TANGGAL_TRANS`, `NO_N
 (15, 5, '2020-04-17 02:04:28', '2020041700009', 2112800, 1, ''),
 (16, 5, '2020-04-17 02:04:39', '2020041700010', 19311000, 2, ''),
 (17, 2, '2020-04-17 02:04:48', '2020041700011', 4644000, 1, ''),
-(18, 6, '2020-04-21 21:13:31', '2020042100001', 91704000, 1, '');
+(18, 6, '2020-04-21 21:13:31', '2020042100001', 91704000, 1, ''),
+(19, 2, '2020-05-06 00:00:00', '2020050600001', 763388, 1, NULL),
+(20, 1, '2020-05-07 17:30:17', '2020050700001', 7149600, 1, ''),
+(21, 1, '2020-05-07 17:30:51', '2020050700002', 6600000, 1, ''),
+(22, 2, '2020-05-05 00:00:00', '2020050500001', 186900000, 1, NULL),
+(23, 2, '2020-05-07 17:55:59', '2020050700003', 2147483647, 1, ''),
+(24, 5, '2020-05-07 18:01:55', '2020050700004', 68897250, 1, ''),
+(25, 1, '2020-05-07 18:03:55', '2020050700005', 30930470, 1, ''),
+(26, 1, '2020-05-07 18:07:21', '2020050700006', 1486698130, 1, '');
 
 --
 -- Triggers `htrans`
@@ -249,6 +270,7 @@ DELIMITER ;
 
 CREATE TABLE `kategori` (
   `ROW_ID_KATEGORI` int(11) NOT NULL,
+  `ROW_ID_KATEGORI_PARENT` int(11) DEFAULT NULL,
   `ID_KATEGORI` varchar(5) DEFAULT NULL,
   `NAMA_KATEGORI` varchar(30) NOT NULL,
   `STATUS_AKTIF_KATEGORI` varchar(1) NOT NULL COMMENT '1=aktif, 0= tidak aktif',
@@ -259,22 +281,23 @@ CREATE TABLE `kategori` (
 -- Dumping data for table `kategori`
 --
 
-INSERT INTO `kategori` (`ROW_ID_KATEGORI`, `ID_KATEGORI`, `NAMA_KATEGORI`, `STATUS_AKTIF_KATEGORI`, `STATUS_PARENT`) VALUES
-(1, 'BT001', 'BATH TUB', '1', '0'),
-(2, 'WA001', 'WASTAFEL', '0', '0'),
-(3, 'TI001', 'TILES', '1', '0'),
-(6, 'LB001', 'LIGHT BULB', '1', '0'),
-(7, 'AP001', 'APPLIANCES', '1', '1'),
-(9, 'EA001', 'ELECTRICAL AND LIGHTING', '1', '1'),
-(10, 'RC001', 'RICE COOKER', '1', '0'),
-(20, 'HD001', 'HOME DECORATION', '1', '1'),
-(21, 'FA001', 'FLOOR AND WALL', '0', '1'),
-(22, 'HI001', 'HOME IMPROVEMENT', '0', '1'),
-(23, 'OU001', 'OUTDOOR', '1', '1'),
-(24, 'SA001', 'SAFETY AND  SECURITY', '0', '1'),
-(25, 'KI001', 'KITCHEN', '1', '1'),
-(26, 'TA001', 'TOOL AND HARDWARE', '0', '1'),
-(27, 'DA001', 'DOOR AND WINDOW', '1', '1');
+INSERT INTO `kategori` (`ROW_ID_KATEGORI`, `ROW_ID_KATEGORI_PARENT`, `ID_KATEGORI`, `NAMA_KATEGORI`, `STATUS_AKTIF_KATEGORI`, `STATUS_PARENT`) VALUES
+(1, 28, 'BT001', 'BATH TUB', '1', '0'),
+(2, 28, 'WA001', 'WASTAFEL', '1', '0'),
+(3, 21, 'TI001', 'TILES', '1', '0'),
+(6, 9, 'LB001', 'LIGHT BULB', '1', '0'),
+(7, NULL, 'AP001', 'APPLIANCES', '1', '1'),
+(9, NULL, 'EA001', 'ELECTRICAL AND LIGHTING', '1', '1'),
+(10, 22, 'RC001', 'RICE COOKER', '1', '0'),
+(20, NULL, 'HD001', 'HOME DECORATION', '1', '1'),
+(21, NULL, 'WA002', 'WALL AND FLOORING', '1', '1'),
+(22, NULL, 'HI001', 'HOME IMPROVEMENT', '1', '1'),
+(23, NULL, 'OU001', 'OUTDOOR', '1', '1'),
+(24, NULL, 'SA001', 'SAFETY AND  SECURITY', '1', '1'),
+(25, NULL, 'KI001', 'KITCHEN', '1', '1'),
+(26, NULL, 'TA001', 'TOOL AND HARDWARE', '1', '1'),
+(27, NULL, 'DA001', 'DOOR AND WINDOW', '1', '1'),
+(28, NULL, 'BA001', 'BATHROOM', '1', '1');
 
 --
 -- Triggers `kategori`
@@ -360,13 +383,13 @@ INSERT INTO `produk` (`ROW_ID_PRODUK`, `ID_PRODUK`, `NAMA_PRODUK`, `STATUS_AKTIF
 (3, 'CR001', 'CERAMAX ROJO FSB0371 W/HUNG BASIN', '1', 472500, '40cm X 40cm X 14cm', '38cm X 38cm X 12cm', '9 Kg', 'PCS', 'CERAMAX ROJO FSB0371 Wall Hung Wastafel\r\n\r\nSpesifikasi:\r\n\r\nTipe: Wall Hung Basin\r\nDimensi 380x380x120MM\r\nMaterial: Porselen\r\nFitur:\r\n\r\nHarga terjangkau\r\nMaterial berbahan porselen mudah dibersihkan dan tidak ada tepian yang tajam\r\nSistem pembuangan yang lancar\r\nDesain elegan\r\nHemat ruang', 'CR001.jpg', -46),
 (5, 'P1001', 'PHILIPS 17401 59449 105 9W 65K MESON CD G3 (3PC)', '1', 195605, '14cm X 12cm X 12cm', '14cm X 12cm X 12cm', '200 gr', 'PCS', 'Keunggulan:\r\n\r\nLED Downlight dengan harga terjangku\r\nTermasuk lampu & driver terintegrasi, Anda bisa langsung\r\nmemasangnya\r\nMudah dipasang\r\nCahaya yang rata dengan diffuser anti silau\r\nHemat Listrik = Hemat Biaya!\r\nTahan lama, umur hingga 15.000 jam\r\nTersedia dalam berbagai macam pilihan ukuran & watt\r\nSpesifikasi:\r\n\r\nColor: Putih (cool day light)\r\nPower: 9W\r\nLumen: 650lm (6500K)\r\nDiameter: 120mm\r\nKetebalan: 47mm\r\nLubang Plafon / Cutout: 105mm / 4.1 inch\r\nKoneksi: flying wire\r\nUmur: hingga 15.000 jam\r\nCRI80\r\nIP20\r\n220-240V ~ 50-60 Hz\r\nTidak dapat diredupkan / Non Dimmable\r\nTidak dapat diganti lampu atau driver-nya saja\r\nUntuk pemakaian di dalam ruangan / Indoor use only', 'P1001.jpg', -12),
 (6, 'TF001', 'TIDY FSA0042 WHITE ONE PIECE TOILET', '1', 1500000, '70cm X 44cm X 61cm', '68cm X 42cm X 59cm', '41kg', 'SET', 'TIDY FSA0042 WHITE ONE PIECE TOILET\r\n\r\nSpesifikasi:\r\n\r\nTipe: Monoblok / One piece toilet\r\nSistem pembuangan: Siphonic\r\nSoft closing seat cover\r\nAs/Jarak dinding/Rough-in/S-trap 300mm\r\nOutfall diameter 100mm\r\nMaterial: Porselen\r\nFitur:\r\n\r\nHarga relatif terjangkau\r\nOne piece toilet dengan ukuran yang sesuai dengan masyarakat Asia\r\nDesain modern\r\nHemat ruang\r\nSistem syphonic', 'TF001.jpg', -5),
-(7, 'GX001', 'GLUCKLICH X01HI1 0.3LT 200W RICE COOKER', '1', 259000, '20cm X 20cm X 22cm', '18cm X 18cm X 20cm', '3kg', 'UNIT', 'Keunggulan:\r\n\r\nBagian dalam anti lengket\r\nFitur tetap hangat\r\nBahan lebih tebal\r\nPerlindungan sekering ganda\r\nPerlindungan suhu tunggi\r\nBaki pengukus tebal\r\nGaransi service 2 tahun\r\nDapat sendok, mangkuk takar, kabel\r\nSpesifikasi:\r\n\r\nGaris air: 0,3 liter\r\nVolume pot: 3 liter\r\nKetebalan: 0.75mm\r\nTegangan: 50/60Hz, 220V\r\nDaya: 200 Watt', 'GX001.jpg', 197),
-(8, 'TA001', 'TIDY ALUMIX PVC MIN KC 2 / 02', '1', 1593150, '100cm x 100cm x 100cm', '20cm x 20cm x 20cm', '10KG', 'PCS', 'Ringan dan Kokoh -Tahan terhadap air -Tidak berkarat -Menggunakan kusen aluminium sehingga lebih awet dan tahan lama -Tidak berubah bentuk akibat cuaca', 'TA001.jpg', 2000),
+(7, 'GX001', 'GLUCKLICH X01HI1 0.3LT 200W RICE COOKER', '1', 259000, '20cm X 20cm X 22cm', '18cm X 18cm X 20cm', '3kg', 'UNIT', 'Keunggulan:\r\n\r\nBagian dalam anti lengket\r\nFitur tetap hangat\r\nBahan lebih tebal\r\nPerlindungan sekering ganda\r\nPerlindungan suhu tunggi\r\nBaki pengukus tebal\r\nGaransi service 2 tahun\r\nDapat sendok, mangkuk takar, kabel\r\nSpesifikasi:\r\n\r\nGaris air: 0,3 liter\r\nVolume pot: 3 liter\r\nKetebalan: 0.75mm\r\nTegangan: 50/60Hz, 220V\r\nDaya: 200 Watt', 'GX001.jpg', 194),
+(8, 'TA001', 'TIDY ALUMIX PVC MIN KC 2 / 02', '1', 1593150, '100cm x 100cm x 100cm', '20cm x 20cm x 20cm', '10KG', 'PCS', 'Ringan dan Kokoh -Tahan terhadap air -Tidak berkarat -Menggunakan kusen aluminium sehingga lebih awet dan tahan lama -Tidak berubah bentuk akibat cuaca', 'TA001.jpg', 1996),
 (9, 'DU001', 'DOORWAY UPVC DOOR HW017L 3/4KC', '0', 1056400, '70cm x 70cm x 70cm', '20cm x 20 cm x 18cm', '4kg', 'UNIT', 'Pintu uPVC yang cocok untuk pintu kamar mandi, karena keunggulanya yaitu tahan air, tahan rayap, dan kokoh. ditambahkan lagi uPVC merupakan bahan yang akan meredam suara dan ramah lingkungan', 'DU001.jpg', -2),
-(10, 'NF001', 'NIRO FLEUR GFL03 MARIGOLD PGVT', '0', 381694, '80cm x 80cm x 80cm', '19cm x 19cm x 19cm', '8kg', 'BOX', 'Granite Niro Exclusive Design Only at Mitra10. Granite lantai Glazed Polsihed Digital ukuran 80x80 glossy surface memberikan nuansa mewah untuk ruangan anda\r\n\r\n\r\nFungsi: granite porcelain, porcelain tiles, granite lantai, granite polished, granite 80x80, granite digital, granite niro, granite glaze\r\n\r\nGranite Niro Exclusive Design Only at Mitra10. Granite lantai Glazed Polsihed Digital ukuran 80x80 glossy surface memberikan nuansa mewah untuk ruangan anda\r\n\r\n\r\nFungsi: granite porcelain, porcelain tiles, granite lantai, granite polished, granite 80x80, granite digital, granite niro, granite glaze', 'NF001.jpg', 8897),
-(11, 'ZT001', 'ZEHN TANGGA ALUMINIUM YKF-403 ( 3 X 4 STEP )', '1', 1161000, '20cm x 30cm x 30cm', '19cm x 20cm x 20cm', '20kg', 'SET', 'Zehn Tangga Aluminium 403 adalah jenis tangga yang bisa dilipat empat, dengan total panjang 3,70 m. Tangga ini bisa disetel/adjust (multipurpose)', 'ZT001.jpg', 937),
+(10, 'NF001', 'NIRO FLEUR GFL03 MARIGOLD PGVT', '0', 381694, '80cm x 80cm x 80cm', '19cm x 19cm x 19cm', '8kg', 'BOX', 'Granite Niro Exclusive Design Only at Mitra10. Granite lantai Glazed Polsihed Digital ukuran 80x80 glossy surface memberikan nuansa mewah untuk ruangan anda\r\n\r\n\r\nFungsi: granite porcelain, porcelain tiles, granite lantai, granite polished, granite 80x80, granite digital, granite niro, granite glaze\r\n\r\nGranite Niro Exclusive Design Only at Mitra10. Granite lantai Glazed Polsihed Digital ukuran 80x80 glossy surface memberikan nuansa mewah untuk ruangan anda\r\n\r\n\r\nFungsi: granite porcelain, porcelain tiles, granite lantai, granite polished, granite 80x80, granite digital, granite niro, granite glaze', 'NF001.jpg', 5000),
+(11, 'ZT001', 'ZEHN TANGGA ALUMINIUM YKF-403 ( 3 X 4 STEP )', '1', 1161000, '20cm x 30cm x 30cm', '19cm x 20cm x 20cm', '20kg', 'SET', 'Zehn Tangga Aluminium 403 adalah jenis tangga yang bisa dilipat empat, dengan total panjang 3,70 m. Tangga ini bisa disetel/adjust (multipurpose)', 'ZT001.jpg', 933),
 (13, 'PP001', 'POLYTRON PRM 28 QS/QB MIRROR 2D REFRIGERATOR', '0', 4099000, '75cm x 75cm x 75cm', '45cm x 45cm x 45', '20kg', 'SET', 'Polytron Belleza 3 hadir dengan mengusung “Zen Design” yang memberikan keseimbangan antara penyempurnaan tampilan dalam (interior) dan tampilan luar (eksterior) dengan menampilkan sentuhan borderless.', 'PP001.jpg', 745),
-(14, 'EE001', 'ELECTROLUX ETS 3505 POP UP TOASTER', '0', 489000, '43cm x 43cm x 42cm', '34cm x 34cm x 34cm', '25kg', 'UNIT', 'ELECTROLUX ETS 3505 POP UP TOASTER\r\n\r\nMemanggang roti dengan kematangan yang sempurna. Membuat sarapan Anda tersaji dengan lebih baik dan lebih cepat.', 'EE001.jpg', 492),
+(14, 'EE001', 'ELECTROLUX ETS 3505 POP UP TOASTER', '0', 489000, '43cm x 43cm x 42cm', '34cm x 34cm x 34cm', '25kg', 'UNIT', 'ELECTROLUX ETS 3505 POP UP TOASTER\r\n\r\nMemanggang roti dengan kematangan yang sempurna. Membuat sarapan Anda tersaji dengan lebih baik dan lebih cepat.', 'EE001.jpg', 488),
 (16, 'PM001', 'PANASONIC MC-CG300X546 VACUUM CLEANER', '0', 1169000, '35cm x 35cm x 35cm', '40cm x 40cm x 40cm', '45kg', 'SET', 'Panasonic MC-CG300X546 merupakan vacuum cleaner yang dapat membersihkan ruangan dari debu, bakteri, jamur, tungau dan allergen lainnya. Dengan Panasonic MC-CG300X546 Anda dapat membersihkan rumah dengan mudah tanpa membutuhkan tenaga ekstra dan menyita banyak waktu Anda.', 'PM001.jpg', 644);
 
 --
@@ -412,14 +435,6 @@ CREATE TABLE `review_produk` (
   `BINTANG_REVIEW` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `review_produk`
---
-
-INSERT INTO `review_produk` (`ROW_ID_REVIEW`, `ROW_ID_CUSTOMER`, `ROW_ID_HTRANS`, `ROW_ID_PRODUK`, `WAKTU_REVIEW`, `KONTEN_REVIEW`, `BINTANG_REVIEW`) VALUES
-(1, 1, 13, 13, '2020-04-24 18:51:56', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ligula lectus, condimentum ut auctor id, vestibulum eget elit. Proin pretium eleifend odio, in interdum sem. Suspendisse bibendum libero sem, ac dignissim lectus sollicitudin ut. Aenean libero lacus, rutrum quis finibus eu, tempus id nunc. Aliquam fringilla neque quam. Donec ornare felis mauris, quis ultricies ex venenatis quis. Etiam rutrum, augue quis interdum interdum, libero tortor mollis nunc, non tempus mauris velit nec dolor. Donec blandit posuere egestas. Donec mauris tortor, tempus nec dictum quis, pellentesque semper orci. Vivamus ac odio consectetur, elementum libero ut, dignissim augue. Nam elementum, risus sed ultricies vestibulum, nunc velit tempor lectus, a aliquam nunc nisl ac elit. Aenean varius dictum nisl a pulvinar. Aliquam iaculis viverra porttitor. Maecenas at arcu id elit vulputate maximus in eget metus.\r\n\r\nDonec at pellentesque erat. In hac habitasse platea dictumst. Donec fermentum libero ex, id cursus sem hendrerit ac. Duis eget leo lectus. Pellentesque malesuada odio mi, interdum commodo augue mattis nec. Donec at malesuada diam, ut suscipit sem. Maecenas viverra lorem nibh, id feugiat nibh varius et. Curabitur at risus ac mi faucibus lacinia sed finibus justo. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam et hendrerit quam. Phasellus vitae felis sit amet turpis efficitur dapibus sed vel libero. Duis at auctor nisi. In sit amet cursus eros. Proin fringilla, erat pretium lobortis ullamcorper, ligula metus dictum velit, a consequat turpis erat eu dolor. Donec posuere mattis neque sed ultricies.\r\n\r\nCras a pulvinar quam, congue dictum sapien. Nulla cursus mi augue, vel lacinia quam ornare blandit. Etiam bibendum eros nisl, in efficitur neque mollis sit amet. Vivamus vitae enim eget odio ultricies viverra. Fusce vel ex quis tortor consectetur fringilla. In non nibh orci. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam imperdiet sed lacus at rutrum. Mauris sit amet nisl a est scelerisque consectetur eu quis enim. Sed fermentum luctus velit et scelerisque.\r\n\r\nCras est elit, bibendum eu libero ut, tempus laoreet velit. Fusce id egestas eros. Etiam nec tellus sit amet tortor placerat hendrerit. Quisque id massa at lectus dapibus mattis. Maecenas sem nibh, tempus sit amet dictum eu, molestie congue odio. Duis finibus, libero non facilisis dapibus, ante justo lobortis risus, non rhoncus diam leo a mauris. Sed congue tellus vitae eleifend semper. Integer rutrum porttitor neque et interdum. Phasellus ornare ac erat id ultrices. Pellentesque et libero aliquet, tempor orci et, eleifend tellus. Vestibulum scelerisque, nunc in posuere iaculis, arcu enim tempus tellus, nec tincidunt turpis lacus et turpis. Ut ultricies scelerisque condimentum.\r\n\r\nSed sed lectus pulvinar urna facilisis porta. Vivamus porta urna nisi. Etiam tristique sapien non magna aliquam, in consectetur dui dapibus. Sed maximus ornare nisi, sed auctor augue faucibus eget. Pellentesque nec blandit purus, in laoreet nunc. Phasellus a purus ut eros pulvinar molestie nec eu nisi. Duis interdum sagittis metus, quis rutrum ante pretium at. Vestibulum ut iaculis ipsum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus a velit purus. Aliquam erat volutpat. Aenean id dignissim velit. Nam consectetur elit eu velit porttitor tristique.', 3),
-(2, 1, 11, 11, '2020-04-24 18:52:31', 'tangga e uapik tenan gilak!', 5);
-
 -- --------------------------------------------------------
 
 --
@@ -452,6 +467,8 @@ CREATE TABLE `wishlist` (
 
 INSERT INTO `wishlist` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`) VALUES
 (1, 5),
+(1, 6),
+(1, 10),
 (6, 5),
 (6, 6),
 (7, 7),
@@ -487,7 +504,8 @@ ALTER TABLE `customer`
 -- Indexes for table `dtrans`
 --
 ALTER TABLE `dtrans`
-  ADD PRIMARY KEY (`ROW_ID_HTRANS`,`ROW_ID_PRODUK`);
+  ADD PRIMARY KEY (`ROW_ID_HTRANS`,`ROW_ID_PRODUK`),
+  ADD KEY `FK_DTRANS_PRODUK` (`ROW_ID_PRODUK`);
 
 --
 -- Indexes for table `htrans`
@@ -500,13 +518,16 @@ ALTER TABLE `htrans`
 -- Indexes for table `kategori`
 --
 ALTER TABLE `kategori`
-  ADD PRIMARY KEY (`ROW_ID_KATEGORI`);
+  ADD PRIMARY KEY (`ROW_ID_KATEGORI`),
+  ADD UNIQUE KEY `ID_KATEGORI` (`ID_KATEGORI`);
 
 --
 -- Indexes for table `kategori_produk`
 --
 ALTER TABLE `kategori_produk`
-  ADD PRIMARY KEY (`ROW_ID_PRODUK`,`ROW_ID_KATEGORI_PARENT`,`ROW_ID_KATEGORI_CHILD`);
+  ADD PRIMARY KEY (`ROW_ID_PRODUK`,`ROW_ID_KATEGORI_PARENT`,`ROW_ID_KATEGORI_CHILD`),
+  ADD KEY `FK_KATEGORI_PRODUK_ROW_KAT_PARENT` (`ROW_ID_KATEGORI_PARENT`),
+  ADD KEY `FK_KATEGORI_PRODUK_ROW_KAT_CHILD` (`ROW_ID_KATEGORI_CHILD`);
 
 --
 -- Indexes for table `produk`
@@ -518,7 +539,10 @@ ALTER TABLE `produk`
 -- Indexes for table `review_produk`
 --
 ALTER TABLE `review_produk`
-  ADD PRIMARY KEY (`ROW_ID_REVIEW`);
+  ADD PRIMARY KEY (`ROW_ID_REVIEW`),
+  ADD KEY `FK_REVIEW_CUSTOMER` (`ROW_ID_CUSTOMER`),
+  ADD KEY `FK_REVIEW_PRODUK` (`ROW_ID_PRODUK`),
+  ADD KEY `FK_REVIEW_HTRANS` (`ROW_ID_HTRANS`);
 
 --
 -- Indexes for table `verifikasi_email`
@@ -531,7 +555,8 @@ ALTER TABLE `verifikasi_email`
 -- Indexes for table `wishlist`
 --
 ALTER TABLE `wishlist`
-  ADD PRIMARY KEY (`ROW_ID_CUSTOMER`,`ROW_ID_PRODUK`);
+  ADD PRIMARY KEY (`ROW_ID_CUSTOMER`,`ROW_ID_PRODUK`),
+  ADD KEY `FK_WISHLIST_ROW_PRODUK` (`ROW_ID_PRODUK`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -547,13 +572,13 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `htrans`
 --
 ALTER TABLE `htrans`
-  MODIFY `ROW_ID_HTRANS` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `ROW_ID_HTRANS` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `kategori`
 --
 ALTER TABLE `kategori`
-  MODIFY `ROW_ID_KATEGORI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `ROW_ID_KATEGORI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `produk`
@@ -578,16 +603,53 @@ ALTER TABLE `verifikasi_email`
 --
 
 --
+-- Constraints for table `cart`
+--
+ALTER TABLE `cart`
+  ADD CONSTRAINT `FK_CART_ROW_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`),
+  ADD CONSTRAINT `FK_CART_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
+
+--
+-- Constraints for table `dtrans`
+--
+ALTER TABLE `dtrans`
+  ADD CONSTRAINT `FK_DTRANS_HTRANS` FOREIGN KEY (`ROW_ID_HTRANS`) REFERENCES `htrans` (`ROW_ID_HTRANS`),
+  ADD CONSTRAINT `FK_DTRANS_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
+
+--
 -- Constraints for table `htrans`
 --
 ALTER TABLE `htrans`
   ADD CONSTRAINT `FK_HTRANS_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`);
 
 --
+-- Constraints for table `kategori_produk`
+--
+ALTER TABLE `kategori_produk`
+  ADD CONSTRAINT `FK_KATEGORI_PRODUK_ROW_KAT_CHILD` FOREIGN KEY (`ROW_ID_KATEGORI_CHILD`) REFERENCES `kategori` (`ROW_ID_KATEGORI`),
+  ADD CONSTRAINT `FK_KATEGORI_PRODUK_ROW_KAT_PARENT` FOREIGN KEY (`ROW_ID_KATEGORI_PARENT`) REFERENCES `kategori` (`ROW_ID_KATEGORI`),
+  ADD CONSTRAINT `FK_KATEGORI_PRODUK_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
+
+--
+-- Constraints for table `review_produk`
+--
+ALTER TABLE `review_produk`
+  ADD CONSTRAINT `FK_REVIEW_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`),
+  ADD CONSTRAINT `FK_REVIEW_HTRANS` FOREIGN KEY (`ROW_ID_HTRANS`) REFERENCES `htrans` (`ROW_ID_HTRANS`),
+  ADD CONSTRAINT `FK_REVIEW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
+
+--
 -- Constraints for table `verifikasi_email`
 --
 ALTER TABLE `verifikasi_email`
   ADD CONSTRAINT `FK_VERIFIKASI_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`);
+
+--
+-- Constraints for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  ADD CONSTRAINT `FK_WISHLIST_ROW_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`),
+  ADD CONSTRAINT `FK_WISHLIST_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

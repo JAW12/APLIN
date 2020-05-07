@@ -1,6 +1,6 @@
 <?php
     include "system/load.php";
-    session_start();
+    // session_start();
 ?>
 <!doctype html>
 <html>

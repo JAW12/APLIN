@@ -20,6 +20,7 @@
     $row_id_htrans = -1;
     if (isset($_POST['row_id_htrans'])) {
         $row_id_htrans = $_POST['row_id_htrans'];
+        // showAlert($row_id_htrans);
     }
 
     if (isset($_SESSION['dataTrans'])) {
@@ -200,7 +201,7 @@
                 </h1>
             </div>
             <form action="transaction-detail.php" method="post">
-                <button class="btn btn-lg btn-light ml-5" type="submit">< Back</button>
+                <!-- <button class="btn btn-lg btn-light ml-5" type="submit">< Back</button> -->
                 <input type="hidden" name="row_id_htrans" value="$row_id_htrans">
             </form>
 
