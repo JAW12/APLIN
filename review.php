@@ -16,7 +16,7 @@
             $rowIdUserAktif = $dataCustomer['ROW_ID_CUSTOMER'];
         }
     }
-
+    $row_id_htransm = '';
     //tambahan winda
     if (isset($_GET['invoice']) && !empty($_GET['invoice'])) {
         $invnum = $_GET['invoice'];
@@ -70,6 +70,11 @@
                             <?php
                         }
                         else{
+                            $invnum = $_GET['invoice'];
+                            $query = "SELECT * FROM HTRANS WHERE NO_NOTA = {$invnum}";
+                            $headerTrans = getQueryResultRow($db, $query);
+
+                            $row_id_htrans = $headerTrans['ROW_ID_HTRANS'];
                             foreach ($detailTrans as $key => $value) {
                                 $ctrNum++;
                                 $row_id_produk = $value['ROW_ID_PRODUK'];
@@ -87,7 +92,7 @@
                                         <td class="text-center align-middle"> <?= $value['QTY_PRODUK'] ?> </td>
                                         <td class="text-right align-middle"> <?= getSeparatorNumberFormatted($value['HARGA_PRODUK']) ?></td>
                                         <td class="text-right align-middle"> <?= getSeparatorNumberFormatted($subtotal) ?> </td>
-                                        <td class="text-center align-middle"><button value="<?= $row_id_produk ?>" class="btn btn-info btnReview" type="button">Review</button></td>
+                                        <td class="text-center align-middle"><button trans="<?= $row_id_htrans ?>" value="<?= $row_id_produk ?>" class="btn btn-info btnReview" type="button">Review</button></td>
                                     </tr>
                                 <?php
                             }
@@ -135,7 +140,6 @@
             #judul{
                 padding: 0;
                 padding-top: 5%;
-
                 padding-bottom: 5%;
                 background-repeat:no-repeat;
                 background-size: cover;
@@ -177,9 +181,98 @@
             .rating:hover>input:checked~label:before {
                 opacity: 0.4
             }
+
+            .modal-confirm {		
+                color: #434e65;
+                width: 525px;
+            }
+            .modal-confirm .modal-content {
+                padding: 20px;
+                font-size: 16px;
+                border-radius: 5px;
+                border: none;
+            }
+            .modal-confirm .modal-header {
+                border-bottom: none;   
+                position: relative;
+                text-align: center;
+                margin: -20px -20px 0;
+                border-radius: 5px 5px 0 0;
+                padding: 35px;
+            }
+            .modal-confirm h4 {
+                text-align: center;
+                font-size: 36px;
+                margin: 10px 0;
+            }
+            .modal-confirm .form-control, .modal-confirm .btn {
+                min-height: 40px;
+                border-radius: 3px; 
+            }
+            .modal-confirm .close {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                color: #fff;
+                text-shadow: none;
+                opacity: 0.5;
+            }
+            .modal-confirm .close:hover {
+                opacity: 0.8;
+            }
+            .modal-confirm .icon-box {
+                color: #fff;		
+                width: 95px;
+                height: 95px;
+                display: inline-block;
+                border-radius: 50%;
+                z-index: 9;
+                border: 5px solid #fff;
+                padding: 15px;
+                margin: 0 auto;
+            }
+            .modal-confirm .icon-box i {
+                font-size: 58px;
+                margin: -2px 0 0 -2px;
+            }
+            .modal-confirm.modal-dialog {
+                margin-top: 80px;
+            }
+            .modal-confirm .btn {
+                color: #fff;
+                border-radius: 4px;
+                text-decoration: none;
+                transition: all 0.4s;
+                line-height: normal;
+                border-radius: 30px;
+                margin-top: 10px;
+                padding: 6px 20px;
+                min-width: 150px;
+                border: none;
+            }
+            .modal-confirm .btn:hover, .modal-confirm .btn:focus {
+                background: #014d92;
+                outline: none;
+            }
         </style>
     </head>
     <body id="page-top">
+        <div id="alertModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="alertModal" aria-hidden="true">
+            <div class="modal-dialog modal-confirm text-center">
+                <div class="modal-content">
+                    <div class="modal-header bg-success">
+                        <div class="icon-box">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Yey!</h4><p>Berhasil Review!</p>          
+                        <button class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Header Section -->
         <?php include("header.php"); ?>
         
@@ -230,6 +323,7 @@
             $(function(){
                 $(".btnReview").click(function(){
                     let val = $(this).val();
+                    let trans = $(this).attr("trans");
                     $.ajax({
                         method: "post",
                         url: "getProduct.php?productinfo",
@@ -246,12 +340,12 @@
                             method: "post",
                             url: "getProduct.php?reviewinfo",
                             data: {
-                                id_htrans : val,
+                                id_htrans : trans,
                                 id_produk : produk["ROW_ID_PRODUK"]
                             },
                             success: function(res){
                                 if(res == 'false'){
-                                    isi += '<input name="id_htrans" type="hidden" value=' + val + '>';
+                                    isi += '<input name="id_htrans" type="hidden" value=' + trans + '>';
                                     isi += '<input name="id_product" type="hidden" value=' + produk["ROW_ID_PRODUK"] + '>';
                                     isi += '<div class="rating"><input type="radio" name="rating" value="5" id="5"><label for="5">☆</label> <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label> <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label> <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label> <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label></div>';
                                     isi += '<div class="form-group"><label for="textArea">Comment</label><textarea class="form-control" id="textArea" rows="3" style="max-height: 250px; min-height: 100px;" name="comment"></textarea></div><div id="reviewAlert"></div>';
@@ -305,16 +399,17 @@
                     url: "reviewProduct.php",
                     data: $("#formReview").serialize(),
                     success: function(res){
-                        if(res == "Not Complete"){
+                        if(res.includes("Not Complete")){
                             $("#reviewAlert").html('<div class="alert alert-danger">Data Tidak Lengkap!</div>');
                             return true;
                         }
-                        else if(res == "Error"){
+                        else if(res.includes("Error")){
                             $("#reviewAlert").html('<div class="alert alert-danger">Error!</div>');
                             return true;
                         }
                         else{
                             $("#reviewModal").modal('hide');
+                            $("#alertModal").modal('show');
                         }
                     }
                 });

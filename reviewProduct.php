@@ -7,6 +7,7 @@
         $id_htrans = $_POST['id_htrans'];
         $rating = $_POST['rating'];
         $comment = $_POST['comment'];
+        echo $id_product . ' ' . $id_htrans . ' ' . $rating . ' ' . $comment . '<br>';
         if($comment != ''){
             $query = "INSERT INTO REVIEW_PRODUK VALUES('', '$login[row_id_customer]', '$id_htrans', '$id_product', now(), '$comment', $rating)";
             $berhasil = executeNonQuery($db, $query);

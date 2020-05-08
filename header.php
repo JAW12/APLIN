@@ -35,14 +35,19 @@
             </div>
         </form>
         <?php if (isset($_SESSION['login'])){
+                if($_SESSION['login']['role'] == 1){
             ?>
                 <a class="btn btn-dark text-warning mr-2" style="width: 50px; height: 37px;" href="cart.php" role="button"><i class="fas fa-shopping-cart"></i></a>
-                <a class="btn btn-dark text-warning mr-2" style="width: 50px; height: 37px;" href="wishlist.php" role="button"><i class="fas fa-heart"></i></a><a class="btn btn-dark text-warning mr-2" style="width: 50px; height: 37px;" href="transaction-list.php" role="button">
+                <a class="btn btn-dark text-warning mr-2" style="width: 50px; height: 37px;" href="wishlist.php" role="button"><i class="fas fa-heart"></i></a>
+                <?php
+                }
+                ?>
+                <a class="btn btn-dark text-warning mr-2" style="width: 50px; height: 37px;" href="transaction-list.php" role="button">
                     <i class="fas fa-history"></i>
                 </a>
                 <a class="btn btn-danger" style="width: 8%" href="logout.php" role="button">Log Out</a>
-            <?php
-        }
+                <?php
+            }
             else{
             ?>
                 <a class="btn btn-primary" style="width: 8%" href="login.php" role="button">Log In</a>
@@ -52,10 +57,8 @@
     </div>
 </nav>
 <script>
-$(function () {
-  $(document).scroll(function () {
-    var $nav = $(".navbar");
-    $nav.toggleClass('scrolled', $(this).scrollTop() > $nav.height());
-  });
-});
+    $(document).scroll(function () {
+        var $nav = $(".navbar");
+        $nav.toggleClass('scrolled', $(this).scrollTop() > $nav.height());
+    });
 </script>

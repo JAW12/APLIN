@@ -43,9 +43,29 @@
                 height: 400px;  /* The height is 400 pixels */
                 width: 100%;  /* The width is the width of the web page */
             }
+
+            .bd-example-modal-lg .modal-dialog{
+				display: table;
+				position: relative;
+				margin: 0 auto;
+				top: calc(50% - 24px);
+			}
+			
+			.bd-example-modal-lg .modal-dialog .modal-content{
+				background-color: transparent;
+				border: none;
+			}
         </style>
     </head>
     <body id="page-top">
+        <div id="loading" class="modal fade bd-example-modal-lg" data-BACKdrop="static" data-keyboard="false" tabindex="-1">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content" style="width: 48px">
+					<span class="fa fa-spinner fa-spin fa-3x"></span>
+				</div>
+			</div>
+        </div>
+        
         <!-- Header Section -->
         <?php include("header.php"); ?>
 
@@ -184,6 +204,7 @@
         <script>
             $(function(){
                 $("#contact-form").submit(function(e){
+                    $('#loading').modal('show');
                     e.preventDefault();
 
                     $.ajax({
@@ -205,7 +226,8 @@
                                 .prop('checked', false)
                                 .prop('selected', false);
 
-                                $("#form_need").val("Request quotation");           
+                                $("#form_need").val("Request quotation");
+                                $('#loading').modal('hide');
                         }
                     });
                 });
