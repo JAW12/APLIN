@@ -115,7 +115,7 @@ if(isset($_SESSION['login'])){
                                     <span class="input-group-text" id="basic-addon2">of <?=$stokProduk." ".strtolower("$satuanProduk")?></span>
                                 </div>
                             </div>
-                            <button type='button' class='btn btn-warning w-100 rounded my-2' name='addToWishlist' onclick=addtowish('<?=$idProduk?>') formaction='wishlist.php'>Add to Wishlist</button>; 
+                            <button type='button' class='btn btn-warning w-100 rounded my-2' name='addToWishlist' onclick=addtowish('<?=$idProduk?>') formaction='wishlist.php'>Add to Wishlist</button>
                             <button type="submit" class="btn btn-success" name="btnBeli"> <i class="fas fa-shopping-cart"></i>
                             &nbsp;&nbsp;&nbsp;Buy Now</button>
                         </form>
@@ -185,7 +185,7 @@ if(isset($_SESSION['login'])){
                 </div>
         </div>
         <div class="container">
-        <h3 class="display-5">Similar Product :</h3>
+        <h3 class="display-5 mt-3">Similar Product :</h3>
             <?php
                 $query = "SELECT * FROM KATEGORI_PRODUK WHERE ROW_ID_PRODUK = $idProduk";
                 $kategoriProduk = getQueryResultRowArrays($db, $query);

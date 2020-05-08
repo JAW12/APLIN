@@ -19,9 +19,12 @@
 
     //--- function ----
     function getListProduk($db){
-        $tmp = array();
+        $tmpFilterCategory = array();
+        $conditionCatParent = "";
+        $conditionCatChildren = "";
+
         $query = "SELECT * FROM PRODUK P, KATEGORI_PRODUK KP";
-        $condition = " P.STATUS_AKTIF_PRODUK = 1 AND P.ROW_ID_PRODUK = KP.ROW_ID_PRODUK";
+        $condition = " P.STATUS_AKTIF_PRODUK = 1 AND P.ROW_ID_PRODUK = KP.ROW_ID_PRODUK ";
         if (isset($_POST['q']) && !empty($_POST['q'])) {
             if ($condition != "") {
                 $condition = $condition . " AND ";
@@ -50,53 +53,79 @@
         }
 
         if (isset($_POST['category_parent']) || isset($_POST['category_child'])) {
-            $selectedParent = $_POST['category_parent'];
-            $selectedChildren = $_POST['category_child'];
-            // $parent_str = ""; $children_str = "";
-            
-            // if (is_array($selectedParent) && count($selectedParent) > 0) {
-            //     // $parent_str = implode(',', array_fill(0, count($selectedParent), '?'));
-            //     $tmp[] = $selectedParent;
-            // }
-            // if (is_array($selectedChildren) && count($selectedChildren) > 0) {
-            //     // $children_str = implode(',', array_fill(0, count($selectedChildren), '?'));
-            //     $tmp[] = $selectedChildren;
-            // }
+            $selectedParent = array(); $selectedChildren = array();
+            if (isset($_POST['category_parent'])) {
+                $selectedParent = $_POST['category_parent'];
+            }
+            if (isset($_POST['category_child'])) {
+                $selectedChildren = $_POST['category_child'];
+            }
 
-            // if (count($tmp) > 0) {
-            //     $questionmarks = implode(',',str_split(str_repeat('?',count($tmp))));
-            //     if ($condition != "") {
-            //         $condition .= " KP.ROW_ID_PRODUK IN ($questionmarks)";
-            //     }
-            // }
+            if (is_array($selectedParent) && count($selectedParent) > 0) {
+                foreach ($selectedParent as $key => $value) {
+                    $tmpFilterCategory[] = $value;
+                }
+            }
+            if (is_array($selectedChildren) && count($selectedChildren) > 0) {
+                foreach ($selectedChildren as $key => $value) {
+                    $tmpFilterCategory[] = $value;
+                }
+            }
+
+            if (count($tmpFilterCategory) > 0) {
+                $inQuery  = str_repeat('?,', count($tmpFilterCategory) - 1) . '?';
+                if ($condition != "") {
+                    $conditionCatParent .= " AND ";
+                    $conditionCatChildren .= " AND ";
+                }
+                $conditionCatParent .= " KP.ROW_ID_KATEGORI_PARENT IN ($inQuery)";
+                $conditionCatChildren .= " KP.ROW_ID_KATEGORI_CHILD IN ($inQuery)";
+            }
         }
 
         if ($condition != "") {
             $query .= " WHERE ";
         }
 
-        $query .= $condition;
-        echo $query;
+        $queryParent = $query . $condition . $conditionCatParent; 
+        $queryChildren = $query . $condition . $conditionCatChildren;
+
+        // echo $queryParent . "<br/>";
+        // echo $queryChildren . "<br/>";
+        // echo count($tmpFilterCategory);
 
         $listProduk = array();
-        $listProduk = getQueryResultRowArrays($db, $query);
-        return $listProduk;
-        // try {
-        //      /** @var PDO $db Prepared Statement */
-        //     $stmt = $db->prepare($query);
-        //     if (count($tmp) > 0) {
-        //         $stmt = $db->prepare($query);
-        //         $listProduk = $stmt->fetchAll(PDO::FETCH_ASSOC);;
-        //     }
-        //     else{
-        //         $stmt = $db->prepare($query);
-        //         $listProduk = $stmt->fetchAll(PDO::FETCH_ASSOC);;
-        //     }
-        //     return $listProduk;
+        try {
+             /** @var PDO $db Prepared Statement */
+            if (count($tmpFilterCategory) > 0) {
+                //get result filter category parent
+                if ($conditionCatParent != "") {
+                    $stmt = $db->prepare($queryParent);
+                    $stmt->execute($tmpFilterCategory);
+                    $resCatParent = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                }
+                
+                if ($conditionCatChildren != "") {
+                    //get result filter category children                            
+                    $stmt = $db->prepare($queryChildren);
+                    $stmt->execute($tmpFilterCategory);
+                    $resCatChildren = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                }
 
-        // } catch (Exception $e) {
-        //     echo $e->getMessage(); //tanda panah pada php = tanda titik pada java/C#/dll
-        // }
+                $listProduk = array_unique(array_merge($resCatParent,$resCatChildren), SORT_REGULAR);
+            }
+            else{
+                $query .= $condition;
+                $stmt = $db->prepare($query);
+                $stmt->execute();
+                $listProduk = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            return $listProduk;
+
+        } catch (Exception $e) {
+            echo $e->getMessage(); //tanda panah pada php = tanda titik pada java/C#/dll
+            return false;
+        }
     }
 
     function showCardProduk($db, $jenisUser, $listProduk){

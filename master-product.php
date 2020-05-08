@@ -77,7 +77,7 @@ if (isset($login) && is_array($login)) {
             if ($status != false) {
                 // echo "file berhasil diupload";
         
-                //insert ke db
+                //update ke db
                 $query = "UPDATE PRODUK SET LOKASI_FOTO_PRODUK = :lokasi WHERE ROW_ID_PRODUK = :id";
                 $stmt = $db->prepare($query);
                 $stmt->bindValue(":lokasi", $namaCustomFileUpload);
