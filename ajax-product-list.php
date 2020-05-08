@@ -104,9 +104,9 @@
                     $stmt->execute($tmpFilterCategory);
                     $resCatParent = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 }
-                
-                if ($conditionCatChildren != "") {
-                    //get result filter category children                            
+
+                //get result filter category children 
+                if ($conditionCatChildren != "") {                                               
                     $stmt = $db->prepare($queryChildren);
                     $stmt->execute($tmpFilterCategory);
                     $resCatChildren = $stmt->fetchAll(PDO::FETCH_ASSOC);
