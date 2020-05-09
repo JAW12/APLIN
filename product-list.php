@@ -179,7 +179,7 @@
                                         <p class="text-sm-left mx-2 my-2">Availability</p>
                                         <div class="form-inline mx-2 w-100">
                                             <input class="form-check-input form-control-sm ml-1" type="checkbox" id="cbAvailableProduct" value="true" name="availableProduct" <?= $checkedStatus ?>>
-                                            <label class="form-check-label col-form-label-sm text-break" for="cbAvailableProduct">Available Products</label>
+                                            <label class="form-check-label text-break" for="cbAvailableProduct">Available Products</label>
                                         </div>
 
                                         <p class="text-sm-left mx-2 my-2 mt-3">Product Name</p>
@@ -265,7 +265,7 @@
                 cbCategories.each(function(){
                     this.checked = false;
                 });
-                
+
             }
 
 

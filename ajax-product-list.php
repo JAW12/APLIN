@@ -98,10 +98,6 @@
         $queryParent = $query . $condition . $conditionCatParent; 
         $queryChildren = $query . $condition . $conditionCatChildren;
 
-        // echo $queryParent . "<br/>";
-        // echo $queryChildren . "<br/>";
-        // echo count($tmpFilterCategory);
-
         $listProduk = array();
         try {
              /** @var PDO $db Prepared Statement */
@@ -143,7 +139,7 @@
         else{
             ?>
             <div class="container-fluid px-1 pl-1">
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 card-deck">
+                <div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 row-cols-xl-4 card-deck">
                     <?php
                     foreach ($listProduk as $key => $value) {
                         $lokasiFotoProduk = "res/img/produk/".$value['LOKASI_FOTO_PRODUK'];
