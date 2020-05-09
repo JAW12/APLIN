@@ -265,9 +265,7 @@
                 cbCategories.each(function(){
                     this.checked = false;
                 });
-
             }
-
 
             function resetFilter(){
                 $("#formFilter input").val("");
@@ -295,11 +293,6 @@
                     $(icon).removeClass("fa-angle-up");
                     $(icon).addClass("fa-angle-down");
                 }
-            })
-
-            $("#formFilter input[type='checkbox']").click(function(){
-            
-                // alert("hai");
             })
 
             $("#btnReset").click(function(){

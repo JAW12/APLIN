@@ -246,7 +246,13 @@
                         scales: {
                             yAxes: [{
                                 ticks: {
-                                    beginAtZero: true
+                                    beginAtZero: true,
+                                    fontSize: 14
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                fontSize: 14
                                 }
                             }]
                         }
