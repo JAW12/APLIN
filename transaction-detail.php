@@ -96,10 +96,10 @@
                         $status_set =  getStatusString(intval($headerTrans['STATUS_PEMBAYARAN']));
                         $cl = $status_set['warna'];
                         $val = $status_set['value'];
-                    ?>
+                    ?>                   
                     <div class="col text-right h4 <?= $cl ?>">
                         <?= $val ?>
-                    </div>
+                    </div>                    
                 </div>
                 <div class="row">
                     <div class="col-2">
@@ -172,7 +172,19 @@
                                         View Invoice
                                     </a>
                                 </form>
-                            <?php
+                            <?php                            
+                            }
+                            else if ($statusTrans == 0) {
+                                ?>
+                                    <form class="form-inline float-right mt-1">
+                                        <button type="submit" class="btn btn-success rounded mx-2 btnAccept" name="acceptOrder" row_id='<?= $headerTrans['ROW_ID_HTRANS'] ?>'>
+                                            <i class="fas fa-check" aria-hidden="true"></i> &nbsp; Accept
+                                        </button>
+                                        <button type="submit" class="btn btn-danger rounded mx-2 btnReject" name="rejectOrder" row_id='<?= $headerTrans['ROW_ID_HTRANS'] ?>'>
+                                            <i class="fas fa-times" aria-hidden="true"></i> &nbsp; Reject
+                                        </button>
+                                    </form>
+                                <?php
                             }
                         ?>            
                 </div>
@@ -341,6 +353,32 @@
                     }
                 });
             }
+
+            function changeStatusTrans(new_status, row_id){
+                $.ajax({
+                    method : "POST",
+                    url : "ajax-transaction-list.php",
+                    data : {
+                        changeStatus : new_status,
+                        row_id_htrans : row_id
+                    }, 
+                    success : function(res){
+                        $("#containerAlert").html(res);
+                    } 
+                });
+            }
+
+            $(document).on("click", ".btnAccept", function(e){
+                changeStatusTrans("accept", $(this).attr("row_id"));
+                window.location.reload();
+                return false;
+            });
+
+            $(document).on("click", ".btnReject", function(e){
+                changeStatusTrans("reject", $(this).attr("row_id"));
+                window.location.reload();
+                return false;
+            });
 
             $(document).ready(function(){
                 setInterval(() => {

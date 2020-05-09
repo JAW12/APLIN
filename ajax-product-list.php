@@ -18,13 +18,21 @@
     }
 
     //--- function ----
-    function getListProduk($db){
+    function getListProduk($db, $jenisUser){
         $tmpFilterCategory = array();
+        $condition = "";
         $conditionCatParent = "";
         $conditionCatChildren = "";
 
         $query = "SELECT * FROM PRODUK P, KATEGORI_PRODUK KP";
-        $condition = " P.STATUS_AKTIF_PRODUK = 1 AND P.ROW_ID_PRODUK = KP.ROW_ID_PRODUK ";
+        //kalo customer maka hanya munculkan produk yg aktif. kalo admin munculin semua
+        if ($jenisUser == "customer") {
+            $condition .= " P.STATUS_AKTIF_PRODUK = 1 ";
+        }
+        if ($condition != "") {
+            $condition .= " AND ";
+        }
+        $condition .= " P.ROW_ID_PRODUK = KP.ROW_ID_PRODUK ";
         if (isset($_POST['q']) && !empty($_POST['q'])) {
             if ($condition != "") {
                 $condition = $condition . " AND ";
@@ -49,7 +57,7 @@
             if ($condition != "") {
                 $condition = $condition . " AND ";
             } 
-            $condition = $condition . " P.STOK_PRODUK > 0 ";
+            $condition = $condition . " P.STOK_PRODUK > 0 AND P.STATUS_AKTIF_PRODUK = 1";
         }
 
         if (isset($_POST['category_parent']) || isset($_POST['category_child'])) {
@@ -145,6 +153,14 @@
                             $text = "Out of Stock";
                             $cl = "grayscale";
                         }
+
+                        if(intval($value['STATUS_AKTIF_PRODUK']) == 0){
+                            if ($text != "&nbsp;") {
+                                $text .= " - ";
+                            }
+                            $text .= "Inactive";
+                            $cl = "grayscale";
+                        }
                         ?>
                             <form method="POST">                            
                                 <div class="card border-0 hover-shadow my-4 p-3" style="width: 18rem;box-sizing: border-box">
@@ -185,7 +201,7 @@
     }
     
     if (isset($_POST['viewProduct'])) {
-        $listProduk = getListProduk($db);
+        $listProduk = getListProduk($db, $jenisUser);
         showCardProduk($db, $jenisUser, $listProduk);
     }
 

@@ -18,7 +18,10 @@
          
         <!-- CSS Sendiri -->
         <link href="style/index.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/datepicker.css">
+
+        <!-- CHART.JS LIBRARY -->
+        <link rel="stylesheet" type="text/css" href="vendor/chart/dist/Chart.css">
+        <link rel="stylesheet" type="text/css" href="vendor/chart/dist/Chart.min.css">
 
         <style>
             /* .footer {
@@ -34,6 +37,13 @@
                 padding-bottom: 5%;
                 background-repeat:no-repeat;
                 background-size: cover;
+            }
+
+            .height-setting{
+                width: 800px;
+                max-height: 600px !important;
+                height : auto;
+                margin: auto;
             }
         </style>
 
@@ -53,38 +63,91 @@
                 </h1>
             </div>
 
-            <!-- filter -->
-            <div class="container-fluid mt-2 mb-4">
-                <div class="container-fluid my-4 d-flex justify-content-around">
-                    <form method="GET" class="form-inline" id="formFilter">
-                        <input type="hidden" name="view">
-                        <input type="number" class="form-control mx-2" placeholder="Invoice Number" name="q">
-                        <input type="number" class="form-control mx-2" placeholder="Minimum Total" name="min">
-                        <input type="number" class="form-control mx-2" placeholder="Maximum Total" name="max">
-                        <select class="form-control" name="status" id="status">
-                            <option value="3">All</option>
-                            <option value="0">Pending</option>
-                            <option value="1">Accepted</option>
-                            <option value="2">Rejected</option>
-                        </select>
-                        <input type="text" onfocus="this.type='date'" onfocusout="this.type='text'" placeholder="Start Date" class="form-control mx-2" name="start">
-                        <div class="font-weight-bold font-italic py-1">Until</div>
-                        <input type="text" onfocus="this.type='date'" onfocusout="this.type='text'" placeholder="End Date" class="form-control mx-2" name="end">
+            <div class="row d-flex justify-content-around">
+                <!-- filter -->
+                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-2 pr-2">   
+                    <div class="container-fluid w-100 ml-5">
+                        <div class="container my-4 d-flex justify-content-around flex-wrap">
+                            <form method="GET" class="form-inline" id="formFilter">
+                                <input type="hidden" name="view" id="inputMode">
+                                <?php
+                                    $class_hr = "border border-dark w-100 float-left mb-2";
+                                ?>                                
+                                <div class="my-2 align-middle w-100">
+                                    <div class="form-inline">
+                                        <button type="button" class="btn btn-light rounded-circle mr-2 btn-angle">
+                                            <i class="fas fa-angle-up"></i>
+                                        </button>
+                                        <span class="font-weight-bold font-italic">Viewing Mode</span>
+                                    </div>
+                                    
+                                    <div class="container-filter w-100 text-left">
+                                        <select class="form-control w-100 my-2" name="cbViewMode" id="cbViewMode">
+                                            <option value="table">Table</option>
+                                            <option value="graphics">Graphics</option>
+                                        </select>
+                                    </div>                                    
+                                </div>
+                                <hr class="<?= $class_hr ?>">
+                                <div class="my-2 align-middle w-100">
+                                    <div class="form-inline">
+                                        <button type="button" class="btn btn-light rounded-circle mr-2 btn-angle">
+                                            <i class="fas fa-angle-up"></i>
+                                        </button>
+                                        <span class="font-weight-bold font-italic">Transaction Info</span>
+                                    </div>
+                                    
+                                    <div class="container-filter w-100 text-left">
+                                        <p class="text-sm-left mx-2 my-2">Invoice Number</p>
+                                        <input type="number" class="form-control form-control-sm mx-2 w-75" placeholder="Invoice Number" name="q">
+                                        <p class="text-sm-left mx-2 my-2 mt-3">Status</p>
+                                        <select class="form-control form-control-sm mx-2 w-75" name="status" id="status">
+                                            <option value="3">All</option>
+                                            <option value="0">Pending</option>
+                                            <option value="1">Accepted</option>
+                                            <option value="2">Rejected</option>
+                                        </select>
+                                    </div>                                    
+                                </div>
+                                <hr class="<?= $class_hr ?>">
+                                <div class="my-2 align-middle" style="width: 100%">
+                                    <div class="form-inline">
+                                        <button type="button" class="btn btn-light rounded-circle mr-2 btn-angle">
+                                            <i class="fas fa-angle-up"></i>
+                                        </button>
+                                        <span class="font-weight-bold font-italic">Transaction Range</span>
+                                    </div>
+                                    
+                                    <div class="container-filter w-100">
+                                        <p class="text-sm-left mx-2 my-2">Total Amount Range</p>
+                                        <input type="number" class="form-control form-control-sm mx-2 my-2 w-75" placeholder="Minimum Total" name="min">
+                                        <input type="number" class="form-control form-control-sm mx-2 my-2 w-75" placeholder="Maximum Total" name="max">
 
-                        <button type="submit" class="btn btn-info mx-3">Show</button>
-                        <!-- <a class="btn btn-info mr-3" href="transaction-list.php">Reset Filter</a> -->
-                        <button type="button" class="btn btn-info mr-3" id="btnReset">Reset Filter</button>
-                    </form>    
+                                        <p class="text-sm-left mx-2 my-2 mt-3">Date Range</p>
+                                        <input type="text" onfocus="this.type='date'" onfocusout="this.type='text'" placeholder="Start Date" class="form-control form-control-sm mx-2 my-2 w-75" name="start">
+                                        <input type="text" onfocus="this.type='date'" onfocusout="this.type='text'" placeholder="End Date" class="form-control form-control-sm mx-2 my-2 w-75" name="end">
+                                    </div>                                    
+                                </div>
+                                <hr class="<?= $class_hr ?>">
+                                <div class="my-1 w-100">
+                                    <!-- <button type="submit" class="btn btn-info w-100 mx-2 my-2" id="btnShow">Show</button> -->
+                                    <button type="button" class="btn btn-info w-100 my-2" id="btnReset">Reset Filter</button>
+                                </div>
+                            </form>    
+                        </div>
+                    </div>
+                </div>
+                <!-- content transaction list -->
+                <div class="col">
+                    <div class="container-fluid" id="containerAlert">
+
+                    </div>
+                    <div class="container-fluid" id="containerDataTrans">
+                        
+                    </div>
                 </div>
             </div>
 
-            <!-- content -->
-            <div class="container my-2" id="containerAlert">
-
-            </div>
-            <div class="container my-4" id="containerDataTrans">
-               
-            </div>
         </main>
 
         <!-- Footer Section -->
@@ -96,12 +159,19 @@
         <script src="js/jQueryUI.js"></script>
         <script type="text/javascript" src="js/datatables.js"></script>
         <script src="script/index.js"></script>
+
+        <!-- CHART.JS LIBRARY -->
+        <script src="vendor/chart/dist/Chart.js"></script>
+        <script src="vendor/chart/dist/Chart.min.js"></script>
+
+        <!-- JS SENDIRI -->
         <script>
             function setValueStatus(value){
                 $("#status").val(value);
             }
 
-            function loadTableMode(mode){
+            function loadTableMode(){
+                $("#inputMode").val("table");
                 $.ajax({
                     method : "GET",
                     url : "ajax-transaction-list.php",
@@ -117,12 +187,89 @@
                 setValueStatus(3);
             }
 
+            // START OF CHART 
+            function getArrayValueByChildIndex(idxArray, array){
+                let returnArray = [];
+                for (let i = 0; i < array.length; i++) {
+                    let eachTrans = array[i];
+                    returnArray.push(eachTrans[idxArray]);
+                }
+                return returnArray;
+            }
+
+            function setUpChartContainer(){
+                //setting up chart container
+                let htmlCanvas = `
+                    <div class="container col-sm-12 col height-setting" style="position:relative;">                    
+                        <canvas id="myChart" width="400" height="400"></canvas>
+                    </div>
+                `;
+                $("#containerDataTrans").html(htmlCanvas);
+            }
+
+            function buildGraphics(dataValue, dataLabels){
+                //building chart
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dataLabels,
+                        datasets: [{
+                            label: 'Transaction Total',
+                            data: dataValue,
+                            backgroundColor: [
+                                'rgba(153, 102, 255, 0.2)',
+                            ],
+                            borderColor: [
+                                'rgba(153, 102, 255, 1)',
+                            ],
+                            borderWidth: 2,
+                            responsive: true,
+                            aspectRation: 1,
+                            maintainAspectRatio: true //set false kalo mau height-nya bisa diatur
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+
+                //setting up chart size
+                // chart.height = 800;
+            }
+
             function loadGraphicsMode(){
+                $("#inputMode").val("graphics");
+                $.ajax({
+                    method : "GET",
+                    url : "ajax-transaction-list.php",
+                    data : $("#formFilter").serialize(),
+                    success : function(dataJSON){
+                        let dataArray = JSON.parse(dataJSON);
+                        let dataTanggal = getArrayValueByChildIndex("TANGGAL_TRANS", dataArray);
+                        let dataTotal = getArrayValueByChildIndex("TOTAL_TRANS", dataArray);
+
+                        setUpChartContainer();
+                        buildGraphics(dataTotal, dataTanggal);
+                    }
+                });
                 
             }
 
+            // END OF CHART
+
             function loadDataTrans(){
-                let mode = "table";
+                //reset isi data trans
+                $("#containerDataTrans").html("");
+
+                //ubah isi data trans sesuai dgn view mode
+                let mode = $("#cbViewMode").val();
                 if (mode == "table") {
                     loadTableMode();
                 }
@@ -150,6 +297,26 @@
                 loadDataTrans();
             })
 
+            $("#formFilter .btn-angle").click(function(){
+                let containerFields = $(this).parent().siblings(".container-filter");
+                let icon = $(this).children();
+
+                //slide toggle fields
+                $(containerFields).slideToggle(200, "linear");
+
+                //ubah icon
+                console.log(icon);
+                if ($(icon).hasClass("fa-angle-down")) {
+                    $(icon).removeClass("fa-angle-down");
+                    $(icon).addClass("fa-angle-up");
+                }
+                else if ($(icon).hasClass("fa-angle-up")) {
+                    $(icon).removeClass("fa-angle-up");
+                    $(icon).addClass("fa-angle-down");
+                }
+                return false;
+            })
+
             $("#formFilter").submit(function(e){
                 e.preventDefault();
                 loadDataTrans();
@@ -159,6 +326,10 @@
                 resetFilter();
                 loadDataTrans();
             });
+
+            $("#cbViewMode").change(function(){
+                loadDataTrans();
+            })
 
             $(document).on("click", ".btnAccept", function(e){
                 changeStatusTrans("accept", $(this).attr("row_id"));

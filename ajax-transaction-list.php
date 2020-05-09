@@ -113,7 +113,7 @@
     function showOverviewTransaction($dataHTrans, $jenisUser){
         ?>
             <!-- <div class="h1 text-center">Transaction List</div> -->
-            <div class="container-fluid mb-2 mt-4">
+            <div class="container mb-2 mt-4">
                 <div class="h3 text-right text-success mt-5 mb-2">
                     <?php
                         $pesan = "Total income : ";
@@ -143,7 +143,7 @@
 
     function showTransactionList($db, $jenisUser, $row_id_cust, $dataHTrans){
         ?>
-        <div class="container-fluid my-2">
+        <div class="container my-2">
             <table class="table table-hover table-striped table-bordered">
                 <thead class="thead-dark text-center">
                     <tr>
@@ -324,8 +324,13 @@
 
     if (isset($_GET['view'])) {
         $dataHTrans = getDataHtrans($db, $jenisUser, $rowIdUserAktif);
-        showOverviewTransaction($dataHTrans, $jenisUser);
-        showTransactionList($db,$jenisUser, $rowIdUserAktif, $dataHTrans); 
+        if ($_GET['view'] == "table") {            
+            showOverviewTransaction($dataHTrans, $jenisUser);
+            showTransactionList($db,$jenisUser, $rowIdUserAktif, $dataHTrans); 
+        }
+        else if ($_GET['view'] == "graphics") {
+            echo json_encode($dataHTrans);
+        }
     }
 
     if (isset($_GET['getCurrentDate'])) {
@@ -333,4 +338,5 @@
         echo $today;
     }
 
+    
 ?>
