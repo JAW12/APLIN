@@ -217,7 +217,7 @@
                     &nbsp;
                 </div>
                 `;
-                $("#spaceContainer").append(html);
+                $("#spaceContainer").html(html + html);
             }
 
             function buildGraphics(dataValue, dataLabels){
