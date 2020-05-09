@@ -253,7 +253,7 @@
                                             ?>
                                                 <td colspan="<?= $colspan ?>" class="d-flex flex-wrap justify-content-around align-middle">
                                                     <a class="btn btn-info rounded" name="viewDetail" href="transaction-detail.php?invoice='<?= $value['NO_NOTA'] ?>'">
-                                                            View Detail
+                                                        View Detail
                                                     </a>   
                                                 </td>  
                                             <?php

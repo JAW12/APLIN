@@ -148,6 +148,10 @@
                 </div>
             </div>
 
+            <div class="col-12" id="spaceContainer">
+                &nbsp;
+            </div>
+
         </main>
 
         <!-- Footer Section -->
@@ -200,11 +204,20 @@
             function setUpChartContainer(){
                 //setting up chart container
                 let htmlCanvas = `
-                    <div class="container col-sm-12 col height-setting" style="position:relative;">                    
-                        <canvas id="myChart" width="400" height="400"></canvas>
+                    <div class="container my-2 mb-4 col-sm-12 col height-setting" style="position:relative;">                    
+                        <canvas id="myChart" class="mb-5" width="400" height="400"></canvas>
                     </div>
                 `;
                 $("#containerDataTrans").html(htmlCanvas);
+            }
+
+            function generateSpaceBawah(){
+                let html = `
+                <div class="col-12 my-5">
+                    &nbsp;
+                </div>
+                `;
+                $("#spaceContainer").append(html);
             }
 
             function buildGraphics(dataValue, dataLabels){
@@ -257,6 +270,7 @@
 
                         setUpChartContainer();
                         buildGraphics(dataTotal, dataTanggal);
+                        generateSpaceBawah();
                     }
                 });
                 
