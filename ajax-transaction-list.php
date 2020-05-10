@@ -300,6 +300,26 @@
         }
     }
 
+    function get10ValueArray($array){
+        $tmp = array();
+        $ctr = 0;
+        foreach ($array as $key => $value) {
+            if ($ctr < 10) {
+                $tmp[]=$value;
+            }
+            $ctr++;
+        }
+        return $tmp;
+    }
+
+    function getProductDetail($db, $row_id_htrans){
+        $query = "SELECT D.ROW_ID_PRODUK, P.NAMA_PRODUK, D.QTY_PRODUK
+                FROM PRODUK P, DTRANS D WHERE D.ROW_ID_PRODUK = P.ROW_ID_PRODUK AND D.ROW_ID_HTRANS = {$row_id_htrans} ORDER BY D.QTY_PRODUK DESC";
+        $result = getQueryResultRow($db, $query);
+        // $returnArray = get10ValueArray($result);
+        return $result;    
+    }
+
     if (isset($_POST['changeStatus'])) {
         $newStatus = $_POST['changeStatus'];
         $row_id_htrans = $_POST['row_id_htrans'];
@@ -328,8 +348,16 @@
             showOverviewTransaction($dataHTrans, $jenisUser);
             showTransactionList($db,$jenisUser, $rowIdUserAktif, $dataHTrans); 
         }
-        else if ($_GET['view'] == "graphics") {
+        else if ($_GET['view'] == "graphicsSales") {
             echo json_encode($dataHTrans);
+        }
+        else if ($_GET['view'] == "graphicsProduct") {
+            $dataProduct = array();
+            foreach ($dataHTrans as $key => $value) {
+                $dataDTrans = getProductDetail($db, $value['ROW_ID_HTRANS']);
+                $dataProduct[] = $dataDTrans;
+            }
+            echo json_encode($dataProduct);
         }
     }
 

@@ -1,6 +1,21 @@
 <?php
     include "system/load.php";
     /** @var PDO $db Prepared Statement */
+
+    cekLogin($db, "", $login);
+
+    if (isset($login)) {
+        $jenisUser = "admin";
+        $rowIdUserAktif = -1;
+        if ($login['role'] == 1) {
+            $jenisUser = "customer";
+        }
+        
+        if ($jenisUser == "customer") {
+            $dataCustomer = getCustomerData($db, $login['username']);
+            $rowIdUserAktif = $dataCustomer['ROW_ID_CUSTOMER'];
+        }
+    }
 ?>
 
 <!doctype html>
@@ -39,10 +54,11 @@
                 background-size: cover;
             }
 
-            .height-setting{
-                width: 800px;
-                max-height: 600px !important;
+            .height-setting{                
+                max-height: 600px !important;                
+                max-width: 800px !important;
                 height : auto;
+                width: auto;
                 margin: auto;
             }
         </style>
@@ -57,6 +73,8 @@
         <main>
             <!-- kalau mau pake space ga ush dicomment -->
             <!-- <div class="spaceatas"></div> -->
+
+            <input type="hidden" id="jenisUserHolder" value="<?= $jenisUser ?>">
             <div id="judul" class="col-12 text-center my-5" style="background-image: url('res/img/bg12.jpg');">
                 <h1 class="text-light display-3 font-weight-bold">
                     Transaction List
@@ -202,13 +220,38 @@
             }
 
             function setUpChartContainer(){
-                //setting up chart container
-                let htmlCanvas = `
-                    <div class="container my-2 mb-4 col-sm-12 col height-setting" style="position:relative;">                    
-                        <canvas id="myChart" class="mb-5" width="400" height="400"></canvas>
+                //setting up chart container                
+                let htmlCanvas = `        
+                <div class="row d-flex flex-nowrap justify-content-around">
+                    <div class="col-12 mb-5">
+                        <div class="container my-2 mt-5 mb-4 col-sm-12 col d-flex flex-wrap justify-content-around height-setting" style="position:relative;"> 
+                            <div class="h3 my-3 col-12">Sales</div>                   
+                            <canvas id="chartSales" class="mb-5 mx-3" width="400" height="400"></canvas>
+                        </div>
+                    </div>                   
+                </div>
+                <div class="col-12 my-5 py-2 mx-0">
+                    &nbsp;
+                </div>
+                <div class="row d-flex flex-nowrap justify-content-around">
+                    <div class="col-12 my-5">
+                        <div class="container my-2 mt-5 mb-4 col-sm-12 col d-flex flex-wrap justify-content-around height-setting" style="position:relative;"> 
+                            <div class="h3 my-3 col-12" id="labelChartProduct">Sold Products</div>
+                            <canvas id="chartProduct" class="mb-5 mx-3" width="400" height="400"></canvas>
+                        </div>
                     </div>
+                </div>
+                    
                 `;
+
                 $("#containerDataTrans").html(htmlCanvas);
+
+                //set up isi label
+                let jenisUser = $("#jenisUserHolder").val();
+                console.log(jenisUser);
+                if (jenisUser == "customer") {
+                    $("#labelChartProduct").text("Bought Products");
+                }                
             }
 
             function generateSpaceBawah(){
@@ -217,18 +260,18 @@
                     &nbsp;
                 </div>
                 `;
-                $("#spaceContainer").html(html + html);
+                $("#spaceContainer").html(html + html + html);
             }
 
-            function buildGraphics(dataValue, dataLabels){
+            function buildGraphicsLine(dataValue, dataLabels, containerID, dsLabel){
                 //building chart
-                var ctx = document.getElementById('myChart').getContext('2d');
-                var chart = new Chart(ctx, {
+                let ctx = document.getElementById(containerID).getContext('2d');
+                let chart = new Chart(ctx, {
                     type: 'line',
                     data: {
                         labels: dataLabels,
                         datasets: [{
-                            label: 'Transaction Total',
+                            label: dsLabel,
                             data: dataValue,
                             backgroundColor: [
                                 'rgba(153, 102, 255, 0.2)',
@@ -263,8 +306,56 @@
                 // chart.height = 800;
             }
 
-            function loadGraphicsMode(){
-                $("#inputMode").val("graphics");
+            function getRepeatedArrayColors(color, ctrRepeat){
+                let arr = [];
+                for (let i = 0; i < ctrRepeat; i++) {
+                    arr.push(color);                    
+                }
+                return arr;
+            }
+
+            function buildGraphicsBar(dataValue, dataLabels, containerID, dsLabel){
+                //building chart
+                let ctx = document.getElementById(containerID).getContext('2d');
+                let chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: dataLabels,
+                        datasets: [{
+                            label: dsLabel,
+                            data: dataValue,
+                            backgroundColor: getRepeatedArrayColors('rgba(153, 102, 255, 0.2)', dataValue.length),
+                            borderColor: getRepeatedArrayColors('rgba(153, 102, 255, 1)', dataValue.length),
+                            borderWidth: 2,
+                            responsive: true,
+                            aspectRation: 1,
+                            maintainAspectRatio: true //set false kalo mau height-nya bisa diatur
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontSize: 14
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                fontSize: 14
+                                }
+                            }]
+                        }
+                    }
+                });
+
+                //setting up chart size
+                // chart.width = 800;
+            }
+
+
+            function loadChartSales(){
+                $("#inputMode").val("graphicsSales");
                 $.ajax({
                     method : "GET",
                     url : "ajax-transaction-list.php",
@@ -274,12 +365,37 @@
                         let dataTanggal = getArrayValueByChildIndex("TANGGAL_TRANS", dataArray);
                         let dataTotal = getArrayValueByChildIndex("TOTAL_TRANS", dataArray);
 
-                        setUpChartContainer();
-                        buildGraphics(dataTotal, dataTanggal);
-                        generateSpaceBawah();
+                        buildGraphicsLine(dataTotal, dataTanggal, "chartSales", "Transaction Total");
                     }
                 });
-                
+            }
+
+            function loadChartProduct(){
+                $("#inputMode").val("graphicsProduct");
+                $.ajax({
+                    method : "GET",
+                    url : "ajax-transaction-list.php",
+                    data : $("#formFilter").serialize(),
+                    success : function(dataJSON){
+                        let dataArray = JSON.parse(dataJSON);
+                        console.log(dataArray);
+                        let dataNamaProduk = getArrayValueByChildIndex("NAMA_PRODUK", dataArray);
+                        let dataQtyTerjual = getArrayValueByChildIndex("QTY_PRODUK", dataArray);
+                        
+                        buildGraphicsBar(dataQtyTerjual, dataNamaProduk, "chartProduct", "Product QTY");
+                    }
+                });
+            }
+
+            function loadGraphicsMode(){
+                try {
+                    setUpChartContainer();
+                    loadChartSales();
+                    loadChartProduct();
+                    generateSpaceBawah()
+                } catch (error) {
+                    document.write(error);
+                }
             }
 
             // END OF CHART
