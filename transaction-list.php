@@ -248,12 +248,12 @@
                 <div class="row d-flex flex-nowrap justify-content-around">
                     <div class="col-12 my-5">
                         <div class="container my-2 mt-5 mb-4 col-sm-12 col d-flex flex-wrap justify-content-around height-setting" style="position:relative;"> 
-                            <div class="h3 my-3 col-12" id="labelChartProduct">Sold Products</div>
+                            <div class="h3 my-3 col-12" id="labelChartProduct">Top 10 Sold Products</div>
+                            <div class="col-12 my-1 text-sm-left text-secondary" id="labelKeterangan">*) if there are more than 10 datas, graphics will only show top 10 sold products</div>
                             <canvas id="chartProduct" class="mb-5 mx-3" width="400" height="400"></canvas>
                         </div>
                     </div>
-                </div>
-                    
+                </div>                    
                 `;
 
                 $("#containerDataTrans").html(htmlCanvas);
@@ -263,7 +263,8 @@
                 console.log(jenisUser);
                 if (jenisUser == "customer") {
                     $("#labelChartSales").text("Your Transactions");
-                    $("#labelChartProduct").text("Bought Products");
+                    $("#labelChartProduct").text("Top 10 Bought Products");
+                    $("#labelKeterangan").text("*) if there are more than 10 datas, graphics will only show top 10 bought products");
                 }                
             }
 
@@ -392,8 +393,8 @@
                     success : function(dataJSON){
                         let dataArray = JSON.parse(dataJSON);
                         console.log(dataArray);
-                        let dataNamaProduk = getArrayValueByGrandChildIndex("NAMA_PRODUK", dataArray);
-                        let dataQtyTerjual = getArrayValueByGrandChildIndex("QTY_PRODUK", dataArray);
+                        let dataNamaProduk = getArrayValueByChildIndex("NAMA_PRODUK", dataArray);
+                        let dataQtyTerjual = getArrayValueByChildIndex("QTY_PRODUK", dataArray);
                         
                         buildGraphicsBar(dataQtyTerjual, dataNamaProduk, "chartProduct", "Product QTY");
                     }

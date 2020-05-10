@@ -312,12 +312,29 @@
         return $tmp;
     }
 
-    function getProductDetail($db, $row_id_htrans){
-        $query = "SELECT D.ROW_ID_PRODUK, P.NAMA_PRODUK, D.QTY_PRODUK
-                FROM PRODUK P, DTRANS D WHERE D.ROW_ID_PRODUK = P.ROW_ID_PRODUK AND D.ROW_ID_HTRANS = {$row_id_htrans} ORDER BY D.QTY_PRODUK DESC";
-        $result = getQueryResultRowArrays($db, $query);
-        // $returnArray = get10ValueArray($result);
-        return $result;    
+    function getArrayValueByChildIndex($idxArray, $array){
+        $returnArray = array();
+        for ($i=0; $i < count($array); $i++) { 
+            $eachChild = $array[$i];
+            $returnArray[] = $eachChild[$idxArray];
+        }
+        return $returnArray;
+    }
+    
+    function getProductDetail($db, $dataHTrans){
+        $arrayRowIdHtrans = getArrayValueByChildIndex("ROW_ID_HTRANS", $dataHTrans);
+        $inQuery  = str_repeat('?,', count($arrayRowIdHtrans) - 1) . '?';
+        $query = "SELECT D.ROW_ID_PRODUK, P.NAMA_PRODUK, SUM(D.QTY_PRODUK) AS QTY_PRODUK FROM PRODUK P, DTRANS D WHERE D.ROW_ID_PRODUK = P.ROW_ID_PRODUK AND D.ROW_ID_HTRANS IN ({$inQuery}) GROUP BY D.ROW_ID_PRODUK,P.NAMA_PRODUK ORDER BY QTY_PRODUK DESC LIMIT 10";
+        try {
+            $stmt = $db->prepare($query);
+            $stmt->execute($arrayRowIdHtrans);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $result;
+        } catch (Exception $e) {
+            echo $e->getMessage(); //tanda panah pada php = tanda titik pada java/C#/dll
+            return false;
+        }
     }
 
     if (isset($_POST['changeStatus'])) {
@@ -353,10 +370,11 @@
         }
         else if ($_GET['view'] == "graphicsProduct") {
             $dataProduct = array();
-            foreach ($dataHTrans as $key => $value) {
-                $dataDTrans = getProductDetail($db, $value['ROW_ID_HTRANS']);
-                $dataProduct[] = $dataDTrans;
-            }
+            // foreach ($dataHTrans as $key => $value) {
+            //     $dataDTrans = getProductDetail($db, $value['ROW_ID_HTRANS']);
+            //     $dataProduct[] = $dataDTrans;
+            // }
+            $dataProduct = getProductDetail($db, $dataHTrans);
             echo json_encode($dataProduct);
         }
     }
