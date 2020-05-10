@@ -410,7 +410,6 @@
                     document.write(error);
                 }
             }
-
             // END OF CHART
 
             function loadDataTrans(){
