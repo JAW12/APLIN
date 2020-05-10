@@ -379,7 +379,7 @@
                         let dataTanggal = getArrayValueByChildIndex("TANGGAL_TRANS", dataArray);
                         let dataTotal = getArrayValueByChildIndex("TOTAL_TRANS", dataArray);
 
-                        buildGraphicsLine(dataTotal, dataTanggal, "chartSales", "Transaction Total");
+                        buildGraphicsLine(dataTotal, dataTanggal, "chartSales", "Total Transactions");
                     }
                 });
             }
