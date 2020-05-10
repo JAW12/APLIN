@@ -315,7 +315,7 @@
     function getProductDetail($db, $row_id_htrans){
         $query = "SELECT D.ROW_ID_PRODUK, P.NAMA_PRODUK, D.QTY_PRODUK
                 FROM PRODUK P, DTRANS D WHERE D.ROW_ID_PRODUK = P.ROW_ID_PRODUK AND D.ROW_ID_HTRANS = {$row_id_htrans} ORDER BY D.QTY_PRODUK DESC";
-        $result = getQueryResultRow($db, $query);
+        $result = getQueryResultRowArrays($db, $query);
         // $returnArray = get10ValueArray($result);
         return $result;    
     }

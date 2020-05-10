@@ -219,6 +219,18 @@
                 return returnArray;
             }
 
+            function getArrayValueByGrandChildIndex(idxArray, array){
+                let returnArray = [];
+                for (let i = 0; i < array.length; i++) {
+                    let eachTrans = array[i];
+                    for (let j = 0; j < eachTrans.length; j++) {
+                        let val = eachTrans[j];
+                        returnArray.push(val[idxArray]);                        
+                    }
+                }
+                return returnArray;
+            }
+
             function setUpChartContainer(){
                 //setting up chart container                
                 let htmlCanvas = `        
@@ -380,8 +392,8 @@
                     success : function(dataJSON){
                         let dataArray = JSON.parse(dataJSON);
                         console.log(dataArray);
-                        let dataNamaProduk = getArrayValueByChildIndex("NAMA_PRODUK", dataArray);
-                        let dataQtyTerjual = getArrayValueByChildIndex("QTY_PRODUK", dataArray);
+                        let dataNamaProduk = getArrayValueByGrandChildIndex("NAMA_PRODUK", dataArray);
+                        let dataQtyTerjual = getArrayValueByGrandChildIndex("QTY_PRODUK", dataArray);
                         
                         buildGraphicsBar(dataQtyTerjual, dataNamaProduk, "chartProduct", "Product QTY");
                     }
