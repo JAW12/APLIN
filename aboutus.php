@@ -1,5 +1,5 @@
 <?php
-    include "system/load.php";
+    include __DIR__."/system/load.php";
 ?>
 <!doctype html>
 <html>
@@ -36,6 +36,30 @@
                 padding-bottom: 5%;
                 background-repeat:no-repeat;
                 background-size: cover;
+            }
+
+            @media only screen and (max-width: 1600px) {
+                #gambar{
+                    margin-top: 5%;
+                }
+            }
+
+            @media only screen and (max-width: 1200px) {
+                #gambar{
+                    margin-top: 7%;
+                }
+            }
+
+            @media only screen and (max-width: 800px) {
+                #gambar{
+                    margin-top: 10%;
+                }
+            }
+
+            @media only screen and (max-width: 480px) {
+                #gambar{
+                    margin-top: 15%;
+                }
             }
         </style>
     </head>

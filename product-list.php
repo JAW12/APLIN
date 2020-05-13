@@ -69,23 +69,6 @@
         }
     }
 ?>
-
-<script language='javascript'>
-    function addtowish(idproduk) {
-        $.post("addtowish.php", 
-            { idproduk: idproduk },
-            function(result) {
-                if(result=="berhasil"){
-                alert('Success adding to WishList');
-                }
-                else{
-                    alert('Item Already in WishList');
-                }
-            }
-        );
-    }
-</script>
-
 <!doctype html>
 <html>
     <head>
@@ -133,7 +116,7 @@
     </head>
     <body id="page-top">
         <!-- Header Section -->
-        <?php include ("header.php"); ?>
+        <?php include("header.php"); ?>
 
         <!-- Main Section -->
         <main>
@@ -270,6 +253,20 @@
             function resetFilter(){
                 $("#formFilter input").val("");
                 uncheckCheckbox();               
+            }
+
+            function addtowish(idproduk) {
+                $.post("addtowish.php", 
+                    { idproduk: idproduk },
+                    function(result) {
+                        if(result=="berhasil"){
+                        alert('Success adding to WishList');
+                        }
+                        else{
+                            alert('Item Already in WishList');
+                        }
+                    }
+                );
             }
 
             $("#formFilter input").change(function(){

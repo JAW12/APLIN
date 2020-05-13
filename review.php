@@ -267,7 +267,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <h4>Yey!</h4><p>Berhasil Review!</p>          
+                        <h4>Yay!</h4><p>Review Success!</p>          
                         <button class="btn btn-primary" data-dismiss="modal">Close</button>
                     </div>
                 </div>

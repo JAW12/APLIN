@@ -117,18 +117,6 @@
         $showBarang = true;
     }
 ?>
-
-<script language='javascript'>
-function deletewishlist(idproduk) {
-    $.post("deletewish.php", 
-        { idproduk: idproduk },
-        function(result) {
-            window.location = "wishlist.php";
-        }
-    );
-}
-</script>
-
 <!doctype html>
 <html>
     <head>
@@ -241,5 +229,17 @@ function deletewishlist(idproduk) {
 
         <!-- Footer Section -->
         <?php include ("footer.php"); ?>
+
+        <script>
+        function deletewishlist(idproduk) {
+            $.post("deletewish.php", 
+                { idproduk: idproduk },
+                function(result) {
+                    window.location = "wishlist.php";
+                }
+            );
+        }
+        </script>
+
     </body>
 </html>

@@ -4,7 +4,7 @@ include __DIR__."/system/function-library.php";
 // var_dump($_POST);
 
 $subject = "[SqueeStore Contact Form] - " . $_POST['name'] . ' ' . $_POST['surname'];
-$body = "You have received a new message from your contact from. <br>=============================================<br>";
+$body = "You have received a new message from your contact form. <br>=============================================<br>";
 $body .= '<table>';
 $body .= '<tr>';
 $body .= '<th style="text-align: left">Full Name</th>';

@@ -8,6 +8,21 @@
     background-color: #fff !important;
     transition: background-color 200ms;
 }
+
+#btnLog div{
+    display: none;
+}
+
+@media only screen and (max-width: 1200px) {
+    #btnLog div{
+        display: block;
+    }
+
+    #btnLog{
+        margin-top: 2%;
+    }
+}
+
 </style>
 <nav class="navbar navbar-expand-lg navbar-fixed-top fixed-top navbar-light bg-light">
     <a class="navbar-brand js-scroll-trigger" href="index.php"><img src="res/img/logo.png" style="width: 100px;"></a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -45,12 +60,14 @@
                 <a class="btn btn-dark text-warning mr-2" style="width: 50px; height: 37px;" href="transaction-list.php" role="button">
                     <i class="fas fa-history"></i>
                 </a>
-                <a class="btn btn-danger" style="width: 8%" href="logout.php" role="button">Log Out</a>
+                <div></div>
+                <a class="btn btn-danger px-4" id="btnLog" href="logout.php" role="button">Log Out</a>
                 <?php
             }
             else{
             ?>
-                <a class="btn btn-primary" style="width: 8%" href="login.php" role="button">Log In</a>
+                <div></div>
+                <a class="btn btn-primary px-4" id="btnLog" href="login.php" role="button">Log In</a>
             <?php
             }
         ?>

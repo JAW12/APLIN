@@ -4,7 +4,6 @@ include __DIR__."/system/load.php";
 if(!isset($_POST['idProduk'])){
     header("location: product-list.php");
 }
-session_start();
 $jenisUser = "";
 if(isset($_SESSION['login'])){
     if($_SESSION['login']['username'] == "admin"){
@@ -15,6 +14,7 @@ if(isset($_SESSION['login'])){
     }
 }
 ?>
+
 <!doctype html>
 <html>
     <head>
@@ -39,11 +39,6 @@ if(isset($_SESSION['login'])){
         <link href="style/index.css" rel="stylesheet">
         
         <title>Detail Produk</title>
-        <script>
-            $( function() {
-                $( "#tabs" ).tabs();
-            } );
-        </script>
     </head>
     <body id="page-top">
         <div class="spaceatas"></br></br></div>
@@ -239,20 +234,25 @@ if(isset($_SESSION['login'])){
         </div>
         <!-- Footer Section -->
         <?php include("footer.php"); ?>
+
+        <script>
+            $( function() {
+                $( "#tabs" ).tabs();
+            });
+            
+            function addtowish(idproduk) {
+                $.post("addtowish.php", 
+                    { idproduk: idproduk },
+                    function(result) {
+                        if(result=="berhasil"){
+                        alert('Success adding to WishList');
+                        }
+                        else{
+                            alert('Item Already in WishList');
+                        }
+                    }
+                );
+            }
+        </script>
     </body>
 </html>
-<script language='javascript'>
-function addtowish(idproduk) {
-    $.post("addtowish.php", 
-        { idproduk: idproduk },
-        function(result) {
-            if(result=="berhasil"){
-               alert('Success adding to WishList');
-            }
-            else{
-                alert('Item Already in WishList');
-            }
-        }
-    );
-}
-</script>
