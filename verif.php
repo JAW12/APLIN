@@ -1,6 +1,6 @@
 <?php
-    include "system/load.php";
-    include "generatecode.php";
+    include __DIR__."/system/load.php";
+    include __DIR__."/generatecode.php";
     $noregis    = $_POST['temp']; 
     $kode       = $_POST['emailCode'];
     $query1     = "SELECT * FROM verifikasi_email where  row_id_customer = '$noregis' and kode_verifikasi='$kode'";

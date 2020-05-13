@@ -1,5 +1,5 @@
 <?php
-    include "system/load.php";
+    include __DIR__."/system/load.php";
     cekLogin($db, "Customer", $login);
 
     if(isset($_POST['rating'])){

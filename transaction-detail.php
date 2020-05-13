@@ -1,5 +1,5 @@
 <?php
-    include "system/load.php";
+    include __DIR__."/system/load.php";
     /** @var PDO $db */ //untuk munculin autocomplete di db
 
     //dapetin data

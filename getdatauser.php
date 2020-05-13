@@ -1,5 +1,5 @@
 <?php
-    include "system/load.php";
+    include __DIR__."/system/load.php";
 
     $id     = $_POST['id']; 
     $query1 = "SELECT CUSTOMER.*, VERIFIKASI_EMAIL.KODE_VERIFIKASI FROM CUSTOMER, VERIFIKASI_EMAIL where  CUSTOMER.ROW_ID_CUSTOMER = VERIFIKASI_EMAIL.ROW_ID_CUSTOMER and CUSTOMER.ROW_ID_CUSTOMER = '$id'";

@@ -1,5 +1,5 @@
 <?php
-    include "system/load.php";
+    include __DIR__."/system/load.php";
     /** @var PDO $db Prepared Statement */
 
     function showTableDetailTrans($db, $detailTrans){

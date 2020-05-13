@@ -1,5 +1,5 @@
 <?php
-include "system/load.php";
+include __DIR__."/system/load.php";
 
 if(!isset($_POST['idProduk'])){
     header("location: product-list.php");

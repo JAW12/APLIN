@@ -261,13 +261,13 @@ function sendEmail($to, $subject, $body){
         $mail->isSMTP();                                            // Send using SMTP
         $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-        $mail->Username   = 'hendrapogobiru@gmail.com';                     // SMTP username
-        $mail->Password   = 'hendra123';                               // SMTP password
+        $mail->Username   = 'squeesquee.store@gmail.com';                     // SMTP username
+        $mail->Password   = 'bocahhulk1234';                               // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
         $mail->Port       = 587;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 
         //Recipients
-        $mail->setFrom('hendrapogobiru@gmail.com', 'Auto Reply SqueeStore');
+        $mail->setFrom('squeesquee.store@gmail.com', 'Auto Reply SqueeStore');
         $mail->addAddress($to, 'User');     // Add a recipient
 
         // Content

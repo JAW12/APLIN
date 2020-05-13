@@ -1,5 +1,5 @@
 <?php
-include("system/function-library.php");
+include __DIR__."/system/function-library.php";
 
 // var_dump($_POST);
 
@@ -26,4 +26,4 @@ $body .= '<th style="text-align: left">Message</th>';
 $body .= '<td>: ' . $_POST['message'] . '<td>';
 $body .= '</tr>';
 
-sendEmail("hendrapogobiru@gmail.com", $subject, $body);
+sendEmail("squeesquee.store@gmail.com", $subject, $body);

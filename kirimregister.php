@@ -1,5 +1,5 @@
 <?php
-include("system/function-library.php");
+include __DIR__."/system/function-library.php";
 
 // var_dump($_POST);
 

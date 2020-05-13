@@ -1,5 +1,5 @@
 <?php
-include "system/load.php";
+include __DIR__."/system/load.php";
 $login = getDataLogin();
 $jenisUser = "";
 if (isset($login) && is_array($login)) {
