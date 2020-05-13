@@ -1,11 +1,3 @@
-<?php 
-    if(isset($_GET['temp'])) {
-        $temp = $_GET['temp']; 
-    }
-    else {
-        header("location:register.php"); 
-    }
-?>
 <!doctype html>
 <html>
     <head>
@@ -17,7 +9,7 @@
         <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
         <link rel="stylesheet" type="text/css" href="css/datatables.css"/>
         <link href="css/all.css" rel="stylesheet">
-        <link rel="icon" type="image/png" href="res/img/goblin.png" /> 
+        <link rel="icon" type="image/png" href="res/img/goblin.png" />         
 
         <!-- CSS template login -->
         <!--===============================================================================================-->        
@@ -42,62 +34,32 @@
         <!-- CSS Sendiri -->
         <link href="style/lrc.css" rel="stylesheet">
 
-        <title>Sign In Page</title>
+        <!-- JS Sendiri -->
+        <title>Register Page</title>
     </head>
     <body>
+<?php 
+    if(isset($_GET['suksesid'])) {
+        include "system/load.php";
+        $id       = $_GET['suksesid']; 
+        $query    = "update verifikasi_email set status_verifikasi = 1 where row_id_customer = $id"; 
+        $berhasil = executeNonQuery($db, $query);
+    }
+?>
 
-        <?php 
-            $gagal = ""; 
-            if(isset($_GET['gagal'])) {
-                $gagal = $_GET['gagal'];
-            }
-        ?>
-        <div class="limiter">
+    <div class="limiter">
             <div class="container-login100" style="background-image: url('res/img/login/bg-06.jpg');">
                 <div class="wrap-login100 p-t-30 p-b-50">      
                     <!-- <span class="login100-form-title p-b-41">
                         Account Login
-                        &#xe81b -> eye
-                        &#xe81a
-                        &#xe81e
-                        &#xe82e; -> cart
                     </span> -->
                     <div class="card rounded">
                         <div class="text-center mt-5">
                             <img src="res/img/logo.png" class="card-img mx-auto w-50 h-50" alt="...">
                         </div>
-                        <div class="card-body" style="box-sizing: border-box">                        
+                        <div class="card-body" style="box-sizing: border-box">   
                             <form class="login100-form validate-form p-b-33 p-t-5" method="post">
-                                <?php 
-                                    if(isset($_GET['temp'])) {
-                                        echo "<input class='input100' type='hidden' name='temp' value='$temp'>";    
-                                    }
-                                ?>
-                                <?php
-                                if($gagal != "") {
-                                    echo "<div class='validate-input' style='color:red;'>";
-                                        echo "<center><span class='text-secondary mt-2'>Your Code is wrong</span></center>"; 
-                                    echo "</div>"; 
-                                }
-                                ?>
-                                <div class="wrap-input100 validate-input" data-validate="Enter code">
-                                    <input class="input100" type="text" name="emailCode" placeholder="Input Your Code">
-                                    <span class="focus-input100" data-placeholder="&#xe86b;"></span>
-                                </div>
-
-                                <div class="container-login100-form-btn m-t-32 d-flex justify-content-around">
-                                    <button class="login100-form-btn w-75" type="submit" formaction="verif.php?user">
-                                        Submit
-                                    </button>
-                                </div>
-
-                                <div class="container text-center">
-                                    <button class="btn btn-link mt-4 text-decoration-none">
-                                        <span class="text-secondary mt-2">Didn't receive a code?</span>
-                                        <input type='button' class='btn-btn-primary' value='Resend Code' onclick='resend()'>
-                                    </button>
-                                </div>
-
+                                <h3 style='text-align:center;'>congratulations</h3>                                
                             </form>
                         </div>
                     </div>
@@ -107,42 +69,12 @@
             </div>
         </div>
 
-        <div id="dropDownSelect1"></div>
-
-        <script language='Javascript'>
-            function resend() {
-                var temp = $("#temp").val();
-               
-                if(temp != "") {
-                    $.post("getdatauser.php",
-                        { id: temp },
-                        function(result) {
-                            var node = JSON.parse(result); 
-
-                            var vnama    = node.NAMA_DEPAN_CUSTOMER; 
-                            var vsurnama = node.NAMA_BELAKANG_CUSTOMER; 
-                            var vemail   = node.EMAIL; 
-                            var vneed    = "Confirmation Email"; 
-                            var vmsg     = node.KODE_VERIFIKASI;
-                            //alert(vnama + "-" + vsurnama + "-" + vemail + "-" + vneed + "-" + vmsg); 
-
-                            $.post("kirimregister.php",
-                                { id: temp, name: vnama, surname: vsurnama, email: vemail, need: vneed, message: vmsg },
-                                function(result) {
-                                }
-                            );
-                        }
-                    );        
-                }
-            }
-        </script>
-
         <!-- JS Library Import -->
         <script src="js/jquery-3.4.1.min.js"></script>
         <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/jQueryUI.js"></script>
         <script type="text/javascript" src="js/datatables.js"></script>
-
+        
         <!-- JS template login -->
         <!--===============================================================================================-->
         <script src="vendor/login/animsition/js/animsition.min.js"></script>

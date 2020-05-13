@@ -38,6 +38,21 @@
         <title>Register Page</title>
     </head>
     <body>
+<?php 
+    if(isset($_GET['saved'])) {
+        echo "<input type='hidden' id='txtsaved' value='1'>"; 
+        if(isset($_GET['temp'])) {
+            echo "<input type='hidden' id='temp' value='".$_GET['temp']."'>";
+        }
+        else {
+            echo "<input type='hidden' id='temp' value=''>";
+        }
+    }
+    else {
+        echo "<input type='hidden' id='txtsaved' value='0'>"; 
+    }
+?>
+
     <div class="limiter">
             <div class="container-login100" style="background-image: url('res/img/login/bg-06.jpg');">
                 <div class="wrap-login100 p-t-30 p-b-50">      
@@ -51,7 +66,7 @@
                         <div class="card-body" style="box-sizing: border-box">   
                             <?php 
                                 if(isset($_GET['saved'])) {
-                                    echo "<h4 style='color:red;'>Registrasi sukses</h4>"; 
+                                    echo "<h4 style='color:red;'>Registrasi sukses Check Your Email for Confirmation</h4>"; 
                                 }else if(isset($_GET['notsaved'])) {
                                     echo "<h4 style='color:red;'>Username harus unik</h4>";  
                                 }
@@ -134,5 +149,34 @@
         <!--===============================================================================================-->
         <script src="js/login.js"></script>
         <script src="script/index.js"></script>
+
+        <script language="javascript">
+        var saved = $("#txtsaved").val(); 
+        if(saved == "1") {
+            var temp = $("#temp").val(); 
+            if(temp != "") {
+                $.post("getdatauser.php",
+                    { id: temp },
+                    function(result) {
+                        var node = JSON.parse(result); 
+
+                        var vnama    = node.NAMA_DEPAN_CUSTOMER; 
+                        var vsurnama = node.NAMA_BELAKANG_CUSTOMER; 
+                        var vemail   = node.EMAIL; 
+                        var vneed    = "Confirmation Email"; 
+                        var vmsg     = node.KODE_VERIFIKASI;
+                        //alert(vnama + "-" + vsurnama + "-" + vemail + "-" + vneed + "-" + vmsg); 
+
+                        $.post("kirimregister.php",
+                            { id: temp, name: vnama, surname: vsurnama, email: vemail, need: vneed, message: vmsg },
+                            function(result) { 
+                                window.location = "verification.php?temp="+temp;
+                            }
+                        );
+                    }
+                );        
+            }
+        }
+        </script>
     </body>
 </html>
