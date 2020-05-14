@@ -3,7 +3,7 @@ include __DIR__."/system/load.php";
 if(isset($_GET['customer'])){
     $u = $_POST['username'];
     $p = $_POST['pass'];
-    $query = "SELECT * FROM customer WHERE username = '$u'";
+    $query = "SELECT * FROM customer WHERE username = '$u' OR email = '$u'";
     $user = getQueryResultRow($db, $query);
     if($user != false){
         // print_r($user);
