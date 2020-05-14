@@ -85,21 +85,33 @@
             }
             $condition .=  " STATUS_PEMBAYARAN = '{$status}'";
         }
-        if (isset($_GET['start']) && !empty($_GET['start'])) {
+
+        //filter tanggal
+        if (isset($_GET['start']) && !empty($_GET['start']) &&
+            isset($_GET['end']) && !empty($_GET['end'])) {
+            $dateStart = $_GET['start'];
+            $dateEnd = $_GET['end'];
+            if ($condition != "") {
+                $condition .= " AND ";
+            }
+            $condition .=  " CAST(TANGGAL_TRANS as DATE) BETWEEN '$dateStart' AND '$dateEnd'";
+        }
+        else if (isset($_GET['start']) && !empty($_GET['start'])) {
             $date = $_GET['start'];
             if ($condition != "") {
                 $condition .= " AND ";
             }
-            $condition .=  " TANGGAL_TRANS >= '$date'";
+            $condition .=  " CAST(TANGGAL_TRANS as DATE) >= '$date'";
         }
-        if (isset($_GET['end']) && !empty($_GET['end'])) {
+        else if (isset($_GET['end']) && !empty($_GET['end'])) {
             $date = $_GET['end'];
             if ($condition != "") {
                 $condition .= " AND ";
             }
-            $condition .=  " TANGGAL_TRANS <= '$date'";
+            $condition .=  " CAST(TANGGAL_TRANS as DATE) <= '$date'";
         }
-                
+        
+        //syntax where
         if ($jenisUser == "admin" && $condition != "") {
             $query .= " WHERE ";
         }
@@ -116,9 +128,9 @@
             <div class="container mb-2 mt-4">
                 <div class="h3 text-right text-success mt-5 mb-2">
                     <?php
-                        $pesan = "Total income : ";
+                        $pesan = "Total Income : ";
                         if ($jenisUser == "customer") {
-                            $pesan = "You have spent : ";
+                            $pesan = "You Have Spent : ";
                         }
                         echo $pesan . getSeparatorNumberFormatted(getTotalTransaction($dataHTrans));
                     ?>
@@ -295,21 +307,8 @@
             $qtyBeli = $value['QTY_PRODUK'];
 
             $query = "UPDATE PRODUK SET STOK_PRODUK = STOK_PRODUK - $qtyBeli WHERE ROW_ID_PRODUK = $row_id_produk";
-            echo $query . "<br/>";
             executeNonQuery($db, $query);
         }
-    }
-
-    function get10ValueArray($array){
-        $tmp = array();
-        $ctr = 0;
-        foreach ($array as $key => $value) {
-            if ($ctr < 10) {
-                $tmp[]=$value;
-            }
-            $ctr++;
-        }
-        return $tmp;
     }
 
     function getArrayValueByChildIndex($idxArray, $array){
@@ -345,13 +344,13 @@
             updateTransactionStatus($db, $row_id_htrans , 1);
             changeProductStock($db, $row_id_htrans);
 
-            $message = "transaction has been accepted";
+            $message = "Transaction has been accepted";
             showInfoDiv($message);
         }
         else if ($newStatus == "reject") {
             updateTransactionStatus($db, $row_id_htrans, 2);
 
-            $message = "transaction has been rejected";
+            $message = "Transaction has been rejected";
             showInfoDiv($message);
         }
         else{

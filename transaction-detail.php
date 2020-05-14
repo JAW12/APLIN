@@ -150,31 +150,37 @@
         ?>
             <div class="container my-5">
                 <?php showHeaderInvoice($headerTrans, $namaCustomer) ?>
-                <div class="my-0 d-flex flex-wrap justify-content-around">
-                    <div class="col-sm-12 col-md-6 mt-5 py-2">
+                <div class="my-0 d-flex flex-wrap justify-content-around row">
+                    <div class="col-sm-12 col-md-12 col-lg-6 mt-5 py-2">
                         <p class="h5 text-dark">Change Payment Proof Image</p><br/>
                         <form method="POST" enctype="multipart/form-data" class="text-left">                            
                             <input type="file" class="p-1 border border-warning rounded" name="file-upload">
                             <button type="submit" class="btn btn-warning rounded" name="changePaymentProofImage">Upload</button>
                         </form>
                     </div>             
-                    <div class="col-sm-12 col-md-6 mt-5 py-2">
+                    <div class="col-sm-12 col-md-12 col-lg-6 mt-5 py-2">
                         <p class="h5 text-dark mb-4">Order Detail</p>
                         <?php
-                            if ($statusTrans == 1 && $jenisUser == "customer") {
+                            if ($statusTrans == 1) {
                             ?>
-                                <form method="POST" class="form-inline float-right mt-1">
+                                <form class="form-inline float-right mt-1">
                                     <input type="hidden" name="row_id_htrans" value="<?= $row_id_htrans ?>">
-                                    <a class="btn btn-warning text-dark rounded mx-2" href="review.php?invoice=<?=$invoice?>">
-                                        Review Product
-                                    </a>
+                                    <?php
+                                        if ($jenisUser == "customer") {
+                                            ?>
+                                                <a class="btn btn-warning text-dark rounded mx-2" href="review.php?invoice=<?=$invoice?>">
+                                                    Review Product
+                                                </a>
+                                            <?php
+                                        }
+                                    ?>                                   
                                     <a class="btn btn-warning text-dark rounded mx-2" target="_blank" href="generate-invoice.php?invoice=<?=$invoice?>">
                                         View Invoice
                                     </a>
                                 </form>
                             <?php                            
                             }
-                            else if ($statusTrans == 0) {
+                            else if ($statusTrans == 0 && $jenisUser == "admin") {
                                 ?>
                                     <form class="form-inline float-right mt-1">
                                         <button type="submit" class="btn btn-success rounded mx-2 btnAccept" name="acceptOrder" row_id='<?= $headerTrans['ROW_ID_HTRANS'] ?>'>

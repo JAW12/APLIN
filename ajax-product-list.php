@@ -116,7 +116,8 @@
                     $resCatChildren = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 }
 
-                $listProduk = array_unique(array_merge($resCatParent,$resCatChildren), SORT_REGULAR);
+                // $listProduk = array_unique(array_merge($resCatParent,$resCatChildren), SORT_REGULAR);
+                $listProduk = array_merge($resCatParent,$resCatChildren);
             }
             else{
                 $query .= $condition;
@@ -171,7 +172,7 @@
                                             </p><br/>
                                             <p>
                                                 <button class="btn btn-link text-left text-dark text-decoration-none" style="width : 230px;height:100px;" name="lihatDetail" formaction="product-detail.php">
-                                                    <?= $value['NAMA_PRODUK'] ?>
+                                                    <?= strtoupper($value['NAMA_PRODUK']) ?>
                                                 </button>                                                 
                                             </p>
                                         </p>                            

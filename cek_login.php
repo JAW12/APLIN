@@ -11,7 +11,7 @@ if(isset($_GET['customer'])){
         if(cekPassword($p, $user['PASSWORD'], false)){ // true => hash, false => gapake
             updateDataSession('login', array(
                 "row_id_customer" => $user["ROW_ID_CUSTOMER"],
-                "username" => $u,
+                "username" => $user['USERNAME'],
                 "password" => hashPassword($p, false), // true => hash, false => gapake
                 "role" => 1
             ));

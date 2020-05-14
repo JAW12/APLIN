@@ -100,7 +100,7 @@
                                     </div>
                                     
                                     <div class="container-filter w-100 text-left">
-                                        <select class="form-control w-100 my-2" name="cbViewMode" id="cbViewMode">
+                                        <select class="form-control form-control-sm w-100 my-2" name="cbViewMode" id="cbViewMode">
                                             <option value="table">Table</option>
                                             <option value="graphics">Graphics</option>
                                         </select>
@@ -117,9 +117,9 @@
                                     
                                     <div class="container-filter w-100 text-left">
                                         <p class="text-sm-left mx-2 my-2">Invoice Number</p>
-                                        <input type="number" class="form-control form-control-sm mx-2 w-75" placeholder="Invoice Number" name="q">
+                                        <input type="number" class="form-control form-control-sm mx-2 w-100" placeholder="Invoice Number" name="q">
                                         <p class="text-sm-left mx-2 my-2 mt-3">Status</p>
-                                        <select class="form-control form-control-sm mx-2 w-75" name="status" id="status">
+                                        <select class="form-control form-control-sm mx-2 w-100" name="status" id="status">
                                             <option value="3">All</option>
                                             <option value="0">Pending</option>
                                             <option value="1">Accepted</option>
@@ -138,18 +138,21 @@
                                     
                                     <div class="container-filter w-100">
                                         <p class="text-sm-left mx-2 my-2">Total Amount Range</p>
-                                        <input type="number" class="form-control form-control-sm mx-2 my-2 w-75" placeholder="Minimum Total" name="min">
-                                        <input type="number" class="form-control form-control-sm mx-2 my-2 w-75" placeholder="Maximum Total" name="max">
+                                        <input type="number" class="form-control form-control-sm mx-2 my-2 w-100" placeholder="Minimum Total" name="min">
+                                        <input type="number" class="form-control form-control-sm mx-2 my-2 w-100" placeholder="Maximum Total" name="max">
 
-                                        <p class="text-sm-left mx-2 my-2 mt-3">Date Range</p>
-                                        <input type="text" onfocus="this.type='date'" onfocusout="this.type='text'" placeholder="Start Date" class="form-control form-control-sm mx-2 my-2 w-75" name="start">
-                                        <input type="text" onfocus="this.type='date'" onfocusout="this.type='text'" placeholder="End Date" class="form-control form-control-sm mx-2 my-2 w-75" name="end">
+                                        <p class="text-sm-left mx-2 my-2 mt-3 w-100">
+                                            <span class="align-middle">Date Range</span><br/>
+                                            <button type="button" class="btn btn-secondary btn-sm float-right" id="btnSetAsToday">Set As Today</button>
+                                        </p>                 
+                                        <input type="text" onfocus="this.type='date'" onfocusout="this.type='text'" placeholder="Start Date" class="form-control form-control-sm mx-2 my-2 w-100 date-field" name="start">
+                                        <input type="text" onfocus="this.type='date'" onfocusout="this.type='text'" placeholder="End Date" class="form-control form-control-sm mx-2 my-2 w-100 date-field" name="end">
                                     </div>                                    
                                 </div>
                                 <hr class="<?= $class_hr ?>">
                                 <div class="my-1 w-100">
                                     <!-- <button type="submit" class="btn btn-info w-100 mx-2 my-2" id="btnShow">Show</button> -->
-                                    <button type="button" class="btn btn-info w-100 my-2" id="btnReset">Reset Filter</button>
+                                    <button type="button" class="btn btn-info w-100 my-2 mx-2" id="btnReset">Clear All</button>
                                 </div>
                             </form>    
                         </div>
@@ -164,16 +167,17 @@
                         
                     </div>
                 </div>
+
+                <div class="col-12" id="spaceContainer">
+                    &nbsp;
+                </div>
             </div>
 
-            <div class="col-12" id="spaceContainer">
-                &nbsp;
-            </div>
-
+           
         </main>
 
-        <!-- Footer Section -->
-        <?php include ("footer.php"); ?>
+       <!-- Footer Section -->
+       <?php include ("footer.php"); ?>
 
         <!-- JS Library Import -->
         <script src="js/jquery-3.4.1.min.js"></script>
@@ -441,6 +445,17 @@
                 });
             }
 
+            function getTodayDateString(){
+                // let asiaTime = new Date().toLocaleString("en-US", {timeZone: "Asia/Jakarta"});  
+                var today = new Date($.now());
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
+
+                today = yyyy + "-" + mm + "-" + dd;
+                return today;
+            }
+
             //setiap kali ada perubahan isi fields filter auto muncul hasil search nya
             $("#formFilter").children().change(function(){
                 loadDataTrans();
@@ -477,6 +492,15 @@
             });
 
             $("#cbViewMode").change(function(){
+                loadDataTrans();
+            })
+
+            $("#btnSetAsToday").click(function(){
+                let dateFields = $(this).parent().siblings(".date-field");
+                let today = getTodayDateString();
+                dateFields.each(function(){
+                    $(this).val(today);
+                });
                 loadDataTrans();
             })
 

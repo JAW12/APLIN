@@ -40,7 +40,7 @@
                 <div class="row ml-0">
                     <div class="col">
                         <div class="form-inline pr-1">
-                            <input class="form-check-input" type="checkbox" value='<?= $row_id_parent ?>' name="category_parent[<?= $key ?>]">
+                            <input class="form-check-input cbCategoryParent" type="checkbox" value='<?= $row_id_parent ?>' name="category_parent[<?= $key ?>]">
                             <label class="form-check-label ml-0 col-form-label-sm"><?= $nama_parent ?></label>
                         </div>
                         <?php
@@ -53,7 +53,7 @@
                                         <div class="row child-category ml-2">
                                             <div class="col float-left">
                                                 <div class="form-inline">
-                                                    <input class="form-check-input" type="checkbox" value='<?= $row_id_parent ?>' name="category_child[<?= $ctrChildren ?>]">
+                                                    <input class="form-check-input cbCategoryChild" type="checkbox" value='<?= $row_id_child ?>' name="category_child[<?= $ctrChildren ?>]">
                                                     <label class="form-check-label col-form-label-sm"><?= $nama_child ?></label>
                                                 </div>
                                             </div>
@@ -197,12 +197,12 @@
                                     </div>                                    
                                 </div>
                                 <hr class="<?= $class_hr ?>">
-                                <div class="my-1 justify-content-around">                                    
-                                    <button type="button" class="btn btn-info w-100 my-2" id="btnReset">Reset Filter</button>
+                                <div class="my-1 mx-0 w-100 d-flex flex-wrap justify-content-around">                                    
+                                    <button type="button" class="btn btn-info w-100 my-2" id="btnReset">Clear All</button>
                                     <?php
                                         if ($jenisUser == "admin") {
                                             ?>
-                                                <button type="submit" class="btn btn-warning w-100 my-2" formaction="master-product.php">Add Product</a>
+                                                <a class="btn btn-warning w-100 my-2" href="master-product.php">Add Product</a>
                                             <?php
                                         }
                                     ?>
@@ -214,9 +214,11 @@
                 </div>
                 <!-- product list -->
                 <div class="col">
-                    <div class="container-fluid" id="containerProductList">
+                    <div class="d-flex flex-wrap justify-content-around">
+                        <div class="container-fluid" id="containerProductList">
                         
-                    </div>
+                        </div>
+                    </div>                    
                 </div>
             </div>            
         </main>
@@ -300,6 +302,15 @@
             $("#formFilter").submit(function(e){
                 e.preventDefault();
                 loadProductList();
+            })
+
+            // automatically check/uncheck all child categories if its parent is checked/unchecked
+            $(document).on("change", ".cbCategoryParent", function(){
+                let childrenCategories = $(this).parent().siblings().find(".cbCategoryChild");
+                childrenCategories.each(function(){
+                    let isChecked = this.checked;
+                    this.checked = !isChecked;
+                });
             })
 
             $(document).ready(function(){
