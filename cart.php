@@ -164,9 +164,9 @@
                                 <?php
                                 echo "<td>$namaItem</td>";
                                 ?>
-                                <td><?= number_format($hargaItem, 0, ',', '.')?></td>
-                                <td><?= $jumlahItem ?></td>
-                                <td><?= number_format($subtotalItem, 0, ',', '.')?></td>
+                                <td style="text-align: right"><?= number_format($hargaItem, 0, ',', '.')?></td>
+                                <td style="text-align: right"><?= $jumlahItem ?></td>
+                                <td style="text-align: right"><?= number_format($subtotalItem, 0, ',', '.')?></td>
                                 <?php
                                 ?>
                                 <form method="POST">
@@ -183,7 +183,8 @@
                         ?>
                         <tr class="text-dark font-weight-bold">
                             <td colspan="5" class="text-center bg-warning">Total Price</td>
-                            <td colspan="2" class="text-left bg-warning"><?= number_format($grandTotal, 0, ',', '.') ?></td>
+                            <td colspan="1" style="text-align: right" class="bg-warning"><?= number_format($grandTotal, 0, ',', '.') ?></td>
+                            <td class="text-center bg-dark" colspan="1"></td>
                         </tr>
                         <?php
                     }

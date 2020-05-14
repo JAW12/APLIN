@@ -159,7 +159,7 @@
                             $cl = "grayscale";
                         }
                         ?>
-                            <form method="POST">                            
+                            <form method="GET" action="/product-detail.php">                            
                                 <div class="card border-0 hover-shadow my-4 p-3" style="width: 18rem;box-sizing: border-box">
                                     <div>
                                         <img width="256px" height="256px" src="<?= $lokasiFotoProduk ?>" class="card-img-top <?= $cl ?>" alt="gambar produk">
@@ -171,7 +171,7 @@
                                                 Rp. <?= getSeparatorNumberFormatted($value['HARGA_PRODUK']) ?>
                                             </p><br/>
                                             <p>
-                                                <button class="btn btn-link text-left text-dark text-decoration-none" style="width : 230px;height:100px;" name="lihatDetail" formaction="product-detail.php">
+                                                <button class="btn btn-link text-left text-dark text-decoration-none" style="width : 230px;height:100px;" name="lihatDetail">
                                                     <?= strtoupper($value['NAMA_PRODUK']) ?>
                                                 </button>                                                 
                                             </p>

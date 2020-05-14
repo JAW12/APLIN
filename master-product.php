@@ -59,7 +59,7 @@ if (isset($login) && is_array($login)) {
                 Master Product
             </h1>
         </div>
-        <?php include("header.php");
+        <?php
         function uploadFile($db, $file, $folderTujuan, $namaFileUpload, $rowID){
             $fileTmp = $file['tmp_name'];
             $namaAsliFileUpload = $file['name'];
@@ -83,22 +83,6 @@ if (isset($login) && is_array($login)) {
                 $stmt->bindValue(":lokasi", $namaCustomFileUpload);
                 $stmt->bindValue(":id", $rowID);
                 $result = $stmt->execute();
-                if ($result) {
-                    if(isset($_POST['cek'])){
-                        showInfoDiv("Successful updating product");
-                    }
-                    else{
-                        showInfoDiv("Successful registering product");
-                    }
-                }
-                else{
-                    if(isset($_POST['cek'])){
-                        showInfoDiv("Failed updating product");
-                    }
-                    else{
-                        showInfoDiv("Failed registering product");
-                    }
-                }
         
             }
             else{
@@ -109,6 +93,7 @@ if (isset($login) && is_array($login)) {
             $query = "SELECT * FROM PRODUK WHERE ROW_ID_PRODUK=$_POST[idProduk]";
             $produk = getQueryResultRow($db,$query);
             $namaProduk = $produk['NAMA_PRODUK'];
+            $statusProduk = $produk['STATUS_AKTIF_PRODUK'];
             $hargaProduk = $produk['HARGA_PRODUK'];
             $dimensiKemasan = $produk['DIMENSI_KEMASAN'];
             $dimensiProduk = $produk['DIMENSI_PRODUK'];
@@ -153,7 +138,9 @@ if (isset($login) && is_array($login)) {
                 }
                 $query = "SELECT ROW_ID_PRODUK AS 'ROW', ID_PRODUK AS 'ID' FROM PRODUK WHERE NAMA_PRODUK =  '$_POST[productName]'";
                 $productId = getQueryResultRowArrays($db, $query);
-                uploadFile($db, $_FILES['productImage'], "/res/img/produk/", $productId[0]['ID'], $productId[0]['ROW']);
+                if($_FILES['productImage']['error'] <= 0){
+                    uploadFile($db, $_FILES['productImage'], "/res/img/produk/", $productId[0]['ID'], $productId[0]['ROW']);
+                }
                 try {
                     $query = "UPDATE KATEGORI_PRODUK SET ROW_ID_KATEGORI_PARENT = :parent, ROW_ID_KATEGORI_CHILD = :child WHERE ROW_ID_PRODUK = :id";
                     $stmt = $db->prepare($query);
@@ -161,11 +148,19 @@ if (isset($login) && is_array($login)) {
                     $stmt->bindValue(":child", $_POST['productChildCategory'], PDO::PARAM_STR);
                     $stmt->bindValue(":id", $_POST['cek'], PDO::PARAM_INT);
                     $result = $stmt->execute();
+                    if ($result) {
+                        header('Location: product-detail.php?idProduk='.$productId[0]['ROW']);
+                    }
                 } catch (Exception $e) {
-                    echo $e->getMessage();
+                    if(isset($_POST['cek'])){
+                        showInfoDiv("Failed updating product");
+                    }
+                    else{
+                        showInfoDiv("Failed registering product");
+                    }
                 }
             }
-            else if(!isset($_POST['cek'])){
+            else{
                 try{
                     $query = "INSERT INTO PRODUK VALUES('','', :nama, :status, :harga, :dimensikemasan, :dimensiproduk, :berat, :satuan, :deskripsi, '', :stok)";
                     $stmt = $db->prepare($query);
@@ -184,18 +179,30 @@ if (isset($login) && is_array($login)) {
                 }
                 $query = "SELECT ROW_ID_PRODUK AS 'ROW', ID_PRODUK AS 'ID' FROM PRODUK WHERE NAMA_PRODUK =  '$_POST[productName]'";
                 $productId = getQueryResultRowArrays($db, $query);
-                uploadFile($db, $_FILES['productImage'], "/res/img/produk/", $productId[0]['ID'], $productId[0]['ROW']);
+                if(isset($_FILES['productImage'])){
+                    print_r($_FILES['productImage']);
+                    uploadFile($db, $_FILES['productImage'], "/res/img/produk/", $productId[0]['ID'], $productId[0]['ROW']);
+                }
                 try {
                     $query = "INSERT INTO KATEGORI_PRODUK VALUES(:id, :parent, :child)";
                     $stmt = $db->prepare($query);
-                    $stmt->bindValue(":id", $_POST['cek'], PDO::PARAM_INT);
+                    $stmt->bindValue(":id", $productId[0]['ROW'], PDO::PARAM_INT);
                     $stmt->bindValue(":parent", $_POST['productParentCategory'], PDO::PARAM_INT);
                     $stmt->bindValue(":child", $_POST['productChildCategory'], PDO::PARAM_INT);
                     $result = $stmt->execute();
+                    if ($result) {
+                        header('Location: product-detail.php?idProduk='.$productId[0]['ROW']);
+                    }
                 } catch (Exception $e) {
-                    echo $e->getMessage();
+                    if(isset($_POST['cek'])){
+                        showInfoDiv("Failed updating product");
+                    }
+                    else{
+                        showInfoDiv("Failed registering product");
+                    }
                 }
             }
+            include("header.php");
         }
         ?>
 
@@ -241,11 +248,23 @@ if (isset($login) && is_array($login)) {
                         echo "<input type=hidden name='cek' value='$_POST[idProduk]'/>";
                         ?>
                         Product Status : </br>
-                        <input type="radio" name="productStatus" value="1" checked>
-                        <label >Active</label><br>
-                        <input type="radio" name="productStatus" value="0">
-                        <label>Inactive</label><br>
                         <?php
+                        if($statusProduk == 1){
+                            ?>
+                            <input type="radio" name="productStatus" value="1" checked>
+                            <label >Active</label><br>
+                            <input type="radio" name="productStatus" value="0">
+                            <label>Inactive</label><br>
+                            <?php
+                        }
+                        else{
+                            ?>
+                            <input type="radio" name="productStatus" value="1">
+                            <label >Active</label><br>
+                            <input type="radio" name="productStatus" value="0" checked>
+                            <label>Inactive</label><br>
+                            <?php
+                        }
                     }
                     ?>
                     Package Dimension : </br>
@@ -264,6 +283,7 @@ if (isset($login) && is_array($login)) {
                     Product Stock : </br>
                     <input type="number" class="form-control" name="productStock" value="<?= isset($_POST['idProduk']) ? $stokProduk : "" ?>" /></br>
                     </br>
+                    <input type="hidden" name="idProduk" value="<?= $_POST['idProduk'] ?>"/>
                     <button type="submit" name="btnSubmit" class="btn btn-success"><?= isset($_POST['idProduk']) ? "Edit Product" : "Add Product" ?></button>
                 </form>
             </section>

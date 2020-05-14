@@ -27,7 +27,6 @@ if(!isset($_POST['idProduk'])){
 
         <!-- CSS Sendiri -->
         <link href="style/index.css" rel="stylesheet">
-        
         <title>All Reviews For <?=$_POST['namaProduk']?></title>
     </head>
     <body id="page-top">
@@ -46,19 +45,22 @@ if(!isset($_POST['idProduk'])){
                         $namaCust = getCustomerName($db,$value['ROW_ID_CUSTOMER']);
                         $isi = $value['KONTEN_REVIEW'];
                         ?>
-                        <div class="float-right">
-                        <?php
-                        for ($i=0; $i < $temp; $i++) {
-                            echo "<i class='fas fa-star' style='color: orange'></i>";
-                        }
-                        ?>
+                        <div class="text-center">
+                            <?=$namaCust[0]['NAME']?> &nbsp;&nbsp;<?=$waktu?>
+                            <div class="float-right">
+                            <?php
+                            for ($i=0; $i < $temp; $i++) {
+                                echo "<i class='fas fa-star' style='color: orange'></i>";
+                            }
+                            ?>
+                            </div>
                         </div>
-                        <?=$namaCust[0]['NAME']?> &nbsp;&nbsp;<?=$waktu?>
-                        <hr class="border border-dark">
-                        <div class="text-justify">
-                            <?=$isi?>
+                        <div style="background-color:lightgray">
+                            <div class="text-justify">
+                                <?=$isi?>
+                            </div>
                         </div>
-                        <hr class="border border-dark">
+                        <hr class="border border-dark mt-0 mb-5">
                         <?php
                     }
                 ?>
