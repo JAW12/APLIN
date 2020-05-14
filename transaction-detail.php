@@ -20,7 +20,7 @@
 
     function showTableDetailTrans($db, $detailTrans){
         ?>
-            <table class="table table-striped table-bordered border-dark">
+            <table class="table table-striped table-bordered border-dark mx-2">
                 <thead class="thead-dark text-center">
                     <th scope="col">#</th>
                     <th scope="col">Product Name</th>
@@ -151,14 +151,14 @@
             <div class="container my-5">
                 <?php showHeaderInvoice($headerTrans, $namaCustomer) ?>
                 <div class="my-0 d-flex flex-wrap justify-content-around row">
-                    <div class="col-sm-12 col-md-12 col-lg-6 mt-5 py-2">
+                    <div class="col-sm-12 col-lg-6 mt-5 py-2">
                         <p class="h5 text-dark">Change Payment Proof Image</p><br/>
                         <form method="POST" enctype="multipart/form-data" class="text-left">                            
                             <input type="file" class="p-1 border border-warning rounded" name="file-upload">
                             <button type="submit" class="btn btn-warning rounded" name="changePaymentProofImage">Upload</button>
                         </form>
                     </div>             
-                    <div class="col-sm-12 col-md-12 col-lg-6 mt-5 py-2">
+                    <div class="col-sm-12 col-lg-6 mt-5 py-2">
                         <p class="h5 text-dark mb-4">Order Detail</p>
                         <?php
                             if ($statusTrans == 1) {
@@ -195,12 +195,12 @@
                         ?>            
                 </div>
                 <div class="mt-1 mb-5 d-flex flex-wrap justify-content-around">
-                    <div class="col-sm-12 col-md-6 mt-1 d-flex justify-content-center">
+                    <div class="col-sm-12 col-lg-6 mt-1 d-flex justify-content-center">
                         <div class="img-fit-container">
                             <img id="paymentProofContainer" src="<?= $lokasiFoto?>" class="img-fit" alt="No Payment Proof Available" class="border"/>
                         </div>         
                     </div>
-                    <div class="col-sm-12 col-md-6 mt-1">
+                    <div class="col-sm-12 col-lg-6 mt-1 table-responsive">
                         <?php showTableDetailTrans($db, $detailTrans) ?>
                     </div>
                 </div>

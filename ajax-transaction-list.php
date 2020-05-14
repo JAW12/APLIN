@@ -155,7 +155,7 @@
 
     function showTransactionList($db, $jenisUser, $row_id_cust, $dataHTrans){
         ?>
-        <div class="container my-2">
+        <div class="container my-2 table-responsive">
             <table class="table table-hover table-striped table-bordered">
                 <thead class="thead-dark text-center">
                     <tr>
