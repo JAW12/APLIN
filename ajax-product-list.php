@@ -18,7 +18,6 @@
     }
 
     //--- function ----
-    //--- function ----
     function getListProduk($db, $jenisUser){
         $tmpFilterCategory = array();
         $condition = "";
