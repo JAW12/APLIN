@@ -18,6 +18,7 @@
     }
 
     //--- function ----
+    //--- function ----
     function getListProduk($db, $jenisUser){
         $tmpFilterCategory = array();
         $condition = "";
@@ -120,8 +121,8 @@
                     $resCatChildren = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 }
 
-                // $listProduk = array_unique(array_merge($resCatParent,$resCatChildren), SORT_REGULAR);
-                $listProduk = array_merge($resCatParent,$resCatChildren);
+                $listProduk = array_unique(array_merge($resCatParent,$resCatChildren), SORT_REGULAR);
+                // $listProduk = array_merge($resCatParent,$resCatChildren);
             }
             else{
                 $query .= $condition;
@@ -167,7 +168,7 @@
                         }
                         ?>
                             <form method="GET" action="/product-detail.php">                            
-                                <div class="card border-0 hover-shadow my-4 p-3" style="width: 18rem;box-sizing: border-box">
+                                <div class="card border-0 hover-shadow my-4 p-3" style="width: 18rem;box-sizing: border-box; margin: 0 auto;">
                                     <div>
                                         <img width="256px" height="256px" src="<?= $lokasiFotoProduk ?>" class="card-img-top <?= $cl ?>" alt="Gambar Produk">
                                     </div>
