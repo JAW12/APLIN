@@ -70,7 +70,7 @@
                             <form class="login100-form validate-form p-b-33 p-t-5" method="post">
                                 <?php 
                                     if(isset($_GET['temp'])) {
-                                        echo "<input class='input100' type='hidden' name='temp' value='$temp'>";    
+                                        echo "<input class='input100' type='hidden' id='temp'name='temp' value='$temp'>";    
                                     }
                                 ?>
                                 <?php

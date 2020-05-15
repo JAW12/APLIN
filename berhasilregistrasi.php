@@ -1,3 +1,9 @@
+<?php
+    if(isset($_POST['btnlogin'])) {
+        header("location:login.php");
+    }
+
+?>
 <!doctype html>
 <html>
     <head>
@@ -59,7 +65,12 @@
                         </div>
                         <div class="card-body" style="box-sizing: border-box">   
                             <form class="login100-form validate-form p-b-33 p-t-5" method="post">
-                                <h3 style='text-align:center;'>congratulations</h3>                                
+                                <h3 style='text-align:center;'>verifikasi is Complete</h3>
+                                <div class="container-login100-form-btn m-t-32 d-flex justify-content-around">
+                                <button type='submit' class="login100-form-btn w-75" name="btnlogin">
+                                        To Login
+                                </button>
+                                </div>
                             </form>
                         </div>
                     </div>

@@ -66,9 +66,12 @@
                         <div class="card-body" style="box-sizing: border-box">   
                             <?php 
                                 if(isset($_GET['saved'])) {
-                                    echo "<h4 style='color:red;'>Registrasi sukses Check Your Email for Confirmation</h4>"; 
+                                    echo "<h4 style='color:red;'>Registration has been successful. 
+                                    Please check your email to verify your account</h4>"; 
                                 }else if(isset($_GET['notsaved'])) {
-                                    echo "<h4 style='color:red;'>Username harus unik</h4>";  
+                                    echo "<h4 style='color:red;'>Username must be unique</h4>";  
+                                }else if(isset($_GET['notemail'])) {
+                                    echo "<h4 style='color:red;'>Email is already in use </h4>";  
                                 }
                             ?>
                             <form class="login100-form validate-form p-b-33 p-t-5" method="post">

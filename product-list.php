@@ -81,7 +81,7 @@
         <link rel="stylesheet" type="text/css" href="css/datatables.css"/>
         <link href="css/all.css" rel="stylesheet">
         <link rel="icon" type="image/png" href="res/img/goblin.png" />    
-        
+
         <!-- CSS Sendiri -->
         <link href="style/index.css" rel="stylesheet">
         <style>
@@ -262,10 +262,9 @@
                     { idproduk: idproduk },
                     function(result) {
                         if(result=="berhasil"){
-                        alert('Success adding to WishList');
                         }
                         else{
-                            alert('Item Already in WishList');
+                           
                         }
                     }
                 );

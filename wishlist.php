@@ -178,7 +178,7 @@
         </style>
 
         <!-- JS Sendiri -->
-        <title>Product List</title>
+        <title>Wishlist List</title>
     </head>
     <body id="page-top">
         <!-- Header Section -->
@@ -220,7 +220,7 @@
                             <label class="form-check-label" for="cbAvailableProduct">Available Products</label>
                         </div>
                         <button type="submit" class="btn btn-info mx-3">Filter</button>
-                        <a class="btn btn-info mr-3" href="product-list.php">Reset Filter</a>
+                        <a class="btn btn-info mr-3" href="wishlist-list.php">Reset Filter</a>
                     </form>    
                 </div>
             </div>

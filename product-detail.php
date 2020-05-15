@@ -287,10 +287,11 @@ if(isset($_SESSION['login'])){
                     { idproduk: idproduk },
                     function(result) {
                         if(result=="berhasil"){
-                        alert('Success adding to WishList');
+                            showAlertDiv("Successfully Insert in Wishlist");
+                        
                         }
                         else{
-                            alert('Item Already in WishList');
+                            showAlertDiv("Item Already in WishList'");
                         }
                     }
                 );
