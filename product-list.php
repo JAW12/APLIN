@@ -214,11 +214,11 @@
                 </div>
                 <!-- product list -->
                 <div class="col">
-                    <div class="d-flex flex-wrap justify-content-around">
-                        <div class="container-fluid" id="containerProductList">
-                        
+                    <div class="container-fluid">
+                        <div class="d-flex justify-content-around" id="containerProductList">
+
                         </div>
-                    </div>                    
+                    </div>               
                 </div>
             </div>            
         </main>
@@ -303,9 +303,11 @@
             // automatically check/uncheck all child categories if its parent is checked/unchecked
             $(document).on("change", ".cbCategoryParent", function(){
                 let childrenCategories = $(this).parent().siblings().find(".cbCategoryChild");
+                let statusCheckedParent = this.checked;
                 childrenCategories.each(function(){
-                    let isChecked = this.checked;
-                    this.checked = !isChecked;
+                    // let isChecked = this.checked;
+                    // this.checked = !isChecked;
+                    this.checked = statusCheckedParent;
                 });
             })
 

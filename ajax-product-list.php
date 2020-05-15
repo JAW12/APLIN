@@ -143,7 +143,10 @@
                 <div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 row-cols-xl-4 card-deck">
                     <?php
                     foreach ($listProduk as $key => $value) {
-                        $lokasiFotoProduk = "res/img/produk/".$value['LOKASI_FOTO_PRODUK'];
+                        $lokasiFotoProduk = "res/img/no-image.png";
+                        if (!empty($value['LOKASI_FOTO_PRODUK'])) {
+                            $lokasiFotoProduk = "res/img/produk/".$value['LOKASI_FOTO_PRODUK'];
+                        }                        
                         $cl = "";
                         $text = "&nbsp;";
                         if (intval($value['STOK_PRODUK']) <= 0) {
@@ -162,7 +165,7 @@
                             <form method="GET" action="/product-detail.php">                            
                                 <div class="card border-0 hover-shadow my-4 p-3" style="width: 18rem;box-sizing: border-box">
                                     <div>
-                                        <img width="256px" height="256px" src="<?= $lokasiFotoProduk ?>" class="card-img-top <?= $cl ?>" alt="gambar produk">
+                                        <img width="256px" height="256px" src="<?= $lokasiFotoProduk ?>" class="card-img-top <?= $cl ?>" alt="Gambar Produk">
                                     </div>
                                     <div class="card-body">
                                         <p class="card-text">
