@@ -82,17 +82,12 @@
                     </div>
                    
                     <!-- <div id="map"></div> -->
-                    <div class="col-1"></div>
-                    <div class="col-4"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d588.2906732009446!2d112.80127418417875!3d-7.293957288475931!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMTcnMzguNSJTIDExMsKwNDgnMDUuNiJF!5e0!3m2!1sen!2sid!4v1587381294169!5m2!1sen!2sid" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe></div>
-                    <div class="col-4">
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
+                    <div class="col-xl-1"></div>
+                    <div class="col-xl-4 col-sm-12" style="height: 500px"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d588.2906732009446!2d112.80127418417875!3d-7.293957288475931!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMTcnMzguNSJTIDExMsKwNDgnMDUuNiJF!5e0!3m2!1sen!2sid!4v1587381294169!5m2!1sen!2sid" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe></div>
+                    <div class="col-xl-4 col-sm-12 py-xl-5 py-sm-3">
+                        <div class="py-xl-5"></div>
+                        <div class="py-xl-5"></div>
+                        <div class="py-xl-4"></div>
                         <h2>Store Location:</h2>
                         <p class="lead">Jl. Keputih Tegal 8, Keputih, Kec. Sukolilo <br>
                             East Surabaya, East Java, Indonesia </p>
@@ -103,7 +98,7 @@
                         <p class="lead small">Available during Workdays (Monday - Friday) 08.00 AM - 18.00 PM</p>
                         </p>
                     </div>
-                    <div class="col-3"></div>
+                    <div class="col-xl-3"></div>
 
                     <hr class="col-10 my-5">
                     <div class="col-12 mb-4">

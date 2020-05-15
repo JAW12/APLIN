@@ -254,6 +254,16 @@
                 background: #014d92;
                 outline: none;
             }
+
+            html, body{ height:100%; margin:0; }
+            body{ 
+                display:flex; 
+                flex-direction:column; 
+            }
+
+            footer{
+                margin-top:auto; 
+            }
         </style>
     </head>
     <body id="page-top">
@@ -399,7 +409,7 @@
                     data: $("#formReview").serialize(),
                     success: function(res){
                         if(res.includes("Not Complete")){
-                            $("#reviewAlert").html('<div class="alert alert-danger">Data Tidak Lengkap!</div>');
+                            $("#reviewAlert").html('<div class="alert alert-danger">Insufficient Data!</div>');
                             return true;
                         }
                         else if(res.includes("Error")){

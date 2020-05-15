@@ -13,7 +13,7 @@
     display: none;
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 991px) {
     #btnLog div{
         display: block;
     }

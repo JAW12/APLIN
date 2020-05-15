@@ -81,7 +81,7 @@
                    
                     <div class="col-1"></div>
 
-                    <div id="tentang" class="col-5 text-justify">
+                    <div id="tentang" class="col-sm-12 col-xl-5 text-justify">
                         <br><br><br>
                         <p style="text-indent: 2em;">The market for building materials and home appliances is currently growing rapidly. The concept of shopping for building materials and home appliances under one roof has become a trend. This development is not only happening Jabodetabek area, but also other major cities in Indonesia. SqueeStore responded to this trend by expanding business networks and applying the concept of retail building materials and home appliances that are close to customers with the concept of one stop shopping for home.</p>
 
@@ -89,7 +89,7 @@
                         With the concept of one-stop shopping, SqueeStore creates a clean and comfortable shopping environment and atmosphere as all customers want. An attractive product layout, provision of informative product catalogs, price quotes with competitive price guarantees are part of efforts to add and strengthen the quality of SqueeStore services. The slogan "Cheap, Complete, and Comfortable" is SqueeStore's guide in serving and meeting the needs of all its customers.</p>
                     </div>
 
-                    <div id="gambar" class="col-5">
+                    <div id="gambar" class="col-sm-12 col-xl-5">
                         <img src="res/img/aboutus/1.jpg" class="img-fluid" style="width: 120%;" alt="Gambar Toko">
                     </div>
                     <div class="col-1"></div>
@@ -119,11 +119,11 @@
                     <div class="col-1"></div>
 
                     <div class="col-1"></div>
-                    <div id="gambar" class="col-5 mb-4">
+                    <div id="gambar" class="col-xl-5 col-sm-12 mb-4">
                         <img src="res/img/aboutus/2.jpg" class="img-fluid" style="width: 120%;" alt="Gambar Toko">
                     </div>
 
-                    <div id="produk" class="col-5 text-justify">
+                    <div id="produk" class="col-xl-5 col-sm-12 text-justify">
                         <br>
                         <br>
                         <h1>Our Products</h1>
