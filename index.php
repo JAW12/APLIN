@@ -65,8 +65,8 @@
                 </div>
             </div>
             <?php
-               //showModal('Ini judul', 'tes', '');
-                 //showAlertModal('bg-danger', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Ooops!</h4><p>Error deh!</p>', 'Close', '');
+                //showModal('Ini judul', 'tes', '');
+                //showAlertModal('bg-danger', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Ooops!</h4><p>Error deh!</p>', 'Close', '');
             ?>
         </main>
         <!-- Footer Section -->

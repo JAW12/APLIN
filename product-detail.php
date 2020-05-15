@@ -274,6 +274,8 @@ if(isset($_SESSION['login'])){
             ?>
             </div>
         </div>
+
+        <div id="alert"></div>
         <!-- Footer Section -->
         <?php include("footer.php"); ?>
 
@@ -286,13 +288,8 @@ if(isset($_SESSION['login'])){
                 $.post("addtowish.php", 
                     { idproduk: idproduk },
                     function(result) {
-                        if(result=="berhasil"){
-                            showAlertDiv("Successfully Insert in Wishlist");
-                        
-                        }
-                        else{
-                            showAlertDiv("Item Already in WishList'");
-                        }
+                        $("#alert").html(result);
+                        $("#alertModal").modal();
                     }
                 );
             }
