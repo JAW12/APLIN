@@ -135,7 +135,7 @@
 
         <!-- JS Sendiri -->
 
-        <title>Review</title>
+        <title>Review Transaction</title>
         <style>
             #judul{
                 padding: 0;
@@ -301,9 +301,9 @@
 
         </div>
             <!-- kalau mau pake space ga ush dicomment -->
-            <div id="judul" class="col-12 text-center my-5" style="background-image: url('res/img/bg12.jpg');">
+            <div id="judul" class="col-12 text-center my-5" style="background-image: url('res/img/bg18.jpg');">
                 <h1 class="text-light display-3 font-weight-bold">
-                    Transaction List
+                    Review Transaction
                 </h1>
             </div>
             <form action="transaction-detail.php" method="post">
@@ -312,7 +312,6 @@
             </form>
 
             <div class="container mb-5">
-                <p class="h1 text-center">Review Transaction</p>
                 <?php showReviewTable($db, $detailTrans) ?>
             </div>
         </main>

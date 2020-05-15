@@ -165,6 +165,16 @@
                 background-size: cover;
             }
 
+            html, body{ height:100%; margin:0; }
+            body{ 
+                display:flex; 
+                flex-direction:column; 
+            }
+
+            footer{
+                margin-top:auto; 
+            }
+
         </style>
 
         <!-- JS Sendiri -->
@@ -177,7 +187,7 @@
         <!-- Main Section -->
         <main>
             <!-- kalau mau pake space ga ush dicomment -->
-            <div id="judul" class="col-12 text-center my-5" style="background-image: url('res/img/bg9.jpg');">
+            <div id="judul" class="container-fluid text-center my-5" style="background-image: url('res/img/bg9.jpg');">
                 <h1 class="text-light display-3 font-weight-bold">
                     Wish List
                 </h1>

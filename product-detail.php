@@ -127,7 +127,7 @@ if(isset($_SESSION['login'])){
                             <input type="hidden" name="idProduk" value="<?=$idProduk?>">
                             <input type="hidden" name="idCust" value="<?=$idCustomer?>">
                             <div class="input-group mb-3">
-                                <input type="number" name="jumlahBeliProduk" class="form-control" placeholder="1" aria-describedby="basic-addon2" min="1" required>
+                                <input type="number" name="jumlahBeliProduk" class="form-control" placeholder="1" aria-describedby="basic-addon2" min="1" value="1" required>
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon2">of <?=$stokProduk." ".strtolower("$satuanProduk")?></span>
                                 </div>
@@ -192,7 +192,7 @@ if(isset($_SESSION['login'])){
                         <form method="POST">
                             <input type="hidden" name="idProduk" value="<?= $idReview ?>">
                             <input type="hidden" name="namaProduk" value="<?=$namaProduk?>">
-                            <button type="submit" class="btn text-center form-control mt-4" style="background-color: orange" name="btnBeli" formaction="showReview.php">See All Other Reviews</button>
+                            <button type="submit" class="btn text-center form-control mt-4" style="background-color: orange" name="btnBeli" formaction="showReview2.php">See All Other Reviews</button>
                         </form>
                         <?php
                     }

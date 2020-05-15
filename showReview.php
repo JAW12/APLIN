@@ -28,10 +28,21 @@ if(!isset($_POST['idProduk'])){
         <!-- CSS Sendiri -->
         <link href="style/index.css" rel="stylesheet">
         <title>All Reviews For <?=$_POST['namaProduk']?></title>
+        <style>
+            html, body{ height:100%; margin:0; }
+            body{ 
+                display:flex; 
+                flex-direction:column; 
+            }
+
+            footer{
+                margin-top:auto; 
+            }
+        </style>
     </head>
     <body id="page-top">
         <main>
-            <div class="spaceatas"></br></br></div>
+            <div class="spaceatas"></div>
             <!-- Header Section -->
             <?php include("header.php");?>
             <div class="h1 text-center" style="margin-top: 2%; margin-bottom: 3%">All Reviews</div>
