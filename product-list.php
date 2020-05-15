@@ -309,6 +309,7 @@
                     // this.checked = !isChecked;
                     this.checked = statusCheckedParent;
                 });
+                loadProductList();
             })
 
             $(document).ready(function(){

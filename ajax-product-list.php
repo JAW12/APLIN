@@ -98,6 +98,10 @@
         $queryParent = $query . $condition . $conditionCatParent; 
         $queryChildren = $query . $condition . $conditionCatChildren;
 
+        // echo $queryParent . "<br/>";
+        // echo $queryChildren . "<br/>";
+        // echo "<pre>". print_r($tmpFilterCategory)."</pre><br/>";
+
         $listProduk = array();
         try {
              /** @var PDO $db Prepared Statement */
