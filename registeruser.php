@@ -12,8 +12,10 @@
     if($gendernya=="laki"){
         $gende="L";
     }
-    else {
+    else if($gendernya=="perempuan"){
         $gende="P";
+    }else{
+        $gende="U";
     }
     $query1 = "SELECT * FROM CUSTOMER where  USERNAME = '$username'";
     $wish = getQueryResultRow($db, $query1);

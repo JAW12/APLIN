@@ -99,18 +99,13 @@
                                 <div class="row">
                                 <legend class="col-form-label col-sm-3 pt-0">Gender</legend>
                                 <div class="col-sm-9">
-                                    <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="laki" checked>
-                                    <label class="form-check-label" for="gridRadios1">
-                                        Laki-Laki
-                                    </label>
-                                    </div>
-                                    <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="perempuan">
-                                    <label class="form-check-label" for="gridRadios2">
-                                        Perempuan
-                                    </label>
-                                    </div>
+                                <div class="form-group">
+                                    <select class="form-control" name="gridRadios">
+                                    <option value="laki">Laki-Laki</option>
+                                    <option value="perempuan">Perempuan</option>
+                                    <option value="undefiend">Undefiend</option>
+                                    </select>
+                                </div>
                                 </div>
                                 </div>
                                 <div class="container-login100-form-btn m-t-32 d-flex justify-content-around">
