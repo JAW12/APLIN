@@ -222,7 +222,7 @@
                 </div>
             </div>            
         </main>
-
+        <div id="alert"></div>
         <!-- Footer Section -->
         <?php include ("footer.php"); ?>
 
@@ -261,11 +261,8 @@
                 $.post("addtowish.php", 
                     { idproduk: idproduk },
                     function(result) {
-                        if(result=="berhasil"){
-                        }
-                        else{
-                           
-                        }
+                        $("#alert").html(result);
+                        $("#alertModal").modal();
                     }
                 );
             }
