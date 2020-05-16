@@ -38,6 +38,13 @@
         <title>Register Page</title>
     </head>
     <body>
+    <div id="loading" class="modal fade bd-example-modal-lg" data-BACKdrop="static" data-keyboard="false" tabindex="-1">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content" style="width: 48px">
+					<span class="fa fa-spinner fa-spin fa-3x"></span>
+				</div>
+			</div>
+        </div>
 <?php 
     if(isset($_GET['saved'])) {
         echo "<input type='hidden' id='txtsaved' value='1'>"; 
@@ -151,6 +158,7 @@
         <script language="javascript">
         var saved = $("#txtsaved").val(); 
         if(saved == "1") {
+            $('#loading').modal('show');
             var temp = $("#temp").val(); 
             if(temp != "") {
                 $.post("getdatauser.php",

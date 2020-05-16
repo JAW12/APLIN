@@ -23,7 +23,7 @@
         $query2 = "SELECT * FROM CUSTOMER where  email = '$email'";
         $wish2 = getQueryResultRow($db, $query2);
         if($wish2 == false){
-            //$pass = password_hash($pass, PASSWORD_DEFAULT); 
+            $pass = password_hash($pass, PASSWORD_DEFAULT); 
             $query = "INSERT INTO CUSTOMER VALUES(0,'$username', '$pass', '$email', '$fistname', '$lastname', '$gende')";
             $berhasil = executeNonQuery($db, $query);
             $temp= $db->lastInsertId();
