@@ -1,6 +1,21 @@
 <?php
-include __DIR__."/system/function-library.php";
+function getNamaHost() {
+    $addr = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";	
+    $posisi = -1; 
+    $i      = strlen($addr) - 1; 
+    while($i >= 0 && $posisi == -1) {
+        if(substr($addr, $i, 1) == "/") {
+            $posisi = $i; 
+        }
+        else { $i-=1; }
+    }
+    if($posisi != -1) {
+        $addr = substr($addr, 0, $posisi); 
+    }
+    return $addr; 
+}
 
+include __DIR__."/system/function-library.php";
 // var_dump($_POST);
 
 $subject = "[SqueeStore Register Form] - " . $_POST['name'] . ' ' . $_POST['surname'];
@@ -233,7 +248,8 @@ $body = "
                     </table>
 
             ";
-            $body .= "<a href='http://localhost/proyek-aplin/berhasilregistrasi.php?suksesid=".$_POST['id']."'><h4>Click here to verify</h4></a>";
+            $addr = getNamaHost(); 
+            $body .= "<a href='".$addr."/berhasilregistrasi.php?suksesid=".$_POST['id']."'><h4>Click here to verify</h4></a>";
 
 
 // Ini untuk Body bagian penutup
