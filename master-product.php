@@ -190,9 +190,6 @@ if (isset($login) && is_array($login)) {
                     $stmt->bindValue(":parent", $_POST['productParentCategory'], PDO::PARAM_INT);
                     $stmt->bindValue(":child", $_POST['productChildCategory'], PDO::PARAM_INT);
                     $result = $stmt->execute();
-                    if ($result) {
-                        header('Location: product-detail.php?idProduk='.$productId[0]['ROW']);
-                    }
                 } catch (Exception $e) {
                     if(isset($_POST['cek'])){
                         showInfoDiv("Failed updating product");
