@@ -96,21 +96,21 @@ if(isset($_SESSION['login'])){
                             <input type="hidden" name="idProduk" value="<?=$idProduk?>">
                             <input type="hidden" name="idCust" value="<?=$idCustomer?>">
                             <input type="hidden" name="stokProduk" value="<?=$stokProduk?>">
-                            <div class="input-group mb-3">
-                                <input type="number" name="jumlahBeliProduk" class="form-control" placeholder="1" aria-describedby="basic-addon2" min="1" value="1" required>
-                                <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon2">of <?=$stokProduk." ".strtolower("$satuanProduk")?></span>
-                                </div>
-                            </div>
                             <?php
                             if($jenisUser != ""){
                             ?>
-                                <button type='button' class='btn btn-warning w-100 rounded my-2' name='addToWishlist' onclick=addtowish('<?=$idProduk?>') formaction='wishlist.php'>Add to Wishlist</button>
                                 <?php
                                 if($stokProduk > 0){
                                 ?>
+                                <div class="input-group mb-3">
+                                    <input type="number" name="jumlahBeliProduk" class="form-control" placeholder="1" aria-describedby="basic-addon2" min="1" value="1" required>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="basic-addon2">of <?=$stokProduk." ".strtolower("$satuanProduk")?></span>
+                                    </div>
+                                </div>
                                 <button type="submit" class="btn btn-success form-control" name="btnBeli" id="btnAdd"> <i class="fas fa-shopping-cart"></i>
                                 &nbsp;&nbsp;&nbsp;Buy Now</button>
+                                <button type='button' class='btn btn-warning w-100 rounded my-2' name='addToWishlist' onclick=addtowish('<?=$idProduk?>') formaction='wishlist.php'>Add to Wishlist</button>
                             <?php
                                 }
                                 else{
