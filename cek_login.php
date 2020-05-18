@@ -6,8 +6,6 @@ if(isset($_GET['customer'])){
     $query = "SELECT * FROM CUSTOMER WHERE USERNAME = '$u' OR EMAIL = '$u'";
     $user = getQueryResultRow($db, $query);
     if($user != false){
-        // print_r($user);
-        echo $p . ' ' . $user['PASSWORD'];
         if(cekPassword($p, $user['PASSWORD'], true)){ // true => hash, false => gapake
             updateDataSession('login', array(
                 "row_id_customer" => $user["ROW_ID_CUSTOMER"],
