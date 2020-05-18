@@ -53,12 +53,16 @@
                     <div name="gambar1" class="col-12">
                         <img src="res/img/bg14.jpg" style="width: 100%;height:500px;">
                     </div>
-                    <div id="gambar2" class="col-6">
+                </div>
+                    <<div class="row">
+                    <div class="col-md-6" style="padding-right:0px;">
                         <img src="res/img/bg15.jpg" style="width: 100%;height:600px;">
-                    </div>
-                    <div id="gambar3" class="col-6">
+                    </div>    
+                    <div class="col-md-6" style="padding-left:0px;">
                         <img src="res/img/bg16.jpg" style="width: 100%;height:600px;">
                     </div>
+    </div>
+                 <div class="row">
                     <div id="gambar4" class="col-12">
                         <img src="res/img/bg17.jpg" style="width: 100%;height:500px;">
                     </div>
