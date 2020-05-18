@@ -28,7 +28,7 @@
         <!-- JS Sendiri -->
         <title>Home</title>
         <style>
-        .col-6:hover{
+        .col-md-6:hover{
             transform: scale(1.2);
             transition: 2s linear;
         }
@@ -49,12 +49,13 @@
             <!-- <div class="spaceatas"></div> -->
             
             <div class="container-fluid">
+            
                 <div class="row">
                     <div name="gambar1" class="col-12">
                         <img src="res/img/bg14.jpg" style="width: 100%;height:500px;">
                     </div>
                 </div>
-                    <<div class="row">
+                    <div class="row">
                     <div class="col-md-6" style="padding-right:0px;">
                         <img src="res/img/bg15.jpg" style="width: 100%;height:600px;">
                     </div>    
