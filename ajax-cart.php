@@ -18,7 +18,7 @@
     else if(isset($_POST['grand'])){
         try {
             $db->beginTransaction();
-            $query = "INSERT INTO HTRANS VALUES('',:idCust,:tanggal, '', '', :status, '')";
+            $query = "INSERT INTO HTRANS VALUES(null,:idCust,:tanggal, '', 0, :status, '')";
             $stmt = $db->prepare($query);
             $stmt->bindValue(":idCust", $_POST['idCust'], PDO::PARAM_INT);
             date_default_timezone_set('asia/jakarta');

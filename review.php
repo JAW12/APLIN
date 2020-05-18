@@ -32,7 +32,7 @@
 
     function showReviewTable($db, $detailTrans){
         ?>
-            <table class="table table-striped table-bordered border-dark mt-3 table-responsive">
+            <table class="table table-striped table-bordered border-dark mt-3">
                 <thead class="thead-dark text-center">
                     <th scope="col">#</th>
                     <th scope="col">Product Photo</th>

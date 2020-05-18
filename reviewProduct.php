@@ -9,11 +9,17 @@
         $comment = $_POST['comment'];
         echo $id_product . ' ' . $id_htrans . ' ' . $rating . ' ' . $comment . '<br>';
         if($comment != ''){
-            $query = "INSERT INTO REVIEW_PRODUK VALUES('', '$login[row_id_customer]', '$id_htrans', '$id_product', now(), '$comment', $rating)";
-            $berhasil = executeNonQuery($db, $query);
-            if($berhasil != true){
-                echo $berhasil;
+            $date = date('Y-m-d H:i:s');
+            $query = "INSERT INTO REVIEW_PRODUK VALUES('15', '$login[row_id_customer]', '$id_htrans', '$id_product', now(), '$comment', $rating)";
+            echo $query;
+            $stmt = $db->prepare($query);
+            $result = $stmt->execute();
+            if($result != true){
+                echo $result;
                 echo "Error";
+            }
+            else{
+                echo "Berhasil";
             }
         }
         else{

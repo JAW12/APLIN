@@ -1,9 +1,9 @@
 <?php //tag php ga ditutup gpp
 //dbname sesuaikan dgn nama db
-$dbname = "proyek_aplin";
+$dbname = "id13750692_proyek_aplin";
 $dsn = "mysql:host=localhost;dbname=".$dbname.";port=3306;charset=utf8mb4";
-$user = "root"; //ini default di xampp. kalo deploy tergantung server
-$pass ="";
+$user = "id13750692_squee"; //ini default di xampp. kalo deploy tergantung server
+$pass ="@Bocahhulk1234";
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

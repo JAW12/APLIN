@@ -49,7 +49,18 @@
                         </div>
                         <div class="card-body" style="box-sizing: border-box">       
                             <div class="alert alert-danger <?= isset($_GET['error']) ? 'd-block' : 'd-none'?>">
-                                <?= $_GET['error'] == 'wrongpw' ? 'Wrong Password!' : 'Login Data Not Found'?>
+                                <?php 
+                                    if($_GET['error'] == 'wrongpw'){
+                                        echo 'Wrong Password!';
+                                    }
+                                    else if($_GET['error'] == 'unverified'){
+                                        echo 'User Is Not Yet Verified!';
+                                    }
+                                    else{
+                                        echo 'Login Data Not Found!';
+                                    }
+                                ?>
+                                <!--<?= $_GET['error'] == 'wrongpw' ? 'Wrong Password!' : 'Login Data Not Found'?>-->
                             </div>                 
                             <form class="login100-form validate-form p-b-33 p-t-5" method="post">
                                 <div class="wrap-input100 validate-input" data-validate="Enter username">

@@ -249,7 +249,7 @@ $body = "
 
             ";
             $addr = getNamaHost(); 
-            $body .= "<a href='".$addr."/berhasilregistrasi.php?suksesid=".$_POST['id']."'><h4>Click here to verify</h4></a>";
+            // $body .= "<a href='".$addr."/berhasilregistrasi.php?suksesid=".$_POST['id']."'><h4>Click here to verify</h4></a>";
 
 
 // Ini untuk Body bagian penutup

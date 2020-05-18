@@ -13,7 +13,7 @@
         $result="";
         do {
            $result=generateCodeForRegistration(5);
-           $query="select Count(*) as jumlah from verifikasi_email where KODE_VERIFIKASI='$result'";
+           $query="select Count(*) as jumlah from VERIFIKASI_EMAIL where KODE_VERIFIKASI='$result'";
            $count=$db->query($query)->fetch(PDO::FETCH_ASSOC)["jumlah"];
         }while ($count >0);
         return $result;

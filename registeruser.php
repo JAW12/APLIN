@@ -28,7 +28,7 @@
             $berhasil = executeNonQuery($db, $query);
             $temp= $db->lastInsertId();
             $kodebaru=uniquecodeemailForRegistration();
-            $query2 = "INSERT INTO verifikasi_email (ROW_ID_CUSTOMER,KODE_VERIFIKASI,STATUS_VERIFIKASI) VALUES ($temp,$kodebaru,'0')";
+            $query2 = "INSERT INTO VERIFIKASI_EMAIL (ROW_ID_CUSTOMER,KODE_VERIFIKASI,STATUS_VERIFIKASI) VALUES ($temp,$kodebaru,'0')";
             $berhasil = executeNonQuery($db, $query2);
             header("location:register.php?saved=1&temp=$temp");
         }else{

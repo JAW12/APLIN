@@ -202,7 +202,7 @@
                                         <button class="btn btn-primary w-100 rounded my-2" name="lihatDetail" formaction="product-detail.php">View Detail</button>    
                                         <?php
                                             if ($jenisUser == "customer") {
-                                                echo "<button type='button'  class='btn btn-danger w-100 rounded my-2' name='removefromwishlist' onclick=removefromwish('".$value['ROW_ID_PRODUK']."') formaction='wishlist.php'>Delete From Wish</button>"; 
+                                                echo "<button type='button'  class='btn btn-danger w-100 rounded my-2' name='removefromwishlist' onclick=removefromwish('".$value['ROW_ID_PRODUK']."') formaction='wishlist.php'>Remove From Wishlist</button>"; 
                                             }
                                         ?>
                                     </div>

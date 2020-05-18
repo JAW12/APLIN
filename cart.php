@@ -1,6 +1,7 @@
 <?php
     include __DIR__."/system/load.php";
-    // session_start();
+    $login = getDataLogin();
+
 ?>
 <!doctype html>
 <html>
@@ -73,7 +74,7 @@
             <div class="container text-right">
                 <form method="POST" id="confirmPurchase">
                     <input type="hidden" name="grand" value="<?=$grandTotal?>"/>
-                    <input type="hidden" name="idCust" value="<?=$idCustomer?>">
+                    <input type="hidden" name="idCust" value="<?=$login['row_id_customer']?>">
                     <button class="btn btn-success text-center px-3" name="btnConfirm">Confirm Purchase</button>
                 </form>
             </div>

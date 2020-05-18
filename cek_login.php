@@ -7,14 +7,31 @@ if(isset($_GET['customer'])){
     $user = getQueryResultRow($db, $query);
     if($user != false){
         if(cekPassword($p, $user['PASSWORD'], true)){ // true => hash, false => gapake
-            updateDataSession('login', array(
-                "row_id_customer" => $user["ROW_ID_CUSTOMER"],
-                "username" => $user['USERNAME'],
-                "password" => hashPassword($p, false), // true => hash, false => gapake
-                "role" => 1
-            ));
-            header("location: index.php");
-            exit;
+            $row_id_customer = $user['ROW_ID_CUSTOMER'];
+            $q = "SELECT * FROM VERIFIKASI_EMAIL WHERE ROW_ID_CUSTOMER = '$row_id_customer'";
+            $status = getQueryResultRow($db, $q);
+            if($status != false)
+            {
+                if($status['STATUS_VERIFIKASI'] == 1){
+                    updateDataSession('login', array(
+                        "row_id_customer" => $user["ROW_ID_CUSTOMER"],
+                        "username" => $user['USERNAME'],
+                        "password" => hashPassword($p, false), // true => hash, false => gapake
+                        "role" => 1
+                    ));
+                    header("location: index.php");
+                    exit;
+                }
+                else{
+                    header("location: login.php?error=unverified");
+                exit; 
+                }
+            }
+            else{
+                header("location: login.php?error=unverified");
+                exit; 
+            }
+            
         }
         else{
             header("location: login.php?error=wrongpw");
@@ -22,7 +39,7 @@ if(isset($_GET['customer'])){
         }
     }
     else{
-        header("location: login.php?error=notfound");
+        // header("location: login.php?error=notfound");
         exit;
     }
 }
