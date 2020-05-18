@@ -36,6 +36,20 @@
 
         <!-- JS Sendiri -->
         <title>Register Page</title>
+        <style>
+
+            .bd-example-modal-lg .modal-dialog{
+				display: table;
+				position: relative;
+				margin: 0 auto;
+				top: calc(50% - 24px);
+			}
+			
+			.bd-example-modal-lg .modal-dialog .modal-content{
+				background-color: transparent;
+				border: none;
+			}
+        </style>
     </head>
     <body>
     <div id="loading" class="modal fade bd-example-modal-lg" data-BACKdrop="static" data-keyboard="false" tabindex="-1">
@@ -103,7 +117,15 @@
                                     <input class="input100" type="text" name="lastname" placeholder="Last Name">
                                     <span class="focus-input100" data-placeholder="&#xe892;"></span>
                                 </div>
-                                <div class="row">
+                                <div class="wrap-input100 validate-input" data-validate="Enter Gender">
+                                    <select class="input100" name="gridRadios" placeholder="Laki - Laki">
+                                    <option value="laki">Laki-Laki</option>
+                                    <option value="perempuan">Perempuan</option>
+                                    <option value="undefiend">Undefiend</option>
+                                    </select>
+                                    <span class="focus-input100" data-placeholder="&#xe82b;"></span>
+                                </div>
+                                <!-- <div class="row">
                                 <legend class="col-form-label col-sm-3 pt-0">Gender</legend>
                                 <div class="col-sm-9">
                                 <div class="form-group">
@@ -114,7 +136,7 @@
                                     </select>
                                 </div>
                                 </div>
-                                </div>
+                                </div> -->
                                 <div class="container-login100-form-btn m-t-32 d-flex justify-content-around">
                                     <button type='submit' class="login100-form-btn w-75" formaction="registeruser.php?user">
                                         Register

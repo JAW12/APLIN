@@ -3,16 +3,16 @@ include __DIR__."/system/load.php";
 if(isset($_GET['customer'])){
     $u = $_POST['username'];
     $p = $_POST['pass'];
-    $query = "SELECT * FROM customer WHERE username = '$u' OR email = '$u'";
+    $query = "SELECT * FROM CUSTOMER WHERE USERNAME = '$u' OR EMAIL = '$u'";
     $user = getQueryResultRow($db, $query);
     if($user != false){
         // print_r($user);
         echo $p . ' ' . $user['PASSWORD'];
-        if(cekPassword($p, $user['PASSWORD'], false)){ // true => hash, false => gapake
+        if(cekPassword($p, $user['PASSWORD'], true)){ // true => hash, false => gapake
             updateDataSession('login', array(
                 "row_id_customer" => $user["ROW_ID_CUSTOMER"],
                 "username" => $user['USERNAME'],
-                "password" => hashPassword($p, false), // true => hash, false => gapake
+                "password" => hashPassword($p, true), // true => hash, false => gapake
                 "role" => 1
             ));
             header("location: index.php");
@@ -34,7 +34,7 @@ else if(isset($_GET['admin'])){
     if($u == 'admin' && $p == 'admin'){
         updateDataSession('login', array(
             "username" => $u,
-            "password" => hashPassword($p, false), // true => hash, false => gapake
+            "password" => hashPassword($p, true), // true => hash, false => gapake
             "role" => 0
         ));
         header("location: index.php");

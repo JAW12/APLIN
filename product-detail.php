@@ -117,6 +117,7 @@ if(isset($_SESSION['login'])){
                                     ?>
                                     <button type="submit" style="pointer-events: none;" class="btn btn-danger form-control disabled" name="btnBeli"> <i class="fas fa-times"></i>
                                     &nbsp;&nbsp;&nbsp;Out of Stock</button>
+                                    <button type='button' class='btn btn-warning w-100 rounded my-2' name='addToWishlist' onclick=addtowish('<?=$idProduk?>') formaction='wishlist.php'>Add to Wishlist</button>
                                     <?php
                                 }
                             }
@@ -162,7 +163,7 @@ if(isset($_SESSION['login'])){
                         <form method="POST">
                             <input type="hidden" name="idProduk" value="<?= $idReview ?>">
                             <input type="hidden" name="namaProduk" value="<?=$namaProduk?>">
-                            <button type="submit" class="btn text-center form-control mt-4" style="background-color: orange" name="btnBeli" formaction="showReview2.php">See All Other Reviews</button>
+                            <button type="submit" class="btn text-center form-control mt-4" style="background-color: orange" name="btnBeli" formaction="showReview.php">See All Other Reviews</button>
                         </form>
                         <?php
                     }
