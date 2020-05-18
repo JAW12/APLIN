@@ -65,44 +65,10 @@ if(isset($_SESSION['login'])){
         $dimensiProduk=$produk['DIMENSI_PRODUK'];
         $beratProduk=$produk['BERAT_PRODUK'];
         $satuanProduk=$produk['SATUAN_PRODUK'];
-        if(isset($_POST['btnBeli'])){
-            if($_POST['jumlahBeliProduk'] > $stokProduk){
-                showAlertDiv('The amount you requested is currently unavailable');
-            }
-            else{
-                $query = "SELECT * FROM CART WHERE ROW_ID_PRODUK = $_POST[idProduk] AND ROW_ID_CUSTOMER = $idCustomer";
-                $cekCart = getQueryResultRowArrays($db, $query);
-                if(count($cekCart) > 0){
-                    try{
-                        $query = "UPDATE CART SET QTY = :qty WHERE ROW_ID_PRODUK = :produk AND ROW_ID_CUSTOMER = :cust";
-                        $stmt = $db->prepare($query);
-                        $qty = $cekCart[0]['QTY'];
-                        $qty = $qty + $_POST['jumlahBeliProduk'];
-                        $stmt->bindValue(":qty", $qty);
-                        $stmt->bindValue(":produk", $_POST['idProduk']);
-                        $stmt->bindValue(":cust", $idCustomer);
-                        $result = $stmt->execute();
-                    } catch (Exception $e) {
-                        echo $e->getMessage();
-                    }
-                    showInfoDiv('Success adding to cart');
-                }
-                else{
-                    try {
-                        $query = "INSERT INTO CART VALUES(:idCust, :idProduk, :qty)";
-                        $stmt = $db->prepare($query);
-                        $stmt->bindValue(":idCust", $idCustomer, PDO::PARAM_INT);
-                        $stmt->bindValue(":idProduk", $_POST['idProduk'], PDO::PARAM_INT);
-                        $stmt->bindValue(":qty", $_POST['jumlahBeliProduk'], PDO::PARAM_INT);
-                        $result = $stmt->execute();
-                    } catch (Exception $e) {
-                        echo $e->getMessage();
-                    }
-                    showInfoDiv('Success adding to cart');
-                }
-            }
-        }
         ?>
+        <div class="container" id="succeessAdd">
+
+        </div>
         <main>
             <div class="container">
             <div class="row mt-3 mb-5">
@@ -123,9 +89,10 @@ if(isset($_SESSION['login'])){
                     }
                     else{
                         ?>
-                        <form method="POST">
+                        <form method="POST" id="addCart">
                             <input type="hidden" name="idProduk" value="<?=$idProduk?>">
                             <input type="hidden" name="idCust" value="<?=$idCustomer?>">
+                            <input type="hidden" name="stokProduk" value="<?=$stokProduk?>">
                             <div class="input-group mb-3">
                                 <input type="number" name="jumlahBeliProduk" class="form-control" placeholder="1" aria-describedby="basic-addon2" min="1" value="1" required>
                                 <div class="input-group-append">
@@ -139,7 +106,7 @@ if(isset($_SESSION['login'])){
                                 <?php
                                 if($stokProduk > 0){
                                 ?>
-                                <button type="submit" class="btn btn-success form-control" name="btnBeli"> <i class="fas fa-shopping-cart"></i>
+                                <button type="submit" class="btn btn-success form-control" name="btnBeli" id="btnAdd"> <i class="fas fa-shopping-cart"></i>
                                 &nbsp;&nbsp;&nbsp;Buy Now</button>
                             <?php
                                 }
@@ -283,7 +250,19 @@ if(isset($_SESSION['login'])){
             $( function() {
                 $( "#tabs" ).tabs();
             });
-            
+
+            $("#addCart").submit(function(e){
+                e.preventDefault();
+                $.ajax({
+                    method : "POST",
+                    url : "ajax-product-detail.php",
+                    data : $("#addCart").serialize(),
+                    success : function(res){
+                        $("#succeessAdd").html(res);
+                    }
+                });
+            });
+
             function addtowish(idproduk) {
                 $.post("addtowish.php", 
                     { idproduk: idproduk },

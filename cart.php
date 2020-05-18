@@ -49,77 +49,25 @@
     </head>
     <body id="page-top">
         <!-- <div class="spaceatas"></div> -->
-        <div id="judul" class="container-fluid text-center my-5" style="background-image: url('res/img/bg12.jpg');">
+        <div id="judul" class="container-fluid text-center my-5" style="background-image: url('res/img/bg19.jpg');">
             <h1 class="text-light display-3 font-weight-bold">
                 Cart
             </h1>
         </div>
         <!-- Header Section -->
         <?php include("header.php"); 
-            if(isset($_SESSION['regisdtrans'])){
-                $registerdtrans = $_SESSION['regisdtrans'];
-            }
             if(isset($_POST['idProduk'])){
                 $idProduk = $_POST['idProduk'];
             }
             if(isset($_POST['grand'])){
                 $grandTotal = $_POST['grand'];
             }
-            if(isset($_SESSION['login'])){
-                $idCustomer = $_SESSION['login']['row_id_customer'];
-            }
-            if(isset($_POST['btnDelete'])){
-                try {
-                    $query = "DELETE FROM CART WHERE ROW_ID_PRODUK = :id AND ROW_ID_CUSTOMER = :idCust";
-                    $stmt = $db->prepare($query);
-                    $stmt->bindValue(":id", $idProduk, PDO::PARAM_INT);
-                    $stmt->bindValue(":idCust", $idCustomer, PDO::PARAM_INT);
-                    $result = $stmt->execute();
-                    showInfoDiv("Successfully delete an item from cart");
-                } catch (Exception $e) {
-                    echo $e->getMessage();
-                }
-            }
-            if(isset($_POST['btnConfirm'])){
-                try {
-                    $db->beginTransaction();
-                    $query = "INSERT INTO HTRANS VALUES('',:idCust,:tanggal, '', '', :status, '')";
-                    $stmt = $db->prepare($query);
-                    $stmt->bindValue(":idCust", $idCustomer, PDO::PARAM_INT);
-                    date_default_timezone_set('asia/jakarta');
-                    $stmt->bindValue(":tanggal",date('Y-m-d H:i:s'), PDO::PARAM_STR);
-                    $stmt->bindValue(":status", 0, PDO::PARAM_INT);
-                    $result = $stmt->execute();
-                    if($result){
-                        $rowIdHtrans = $db->lastInsertId();
-                        foreach ($registerdtrans as $key => $value) {
-                            $query = "INSERT INTO DTRANS VALUES(:htrans, :idProduk, :qty, '', '')";
-                            $stmt = $db->prepare($query);
-                            $stmt->bindValue(":htrans", $rowIdHtrans, PDO::PARAM_INT);
-                            $stmt->bindValue(":idProduk", $value['id'], PDO::PARAM_INT);
-                            $stmt->bindValue(":qty", $value['qty'], PDO::PARAM_INT);
-                            $result = $stmt->execute();
-                        }
-                        unset($_SESSION['regisdtrans']);
-                    }
-                    showInfoDiv("Purchase Confirmed");
-                    try {
-                        $query = "DELETE FROM CART WHERE ROW_ID_CUSTOMER = :idCust";
-                        $stmt = $db->prepare($query);
-                        $stmt->bindValue(":idCust", $idCustomer, PDO::PARAM_INT);
-                        $result = $stmt->execute();
-                    } catch (Exception $e) {
-                        echo $e->getMessage();
-                    }
-                    $db->commit();
-                } catch (Exception $e) {
-                    echo $e->getMessage();
-                }
-                $_SESSION['regisdtrans'] = [];
-            }
         ?>
+        <div class="container" id="succeessAdd">
+
+        </div>
         <main>
-            <table class="table table-hover table-striped table-bordered container">
+            <table id="tableProduct" class="table table-hover table-striped table-bordered container">
                 <thead class="thead-dark text-center">
                     <tr>
                         <th scope="col">#</th>
@@ -133,6 +81,9 @@
                 </thead>
                 <tbody>
                     <?php
+                        if(isset($_SESSION['login'])){
+                            $idCustomer = $_SESSION['login']['row_id_customer'];
+                        }
                         $query = "SELECT * FROM CART WHERE ROW_ID_CUSTOMER='$idCustomer'";
                         $cartData = getQueryResultRowArrays($db, $query);
                         if (count($cartData) <= 0) {
@@ -180,9 +131,11 @@
                                     <td style="text-align: right"><?= number_format($subtotalItem, 0, ',', '.')?></td>
                                     <?php
                                     ?>
-                                    <form method="POST">
+                                    <form method="POST" class="delItem">
                                         <input type="hidden" name="idProduk" value="<?=$itemData['ROW_ID_PRODUK']?>"/>
-                                        <td style="text-align: center;"><button class="btn btn-danger" name="btnDelete">Delete Item</button></td>
+                                        <input type="hidden" name="delete" value="a"/>
+                                        <input type="hidden" name="idCust" value="<?=$idCustomer?>">
+                                        <td style="text-align: center;"><button class="btn btn-danger btn-delete" name="btnDelete">Delete Item</button></td>
                                     </form>
                                     <?php
                                     $grandTotal = $grandTotal + $subtotalItem;
@@ -203,8 +156,9 @@
                 </tbody>
             </table>
             <div class="container text-right">
-                <form method="POST">
+                <form method="POST" id="confirmPurchase">
                         <input type="hidden" name="grand" value="<?=$grandTotal?>"/>
+                        <input type="hidden" name="idCust" value="<?=$idCustomer?>">
                         <button class="btn btn-success text-center px-3" name="btnConfirm">Confirm Purchase</button>
                 </form>
             </div>
@@ -213,6 +167,79 @@
         </main>
         
         <?php include("footer.php"); ?>
+
+        <script>
+             $(document).ready(function(){
+
+                //data akan diperbarui setiap 1 menit sekali
+                setInterval(() => {
+                    showCart();
+                }, 60 * 1000);
+            });
+
+            $( function() {
+                $( "#tabs" ).tabs();
+            });
+
+            $(document).on( "click", ".btn-delete", function(e){
+                e.preventDefault();
+                let form = $(this).parent().parent();
+                $.ajax({
+                    method : "POST",
+                    url : "ajax-cart.php",
+                    data : $(form).serialize(),
+                    success : function(res){
+                        $("#succeessAdd").html(res);
+                        showCart();
+                    }
+                });
+            });
+
+            $("#confirmPurchase").submit(function(e){
+                e.preventDefault();
+                $.ajax({
+                    method : "POST",
+                    url : "ajax-cart.php",
+                    data : $("#confirmPurchase").serialize(),
+                    success : function(res){
+                        $("#succeessAdd").html(res);
+                        var success = `
+                        <thead class="thead-dark text-center">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Picture</th>
+                                <th scope="col">Name</th>                        
+                                <th scope="col">Price</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Subtotal</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>       
+                        <tbody>                         
+                            <tr>
+                                <th colspan="7" class="text-center">
+                                    <span class="text-dark">You don't have any item in your cart yet</span> <br/>
+                                    <a class="btn btn-warning text-dark rounded mx-2 my-2" href="product-list.php">
+                                        Start shopping now
+                                    </a>
+                                </th>
+                            </tr>
+                        </tbody>`;
+                        $("#tableProduct").html(success);
+                    }
+                });
+            });
+
+            function showCart(){
+                $.ajax({
+                    method: "post",
+                    url: "ajax-cart.php",
+                    success : function(res){
+                        $("#tableProduct").html("tes");
+                    }
+                });
+            }
+        </script>
 
     </body>
 </html>
