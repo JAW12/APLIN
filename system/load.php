@@ -15,7 +15,7 @@
 
         if(isset($login)){
             if($role == 'Admin'){
-                if(!cekPassword($login['password'], 'admin', false)){
+                if(!cekPassword($login['password'], 'admin', true)){
                     header("location: index.php");
                     exit;
                 }
@@ -25,10 +25,10 @@
                 }
             }
             else if($role == 'Customer'){
-                $query = "SELECT * FROM customer WHERE username = '$login[username]'";
+                $query = "SELECT * FROM CUSTOMER WHERE USERNAME = '$login[username]'";
                 $user = getQueryResultRow($db, $query);
                 if($user != false){
-                    if(!cekPassword($login['password'], $user['PASSWORD'], false)){ // true => hash, false => gapake
+                    if(!cekPassword($login['password'], $user['PASSWORD'], true)){ // true => hash, false => gapake
                         header("location: login.php");
                         exit;
                     }

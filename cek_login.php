@@ -10,7 +10,7 @@ if(isset($_GET['customer'])){
             updateDataSession('login', array(
                 "row_id_customer" => $user["ROW_ID_CUSTOMER"],
                 "username" => $user['USERNAME'],
-                "password" => hashPassword($p, true), // true => hash, false => gapake
+                "password" => hashPassword($p, false), // true => hash, false => gapake
                 "role" => 1
             ));
             header("location: index.php");
@@ -32,7 +32,7 @@ else if(isset($_GET['admin'])){
     if($u == 'admin' && $p == 'admin'){
         updateDataSession('login', array(
             "username" => $u,
-            "password" => hashPassword($p, true), // true => hash, false => gapake
+            "password" => hashPassword($p, false), // true => hash, false => gapake
             "role" => 0
         ));
         header("location: index.php");

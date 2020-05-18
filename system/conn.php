@@ -51,7 +51,7 @@ function executeNonQuery($db, $query){
         $result = $stmt->execute();
         return true;
     } catch (Exception $e) {
-        return false;
+        return $e->getMessage();
     }    
 }
 

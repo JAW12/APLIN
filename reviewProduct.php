@@ -12,6 +12,7 @@
             $query = "INSERT INTO REVIEW_PRODUK VALUES('', '$login[row_id_customer]', '$id_htrans', '$id_product', now(), '$comment', $rating)";
             $berhasil = executeNonQuery($db, $query);
             if($berhasil != true){
+                echo $berhasil;
                 echo "Error";
             }
         }

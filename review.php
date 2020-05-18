@@ -30,27 +30,9 @@
         $dataCust = getQueryResultRow($db, $query);
     }
 
-    // $row_id_htrans = -1;
-    // if (isset($_GET['row_id_htrans'])) {
-    //     $row_id_htrans = $_POST['row_id_htrans'];
-    //     showAlert($row_id_htrans);
-    // }
-
-    // if (isset($_SESSION['dataTrans'])) {
-    //     $dataTrans = $_SESSION['dataTrans'];       
-    //     $row_id_htrans = $dataTrans['row_id_htrans']; 
-    //     $detailTrans = $dataTrans['detail'];
-    // }
-    // else{        
-    //     $row_id_htrans = 0;
-    //     $dataCust = array();
-    //     $headerTrans = array();
-    //     $detailTrans = array();
-    // }
-
     function showReviewTable($db, $detailTrans){
         ?>
-            <table class="table table-striped table-bordered border-dark mt-3">
+            <table class="table table-striped table-bordered border-dark mt-3 table-responsive">
                 <thead class="thead-dark text-center">
                     <th scope="col">#</th>
                     <th scope="col">Product Photo</th>
