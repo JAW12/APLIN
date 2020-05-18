@@ -54,17 +54,17 @@
     }
     else{
         ?>
-        <thead class="thead-dark text-center">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Picture</th>
-                <th scope="col">Name</th>                        
-                <th scope="col">Price</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Subtotal</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
+            <thead class="thead-dark text-center">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Picture</th>
+                    <th scope="col">Name</th>                        
+                    <th scope="col">Price</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
             <tbody>
                 <?php
                     if(isset($_SESSION['login'])){
@@ -121,7 +121,7 @@
                                     <input type="hidden" name="idProduk" value="<?=$itemData['ROW_ID_PRODUK']?>"/>
                                     <input type="hidden" name="delete" value="a"/>
                                     <input type="hidden" name="idCust" value="<?=$idCustomer?>">
-                                    <td style="text-align: center;"><button class="btn btn-danger btn-delete" name="btnDelete">Delete Item</button></td>
+                                    <td style="text-align: center;"><button type="button" class="btn btn-danger btn-delete" name="btnDelete">Delete Item</button></td>
                                 </form>
                                 <?php
                                 $grandTotal = $grandTotal + $subtotalItem;
