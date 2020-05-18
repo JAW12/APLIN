@@ -52,7 +52,7 @@
         }
         $_SESSION['regisdtrans'] = [];
     }
-    else{
+    else if(isset($_POST['load'])){
         ?>
             <thead class="thead-dark text-center">
                 <tr>
@@ -117,12 +117,15 @@
                                 <td style="text-align: right"><?= number_format($subtotalItem, 0, ',', '.')?></td>
                                 <?php
                                 ?>
-                                <form method="POST" class="delItem">
-                                    <input type="hidden" name="idProduk" value="<?=$itemData['ROW_ID_PRODUK']?>"/>
-                                    <input type="hidden" name="delete" value="a"/>
-                                    <input type="hidden" name="idCust" value="<?=$idCustomer?>">
-                                    <td style="text-align: center;"><button type="button" class="btn btn-danger btn-delete" name="btnDelete">Delete Item</button></td>
-                                </form>
+                                <td style="text-align: center;">
+                                    <form method="POST" class="delItem">
+                                        <input type="hidden" name="idProduk" value="<?=$itemData['ROW_ID_PRODUK']?>"/>
+                                        <input type="hidden" name="delete" value="a"/>
+                                        <input type="hidden" name="idCust" value="<?=$idCustomer?>">
+                                        <button type="button" class="btn btn-danger btn-delete" name="btnDelete">Delete Item</button>
+                                    </form>
+                                </td>
+                                
                                 <?php
                                 $grandTotal = $grandTotal + $subtotalItem;
                                 echo "</tr>";

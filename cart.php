@@ -72,9 +72,9 @@
             </table>
             <div class="container text-right">
                 <form method="POST" id="confirmPurchase">
-                        <input type="hidden" name="grand" value="<?=$grandTotal?>"/>
-                        <input type="hidden" name="idCust" value="<?=$idCustomer?>">
-                        <button class="btn btn-success text-center px-3" name="btnConfirm">Confirm Purchase</button>
+                    <input type="hidden" name="grand" value="<?=$grandTotal?>"/>
+                    <input type="hidden" name="idCust" value="<?=$idCustomer?>">
+                    <button class="btn btn-success text-center px-3" name="btnConfirm">Confirm Purchase</button>
                 </form>
             </div>
             
@@ -97,8 +97,10 @@
             });
 
             $(document).on( "click", ".btn-delete", function(e){
-                e.preventDefault();
+                // e.preventDefault();
+                console.log(this);
                 let form = $(this).parent();
+                console.log(form);
                 $.ajax({
                     method : "POST",
                     url : "ajax-cart.php",
@@ -149,6 +151,9 @@
                 $.ajax({
                     method: "post",
                     url: "ajax-cart.php",
+                    data : {
+                        load : "true"
+                    },
                     success : function(res){
                         $("#tableProduct").html(res);
                     }
