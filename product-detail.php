@@ -56,7 +56,10 @@ if(isset($_SESSION['login'])){
         }
         $query = "SELECT * FROM PRODUK WHERE ROW_ID_PRODUK=$idProduk";
         $produk = getQueryResultRow($db, $query);
-        $fotoProduk="res/img/produk/".$produk['LOKASI_FOTO_PRODUK'];
+        $fotoProduk = "res/img/no-image.png";
+        if (!empty($produk['LOKASI_FOTO_PRODUK'])) {
+            $fotoProduk="res/img/produk/".$produk['LOKASI_FOTO_PRODUK'];
+        }            
         $namaProduk=$produk['NAMA_PRODUK'];
         $hargaProduk=$produk['HARGA_PRODUK'];
         $stokProduk=$produk['STOK_PRODUK'];
@@ -167,22 +170,34 @@ if(isset($_SESSION['login'])){
                 </div>
             </div>
         </main>
-        <div id="tabs" class="container">
-                <ul>
-                    <li><a href="#tabs-1">Product Description</a></li>
-                    <li><a href="#tabs-2">Other Information</a></li>
-                </ul>
-                <div id="tabs-1">
-                    <p><?=$deskripsiProduk?></p>
+        <div class="container">
+            <?php
+            $query = "SELECT * FROM PRODUK WHERE ROW_ID_PRODUK=$idProduk";
+            $produk = getQueryResultRowArrays($db, $query);
+            ?>
+            <ul class="nav nav-tabs mt-3">
+                <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#home">Product Description</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#menu1">Other Information</a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div id="home" class="container tab-pane active" style="min-height: 225px;"><br>
+                <p><?= $produk[0]["DESKRIPSI_PRODUK"];?></p>
                 </div>
-                <div id="tabs-2">
-                    <p>Package Dimension : </br>
-                    <?= $dimensiKemasan?></p>
-                    <p>Product Dimension : </br>
-                    <?= $dimensiProduk?> </p>
-                    <p>Product Weight : </br>
-                    <?= $beratProduk?> </p>
+                <div id="menu1" class="container tab-pane fade"><br>
+                <h6>Package Dimension</h6>
+                <p><?= $produk[0]["DIMENSI_KEMASAN"];?></p>
+                <h6>Product Dimension</h6>
+                <p><?= $produk[0]["DIMENSI_PRODUK"];?></p>
+                <h6>Product Weight</h6>
+                <p><?= $produk[0]["BERAT_PRODUK"];?></p>
                 </div>
+            </div>
         </div>
         <div class="container px-1 pl-1">
             <h3 class="display-4 mt-3">Similar Product :</h3>
@@ -247,9 +262,6 @@ if(isset($_SESSION['login'])){
         <?php include("footer.php"); ?>
 
         <script>
-            $( function() {
-                $( "#tabs" ).tabs();
-            });
 
             $("#addCart").submit(function(e){
                 e.preventDefault();

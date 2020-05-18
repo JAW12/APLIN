@@ -275,6 +275,7 @@ if (isset($login) && is_array($login)) {
                     Product Description : </br>
                     <textarea class="form-control" name="productDescription" rows="6" value="<?= isset($_POST['idProduk']) ? $deskripsiProduk : "" ?>"><?= isset($_POST['idProduk']) ? $deskripsiProduk : "" ?></textarea></br>
                     Product Image : </br>
+                    <h8 class="display-5" style="color: red"><i>Image must be a .PNG</i></h8>
                     <input type="file" id="files" class="form-control-file" name="productImage" value="<?= isset($_POST['idProduk']) ? $fotoProduk : "" ?>">
                     <img id="fotoFile"></br></br>
                     Product Stock : </br>

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 15, 2020 at 10:24 AM
+-- Generation Time: May 18, 2020 at 12:00 PM
 -- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.1
+-- PHP Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -22,16 +22,6 @@ SET time_zone = "+00:00";
 -- Database: `proyek_aplin`
 --
 
-DELIMITER $$
---
--- Functions
---
-CREATE DEFINER=`root`@`localhost` FUNCTION `F_HELLO` (`PESAN` VARCHAR(20)) RETURNS TEXT CHARSET utf8 BEGIN
-	RETURN PESAN;
-END$$
-
-DELIMITER ;
-
 -- --------------------------------------------------------
 
 --
@@ -42,7 +32,7 @@ CREATE TABLE `cart` (
   `ROW_ID_CUSTOMER` int(11) NOT NULL,
   `ROW_ID_PRODUK` int(11) NOT NULL,
   `QTY` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `cart`
@@ -78,12 +68,12 @@ INSERT INTO `cart` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`, `QTY`) VALUES
 CREATE TABLE `customer` (
   `ROW_ID_CUSTOMER` int(11) NOT NULL,
   `USERNAME` varchar(20) NOT NULL,
-  `PASSWORD` text NOT NULL,
+  `PASSWORD` mediumtext NOT NULL,
   `EMAIL` varchar(320) NOT NULL,
   `NAMA_DEPAN_CUSTOMER` varchar(50) NOT NULL,
   `NAMA_BELAKANG_CUSTOMER` varchar(50) NOT NULL,
   `JENIS_KELAMIN_CUSTOMER` varchar(1) NOT NULL COMMENT 'L = Laki-laki; P = Perempuan; U=Undefined (untuk organisasi/perusahaan)'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `customer`
@@ -117,7 +107,7 @@ CREATE TABLE `dtrans` (
   `QTY_PRODUK` int(11) NOT NULL,
   `HARGA_PRODUK` int(11) DEFAULT NULL,
   `SUBTOTAL` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `dtrans`
@@ -230,8 +220,8 @@ CREATE TABLE `htrans` (
   `NO_NOTA` varchar(15) DEFAULT NULL,
   `TOTAL_TRANS` int(11) DEFAULT 0,
   `STATUS_PEMBAYARAN` int(11) NOT NULL COMMENT '0=Pending,  1= Accepted,  2=Rejected',
-  `LOKASI_FOTO_BUKTI_PEMBAYARAN` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `LOKASI_FOTO_BUKTI_PEMBAYARAN` mediumtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `htrans`
@@ -292,7 +282,7 @@ CREATE TABLE `kategori` (
   `NAMA_KATEGORI` varchar(30) NOT NULL,
   `STATUS_AKTIF_KATEGORI` varchar(1) NOT NULL COMMENT '1=aktif, 0= tidak aktif',
   `STATUS_PARENT` varchar(1) DEFAULT '0' COMMENT '1=parent, 0= bukan parent - default nya bukan parent'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `kategori`
@@ -353,13 +343,14 @@ CREATE TABLE `kategori_produk` (
   `ROW_ID_PRODUK` int(11) NOT NULL,
   `ROW_ID_KATEGORI_PARENT` int(11) NOT NULL,
   `ROW_ID_KATEGORI_CHILD` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `kategori_produk`
 --
 
 INSERT INTO `kategori_produk` (`ROW_ID_PRODUK`, `ROW_ID_KATEGORI_PARENT`, `ROW_ID_KATEGORI_CHILD`) VALUES
+(3, 28, 2),
 (5, 9, 6),
 (6, 7, 2),
 (7, 7, 10),
@@ -388,29 +379,28 @@ CREATE TABLE `produk` (
   `DIMENSI_PRODUK` varchar(30) NOT NULL,
   `BERAT_PRODUK` varchar(10) NOT NULL,
   `SATUAN_PRODUK` varchar(10) NOT NULL,
-  `DESKRIPSI_PRODUK` text DEFAULT NULL,
-  `LOKASI_FOTO_PRODUK` text DEFAULT NULL,
+  `DESKRIPSI_PRODUK` mediumtext DEFAULT NULL,
+  `LOKASI_FOTO_PRODUK` mediumtext DEFAULT NULL,
   `STOK_PRODUK` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `produk`
 --
 
 INSERT INTO `produk` (`ROW_ID_PRODUK`, `ID_PRODUK`, `NAMA_PRODUK`, `STATUS_AKTIF_PRODUK`, `HARGA_PRODUK`, `DIMENSI_KEMASAN`, `DIMENSI_PRODUK`, `BERAT_PRODUK`, `SATUAN_PRODUK`, `DESKRIPSI_PRODUK`, `LOKASI_FOTO_PRODUK`, `STOK_PRODUK`) VALUES
-(3, 'CR001', 'CERAMAX ROJO FSB0371 W/HUNG BASIN', '1', 472500, '40cm X 40cm X 14cm', '38cm X 38cm X 12cm', '9 Kg', 'PCS', 'CERAMAX ROJO FSB0371 Wall Hung Wastafel\r\n\r\nSpesifikasi:\r\n\r\nTipe: Wall Hung Basin\r\nDimensi 380x380x120MM\r\nMaterial: Porselen\r\nFitur:\r\n\r\nHarga terjangkau\r\nMaterial berbahan porselen mudah dibersihkan dan tidak ada tepian yang tajam\r\nSistem pembuangan yang lancar\r\nDesain elegan\r\nHemat ruang', 'CR001.jpg', -46),
-(5, 'P1001', 'PHILIPS 17401 59449 105 9W 65K MESON CD G3', '1', 195605, '14cm X 12cm X 12cm', '14cm X 12cm X 12cm', '200 gr', 'PCS', 'Keunggulan:\r\n\r\nLED Downlight dengan harga terjangku\r\nTermasuk lampu & driver terintegrasi, Anda bisa langsung\r\nmemasangnya\r\nMudah dipasang\r\nCahaya yang rata dengan diffuser anti silau\r\nHemat Listrik = Hemat Biaya!\r\nTahan lama, umur hingga 15.000 jam\r\nTersedia dalam berbagai macam pilihan ukuran & watt\r\nSpesifikasi:\r\n\r\nColor: Putih (cool day light)\r\nPower: 9W\r\nLumen: 650lm (6500K)\r\nDiameter: 120mm\r\nKetebalan: 47mm\r\nLubang Plafon / Cutout: 105mm / 4.1 inch\r\nKoneksi: flying wire\r\nUmur: hingga 15.000 jam\r\nCRI80\r\nIP20\r\n220-240V ~ 50-60 Hz\r\nTidak dapat diredupkan / Non Dimmable\r\nTidak dapat diganti lampu atau driver-nya saja\r\nUntuk pemakaian di dalam ruangan / Indoor use only', 'P1001.jpg', -12),
-(6, 'TF001', 'TIDY FSA0042 WHITE ONE PIECE TOILET', '1', 1500000, '70cm X 44cm X 61cm', '68cm X 42cm X 59cm', '41kg', 'SET', 'TIDY FSA0042 WHITE ONE PIECE TOILET\r\n\r\nSpesifikasi:\r\n\r\nTipe: Monoblok / One piece toilet\r\nSistem pembuangan: Siphonic\r\nSoft closing seat cover\r\nAs/Jarak dinding/Rough-in/S-trap 300mm\r\nOutfall diameter 100mm\r\nMaterial: Porselen\r\nFitur:\r\n\r\nHarga relatif terjangkau\r\nOne piece toilet dengan ukuran yang sesuai dengan masyarakat Asia\r\nDesain modern\r\nHemat ruang\r\nSistem syphonic', 'TF001.jpg', -5),
-(7, 'GX001', 'GLUCKLICH X01HI1 0.3LT 200W RICE COOKER', '1', 259000, '20cm X 20cm X 22cm', '18cm X 18cm X 20cm', '3kg', 'UNIT', 'Keunggulan:\r\n\r\nBagian dalam anti lengket\r\nFitur tetap hangat\r\nBahan lebih tebal\r\nPerlindungan sekering ganda\r\nPerlindungan suhu tunggi\r\nBaki pengukus tebal\r\nGaransi service 2 tahun\r\nDapat sendok, mangkuk takar, kabel\r\nSpesifikasi:\r\n\r\nGaris air: 0,3 liter\r\nVolume pot: 3 liter\r\nKetebalan: 0.75mm\r\nTegangan: 50/60Hz, 220V\r\nDaya: 200 Watt', 'GX001.PNG', 173),
-(8, 'TA001', 'TIDY ALUMIX PVC MIN KC 2 / 02', '1', 1593150, '100cm x 100cm x 100cm', '20cm x 20cm x 20cm', '10KG', 'PCS', 'Ringan dan Kokoh -Tahan terhadap air -Tidak berkarat -Menggunakan kusen aluminium sehingga lebih awet dan tahan lama -Tidak berubah bentuk akibat cuaca', 'TA001.jpg', 1984),
-(9, 'DU001', 'DOORWAY UPVC DOOR HW017L 3/4KC', '1', 1056400, '70cm x 70cm x 70cm', '20cm x 20 cm x 18cm', '4kg', 'UNIT', 'Pintu uPVC yang cocok untuk pintu kamar mandi, karena keunggulanya yaitu tahan air, tahan rayap, dan kokoh. ditambahkan lagi uPVC merupakan bahan yang akan meredam suara dan ramah lingkungan', 'DU001.jpg', -2),
-(10, 'NF001', 'NIRO FLEUR GFL03 MARIGOLD PGVT', '1', 381694, '80cm x 80cm x 80cm', '19cm x 19cm x 19cm', '8kg', 'BOX', 'Granite Niro Exclusive Design Only at Mitra10. Granite lantai Glazed Polsihed Digital ukuran 80x80 glossy surface memberikan nuansa mewah untuk ruangan anda\r\n\r\n\r\nFungsi: granite porcelain, porcelain tiles, granite lantai, granite polished, granite 80x80, granite digital, granite niro, granite glaze\r\n\r\nGranite Niro Exclusive Design Only at Mitra10. Granite lantai Glazed Polsihed Digital ukuran 80x80 glossy surface memberikan nuansa mewah untuk ruangan anda\r\n\r\n\r\nFungsi: granite porcelain, porcelain tiles, granite lantai, granite polished, granite 80x80, granite digital, granite niro, granite glaze', 'NF001.jpg', 4995),
-(11, 'ZT001', 'ZEHN TANGGA ALUMINIUM YKF-403 ( 3 X 4 STEP )', '1', 1161000, '20cm x 30cm x 30cm', '19cm x 20cm x 20cm', '20kg', 'SET', 'Zehn Tangga Aluminium 403 adalah jenis tangga yang bisa dilipat empat, dengan total panjang 3,70 m. Tangga ini bisa disetel/adjust (multipurpose)', 'ZT001.jpg', 933),
-(13, 'PP001', 'POLYTRON PRM 28 QS/QB MIRROR 2D REFRIGERATOR', '1', 4099000, '75cm x 75cm x 75cm', '45cm x 45cm x 45', '20kg', 'SET', 'Polytron Belleza 3 hadir dengan mengusung “Zen Design” yang memberikan keseimbangan antara penyempurnaan tampilan dalam (interior) dan tampilan luar (eksterior) dengan menampilkan sentuhan borderless.', 'PP001.jpg', 745),
-(14, 'EE001', 'ELECTROLUX ETS 3505 POP UP TOASTER', '1', 489000, '43cm x 43cm x 42cm', '34cm x 34cm x 34cm', '25kg', 'UNIT', 'ELECTROLUX ETS 3505 POP UP TOASTER\r\n\r\nMemanggang roti dengan kematangan yang sempurna. Membuat sarapan Anda tersaji dengan lebih baik dan lebih cepat.', 'EE001.jpg', 488),
-(16, 'PM001', 'PANASONIC MC-CG300X546 VACUUM CLEANER', '1', 1169000, '35cm x 35cm x 35cm', '40cm x 40cm x 40cm', '45kg', 'SET', 'Panasonic MC-CG300X546 merupakan vacuum cleaner yang dapat membersihkan ruangan dari debu, bakteri, jamur, tungau dan allergen lainnya. Dengan Panasonic MC-CG300X546 Anda dapat membersihkan rumah dengan mudah tanpa membutuhkan tenaga ekstra dan menyita banyak waktu Anda.', 'PM001.jpg', 644),
-(20, 'SA001', 'Keramik Pokemon', '0', 25000, '40 cm X 40 cm X 14 cm', '38 cm X 38 cm X 12 cm', '35 kg', 'PCS', 'This is a shiny pokemon tile', '', 2),
-(21, 'TE001', 'tetsing', '1', 122222, '14cm X 12cm X 12cm', '14cm X 12cm X 12cm', '9 Kg', 'PCS', 'a', NULL, 12);
+(3, 'CR001', 'CERAMAX ROJO FSB0371 W/HUNG BASIN', '1', 472500, '40cm X 40cm X 14cm', '38cm X 38cm X 12cm', '9 Kg', 'PCS', 'CERAMAX ROJO FSB0371 Wall Hung Wastafel\r\n\r\nSpesifikasi:\r\n\r\nTipe: Wall Hung Basin\r\nDimensi 380x380x120MM\r\nMaterial: Porselen\r\nFitur:\r\n\r\nHarga terjangkau\r\nMaterial berbahan porselen mudah dibersihkan dan tidak ada tepian yang tajam\r\nSistem pembuangan yang lancar\r\nDesain elegan\r\nHemat ruang', 'CR001.png', -46),
+(5, 'P1001', 'PHILIPS 17401 59449 105 9W 65K MESON CD G3', '1', 195605, '14cm X 12cm X 12cm', '14cm X 12cm X 12cm', '200 gr', 'PCS', 'Keunggulan:\r\n\r\nLED Downlight dengan harga terjangku\r\nTermasuk lampu & driver terintegrasi, Anda bisa langsung\r\nmemasangnya\r\nMudah dipasang\r\nCahaya yang rata dengan diffuser anti silau\r\nHemat Listrik = Hemat Biaya!\r\nTahan lama, umur hingga 15.000 jam\r\nTersedia dalam berbagai macam pilihan ukuran & watt\r\nSpesifikasi:\r\n\r\nColor: Putih (cool day light)\r\nPower: 9W\r\nLumen: 650lm (6500K)\r\nDiameter: 120mm\r\nKetebalan: 47mm\r\nLubang Plafon / Cutout: 105mm / 4.1 inch\r\nKoneksi: flying wire\r\nUmur: hingga 15.000 jam\r\nCRI80\r\nIP20\r\n220-240V ~ 50-60 Hz\r\nTidak dapat diredupkan / Non Dimmable\r\nTidak dapat diganti lampu atau driver-nya saja\r\nUntuk pemakaian di dalam ruangan / Indoor use only', 'P1001.png', -12),
+(6, 'TF001', 'TIDY FSA0042 WHITE ONE PIECE TOILET', '1', 1500000, '70cm X 44cm X 61cm', '68cm X 42cm X 59cm', '41kg', 'SET', 'TIDY FSA0042 WHITE ONE PIECE TOILET\r\n\r\nSpesifikasi:\r\n\r\nTipe: Monoblok / One piece toilet\r\nSistem pembuangan: Siphonic\r\nSoft closing seat cover\r\nAs/Jarak dinding/Rough-in/S-trap 300mm\r\nOutfall diameter 100mm\r\nMaterial: Porselen\r\nFitur:\r\n\r\nHarga relatif terjangkau\r\nOne piece toilet dengan ukuran yang sesuai dengan masyarakat Asia\r\nDesain modern\r\nHemat ruang\r\nSistem syphonic', 'TF001.png', -5),
+(7, 'GX001', 'GLUCKLICH X01HI1 0.3LT 200W RICE COOKER', '1', 259000, '20cm X 20cm X 22cm', '18cm X 18cm X 20cm', '3kg', 'UNIT', 'Keunggulan:\r\n\r\nBagian dalam anti lengket\r\nFitur tetap hangat\r\nBahan lebih tebal\r\nPerlindungan sekering ganda\r\nPerlindungan suhu tunggi\r\nBaki pengukus tebal\r\nGaransi service 2 tahun\r\nDapat sendok, mangkuk takar, kabel\r\nSpesifikasi:\r\n\r\nGaris air: 0,3 liter\r\nVolume pot: 3 liter\r\nKetebalan: 0.75mm\r\nTegangan: 50/60Hz, 220V\r\nDaya: 200 Watt', 'GX001.png', 173),
+(8, 'TA001', 'TIDY ALUMIX PVC MIN KC 2 / 02', '1', 1593150, '100cm x 100cm x 100cm', '20cm x 20cm x 20cm', '10KG', 'PCS', 'Ringan dan Kokoh -Tahan terhadap air -Tidak berkarat -Menggunakan kusen aluminium sehingga lebih awet dan tahan lama -Tidak berubah bentuk akibat cuaca', 'TA001.png', 1984),
+(9, 'DU001', 'DOORWAY UPVC DOOR HW017L 3/4KC', '1', 1056400, '70cm x 70cm x 70cm', '20cm x 20 cm x 18cm', '4kg', 'UNIT', 'Pintu uPVC yang cocok untuk pintu kamar mandi, karena keunggulanya yaitu tahan air, tahan rayap, dan kokoh. ditambahkan lagi uPVC merupakan bahan yang akan meredam suara dan ramah lingkungan', 'DU001.png', -2),
+(10, 'NF001', 'NIRO FLEUR GFL03 MARIGOLD PGVT', '1', 381694, '80cm x 80cm x 80cm', '19cm x 19cm x 19cm', '8kg', 'BOX', 'Granite Niro Exclusive Design Only at Mitra10. Granite lantai Glazed Polsihed Digital ukuran 80x80 glossy surface memberikan nuansa mewah untuk ruangan anda\r\n\r\n\r\nFungsi: granite porcelain, porcelain tiles, granite lantai, granite polished, granite 80x80, granite digital, granite niro, granite glaze\r\n\r\nGranite Niro Exclusive Design Only at Mitra10. Granite lantai Glazed Polsihed Digital ukuran 80x80 glossy surface memberikan nuansa mewah untuk ruangan anda\r\n\r\n\r\nFungsi: granite porcelain, porcelain tiles, granite lantai, granite polished, granite 80x80, granite digital, granite niro, granite glaze', 'NF001.png', 4995),
+(11, 'ZT001', 'ZEHN TANGGA ALUMINIUM YKF-403 ( 3 X 4 STEP )', '1', 1161000, '20cm x 30cm x 30cm', '19cm x 20cm x 20cm', '20kg', 'SET', 'Zehn Tangga Aluminium 403 adalah jenis tangga yang bisa dilipat empat, dengan total panjang 3,70 m. Tangga ini bisa disetel/adjust (multipurpose)', 'ZT001.png', 933),
+(13, 'PP001', 'POLYTRON PRM 28 QS/QB MIRROR 2D REFRIGERATOR', '1', 4099000, '75cm x 75cm x 75cm', '45cm x 45cm x 45', '20kg', 'SET', 'Polytron Belleza 3 hadir dengan mengusung “Zen Design” yang memberikan keseimbangan antara penyempurnaan tampilan dalam (interior) dan tampilan luar (eksterior) dengan menampilkan sentuhan borderless.', 'PP001.png', 745),
+(14, 'EE001', 'ELECTROLUX ETS 3505 POP UP TOASTER', '1', 489000, '43cm x 43cm x 42cm', '34cm x 34cm x 34cm', '25kg', 'UNIT', 'ELECTROLUX ETS 3505 POP UP TOASTER\r\n\r\nMemanggang roti dengan kematangan yang sempurna. Membuat sarapan Anda tersaji dengan lebih baik dan lebih cepat.', 'EE001.png', 488),
+(16, 'PM001', 'PANASONIC MC-CG300X546 VACUUM CLEANER', '1', 1169000, '35cm x 35cm x 35cm', '40cm x 40cm x 40cm', '45kg', 'SET', 'Panasonic MC-CG300X546 merupakan vacuum cleaner yang dapat membersihkan ruangan dari debu, bakteri, jamur, tungau dan allergen lainnya. Dengan Panasonic MC-CG300X546 Anda dapat membersihkan rumah dengan mudah tanpa membutuhkan tenaga ekstra dan menyita banyak waktu Anda.', 'PM001.png', 644),
+(20, 'SA001', 'Keramik Pokemon', '0', 25000, '40 cm X 40 cm X 14 cm', '38 cm X 38 cm X 12 cm', '35 kg', 'PCS', 'This is a shiny pokemon tile', '', 2);
 
 --
 -- Triggers `produk`
@@ -451,9 +441,9 @@ CREATE TABLE `review_produk` (
   `ROW_ID_HTRANS` int(11) NOT NULL,
   `ROW_ID_PRODUK` int(11) NOT NULL,
   `WAKTU_REVIEW` datetime NOT NULL,
-  `KONTEN_REVIEW` text NOT NULL,
+  `KONTEN_REVIEW` mediumtext NOT NULL,
   `BINTANG_REVIEW` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `review_produk`
@@ -478,7 +468,7 @@ CREATE TABLE `verifikasi_email` (
   `STATUS_VERIFIKASI` varchar(1) NOT NULL COMMENT '''1'' = sudah verifikasi - ''0'' = belum verifikasi',
   `INSERT_DATE` datetime DEFAULT current_timestamp(),
   `UPDATE_DATE` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `verifikasi_email`
@@ -496,7 +486,7 @@ INSERT INTO `verifikasi_email` (`ROW_ID_VERIFIKASI`, `ROW_ID_CUSTOMER`, `KODE_VE
 CREATE TABLE `wishlist` (
   `ROW_ID_CUSTOMER` int(11) NOT NULL,
   `ROW_ID_PRODUK` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `wishlist`
@@ -638,59 +628,6 @@ ALTER TABLE `review_produk`
 --
 ALTER TABLE `verifikasi_email`
   MODIFY `ROW_ID_VERIFIKASI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `cart`
---
-ALTER TABLE `cart`
-  ADD CONSTRAINT `FK_CART_ROW_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`),
-  ADD CONSTRAINT `FK_CART_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
-
---
--- Constraints for table `dtrans`
---
-ALTER TABLE `dtrans`
-  ADD CONSTRAINT `FK_DTRANS_HTRANS` FOREIGN KEY (`ROW_ID_HTRANS`) REFERENCES `htrans` (`ROW_ID_HTRANS`),
-  ADD CONSTRAINT `FK_DTRANS_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
-
---
--- Constraints for table `htrans`
---
-ALTER TABLE `htrans`
-  ADD CONSTRAINT `FK_HTRANS_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`);
-
---
--- Constraints for table `kategori_produk`
---
-ALTER TABLE `kategori_produk`
-  ADD CONSTRAINT `FK_KATEGORI_PRODUK_ROW_KAT_CHILD` FOREIGN KEY (`ROW_ID_KATEGORI_CHILD`) REFERENCES `kategori` (`ROW_ID_KATEGORI`),
-  ADD CONSTRAINT `FK_KATEGORI_PRODUK_ROW_KAT_PARENT` FOREIGN KEY (`ROW_ID_KATEGORI_PARENT`) REFERENCES `kategori` (`ROW_ID_KATEGORI`),
-  ADD CONSTRAINT `FK_KATEGORI_PRODUK_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
-
---
--- Constraints for table `review_produk`
---
-ALTER TABLE `review_produk`
-  ADD CONSTRAINT `FK_REVIEW_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`),
-  ADD CONSTRAINT `FK_REVIEW_HTRANS` FOREIGN KEY (`ROW_ID_HTRANS`) REFERENCES `htrans` (`ROW_ID_HTRANS`),
-  ADD CONSTRAINT `FK_REVIEW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
-
---
--- Constraints for table `verifikasi_email`
---
-ALTER TABLE `verifikasi_email`
-  ADD CONSTRAINT `FK_VERIFIKASI_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`);
-
---
--- Constraints for table `wishlist`
---
-ALTER TABLE `wishlist`
-  ADD CONSTRAINT `FK_WISHLIST_ROW_CUSTOMER` FOREIGN KEY (`ROW_ID_CUSTOMER`) REFERENCES `customer` (`ROW_ID_CUSTOMER`),
-  ADD CONSTRAINT `FK_WISHLIST_ROW_PRODUK` FOREIGN KEY (`ROW_ID_PRODUK`) REFERENCES `produk` (`ROW_ID_PRODUK`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

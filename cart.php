@@ -98,7 +98,7 @@
 
             $(document).on( "click", ".btn-delete", function(e){
                 // e.preventDefault();
-                console.log(this);
+                // console.log(this);
                 let form = $(this).parent();
                 console.log(form);
                 $.ajax({
