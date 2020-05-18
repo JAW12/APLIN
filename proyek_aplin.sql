@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2020 at 12:00 PM
+-- Generation Time: May 18, 2020 at 12:36 PM
 -- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.3
+-- PHP Version: 7.4.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -80,20 +79,19 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`ROW_ID_CUSTOMER`, `USERNAME`, `PASSWORD`, `EMAIL`, `NAMA_DEPAN_CUSTOMER`, `NAMA_BELAKANG_CUSTOMER`, `JENIS_KELAMIN_CUSTOMER`) VALUES
-(1, 'winda', 'winda1234', 'wau959@gmail.com', 'Winda', 'Angelina', 'P'),
-(2, 'bambang', 'bambang1234', 'bambangmantoel@yahoo.com', 'Bambang', 'Mantoel', 'L'),
-(5, 'majujaya', 'majujaya1234', 'majuselalu@gmail.com', 'PT MAJU ', 'JAYA', 'U'),
-(6, 'Siti', 'siti001', 'sitin1@gmail.com', 'Siti', 'Nurbaya', 'P'),
-(7, 'Jamesj1', 'jsj1', 'jamesjeff@gmail.com', 'James', 'Jefferson', 'L'),
-(8, 'nadya', 'nadya1', 'nadya@gmail.com', 'nadya', 'hamdani', 'L'),
-(9, 'arnold', 'arnold2', 'arnold@gmail.com', 'arnold', 'Christopher', 'L'),
-(10, 'Raymond', 'raymond1', 'Raymond@yahoo.com', 'raymond', 'yaputra', 'L'),
-(11, 'Felia', 'felia1', 'felia@gmail.com', 'felia', 'subagyo', 'P'),
-(12, 'juan', 'juan1', 'juan@gmail.com', 'juan', 'tjipta', 'L'),
-(13, 'angel', 'angel1', 'angel@gmail.com', 'angel', 'yaputri', 'P'),
-(14, 'juci', 'juci1', 'juci@gmail.com', 'juci', 'tjipta', 'U'),
-(15, 'hamdani', 'hamdani1', 'hamdani2@gmail.com', 'hamdani', 'evan', 'U'),
-(16, 'jem', 'jem', 'jem.angkasa91@gmail.com', 'Jem', 'Angkasa', 'L');
+(1, 'winda', '$2y$10$UCi1./JgsZBEW/cIGLf0qexKtpGVE3IbO0K/CHfxNCjBR1W8ZLoi.', 'wau959@gmail.com', 'Winda', 'Angelina', 'P'),
+(2, 'bambang', '$2y$10$9FnstyKB7pna0Br8HwPSV.LDFq2cIxy.BcLmbOMVODgmnKcsZc6I6', 'bambangmantoel@yahoo.com', 'Bambang', 'Mantoel', 'L'),
+(5, 'majujaya', '$2y$10$gi4Cok0Eb1b/jg8UeNKy5Ov8K6N01aUDrMULPiTPfKJoGsCW8Vr.q', 'majuselalu@gmail.com', 'PT MAJU ', 'JAYA', 'U'),
+(6, 'Siti', '$2y$10$4g27PUpri3rKiBpYrImhVuDnX0jgww0OlwTCrLojiBScwHaIrXQeW', 'sitin1@gmail.com', 'Siti', 'Nurbaya', 'P'),
+(7, 'Jamesj1', '$2y$10$HjUxKo1jjrLEyB5gSiiQMubmFAPxRp7GD5qLT2O3mRwdD.u73MOA2', 'jamesjeff@gmail.com', 'James', 'Jefferson', 'L'),
+(8, 'nadya', '$2y$10$OVbkDxUynPGh1E1VowwTe.2B4GW8DKH4Frv70y3ylva2bGE0DJJFq', 'nadya@gmail.com', 'nadya', 'hamdani', 'L'),
+(9, 'arnold', '$2y$10$9d2tPYrnXA.IKliZMJ8zLurxVdtb38pIGtEsxp4NVPdze3YkV1UDG', 'arnold@gmail.com', 'arnold', 'Christopher', 'L'),
+(10, 'Raymond', '$2y$10$vdwkN/twytueNABEU8PagOPNeiWAVY31NeqFfIOJKjyZs9IgNm8b.', 'Raymond@yahoo.com', 'raymond', 'yaputra', 'L'),
+(11, 'Felia', '$2y$10$erymxitULAoXjdQRRQBYIe.HPU4de4MnDd0a6MpM34oypUquz2gmi', 'felia@gmail.com', 'felia', 'subagyo', 'P'),
+(12, 'juan', '$2y$10$.Ksj2CX9qIrF2rMeKf0x9.Sq.yDMS2refTFDqPtpuTajnmE1.QnEa', 'juan@gmail.com', 'juan', 'tjipta', 'L'),
+(13, 'angel', '$2y$10$lV7T0NIe/D/v6UlTiVe5vO7FMx5.IWlQI67v6LXxpCbJTANCWgr/u', 'angel@gmail.com', 'angel', 'yaputri', 'P'),
+(14, 'juci', '$2y$10$PM3e9kxez/RiGHMgMIsZn.jKzUw63WYCi3TeFNSpTw/tGVqA1qzzK', 'juci@gmail.com', 'juci', 'tjipta', 'U'),
+(15, 'hamdani', '$2y$10$vh2giCeSaFCKroFiz3HUt.zBzcjkOFzq81.jIB/5b9ABSau.yjXoK', 'hamdani2@gmail.com', 'hamdani', 'evan', 'U');
 
 -- --------------------------------------------------------
 
@@ -475,7 +473,10 @@ CREATE TABLE `verifikasi_email` (
 --
 
 INSERT INTO `verifikasi_email` (`ROW_ID_VERIFIKASI`, `ROW_ID_CUSTOMER`, `KODE_VERIFIKASI`, `STATUS_VERIFIKASI`, `INSERT_DATE`, `UPDATE_DATE`) VALUES
-(1, 16, '78696', '1', '2020-05-13 16:05:30', NULL);
+(1, 16, '78696', '1', '2020-05-13 16:05:30', NULL),
+(2, 17, '43859', '0', '2020-05-18 17:19:20', NULL),
+(3, 18, '86568', '0', '2020-05-18 17:20:31', NULL),
+(4, 19, '54839', '1', '2020-05-18 17:21:25', NULL);
 
 -- --------------------------------------------------------
 
@@ -597,7 +598,7 @@ ALTER TABLE `wishlist`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `ROW_ID_CUSTOMER` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `ROW_ID_CUSTOMER` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `htrans`
@@ -627,7 +628,7 @@ ALTER TABLE `review_produk`
 -- AUTO_INCREMENT for table `verifikasi_email`
 --
 ALTER TABLE `verifikasi_email`
-  MODIFY `ROW_ID_VERIFIKASI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ROW_ID_VERIFIKASI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
