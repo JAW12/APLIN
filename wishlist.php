@@ -120,7 +120,7 @@
 
         <!-- Main Section -->
         <main>
-            <div id="judul" class="col-12 text-center my-5" style="background-image: url('res/img/bg9.jpg');">
+            <div id="judul" class="col-12 text-center my-5" style="background-image: url('res/img/kategori_banners/electrical-lightning.jpg');">
                 <h1 class="text-light display-3 font-weight-bold">
                     Wish List
                 </h1>

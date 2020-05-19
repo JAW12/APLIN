@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 18, 2020 at 03:40 PM
+-- Generation Time: May 19, 2020 at 06:24 AM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.12
 
@@ -39,9 +39,6 @@ CREATE TABLE `CART` (
 --
 
 INSERT INTO `CART` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`, `QTY`) VALUES
-(1, 10, 10),
-(1, 11, 10),
-(1, 16, 100),
 (6, 3, 50),
 (6, 6, 10),
 (6, 7, 1),
@@ -59,7 +56,8 @@ INSERT INTO `CART` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`, `QTY`) VALUES
 (12, 10, 5),
 (12, 13, 2),
 (13, 14, 1),
-(15, 16, 20);
+(15, 16, 20),
+(27, 10, 2);
 
 -- --------------------------------------------------------
 
@@ -70,7 +68,7 @@ INSERT INTO `CART` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`, `QTY`) VALUES
 CREATE TABLE `CUSTOMER` (
   `ROW_ID_CUSTOMER` int(11) NOT NULL,
   `USERNAME` varchar(20) NOT NULL,
-  `PASSWORD` mediumtext NOT NULL,
+  `PASSWORD` longtext NOT NULL,
   `EMAIL` varchar(320) NOT NULL,
   `NAMA_DEPAN_CUSTOMER` varchar(50) NOT NULL,
   `NAMA_BELAKANG_CUSTOMER` varchar(50) NOT NULL,
@@ -119,6 +117,7 @@ CREATE TABLE `DTRANS` (
 --
 
 INSERT INTO `DTRANS` (`ROW_ID_HTRANS`, `ROW_ID_PRODUK`, `QTY_PRODUK`, `HARGA_PRODUK`, `SUBTOTAL`) VALUES
+(1, 3, 2, 472500, 945000),
 (1, 5, 3, 195605, 586815),
 (1, 6, 3, 1500000, 4500000),
 (1, 7, 2, 259000, 518000),
@@ -165,7 +164,14 @@ INSERT INTO `DTRANS` (`ROW_ID_HTRANS`, `ROW_ID_PRODUK`, `QTY_PRODUK`, `HARGA_PRO
 (30, 7, 6, 259000, 1554000),
 (30, 11, 2, 1161000, 2322000),
 (31, 7, 3, 259000, 777000),
-(32, 7, 3, 259000, 777000);
+(32, 7, 3, 259000, 777000),
+(53, 7, 100, 259000, 25900000),
+(53, 10, 100, 381694, 38169400),
+(53, 11, 10, 1161000, 11610000),
+(53, 14, 10, 489000, 4890000),
+(53, 16, 100, 1169000, 116900000),
+(54, 11, 100, 1161000, 116100000),
+(54, 14, 100, 489000, 48900000);
 
 --
 -- Triggers `DTRANS`
@@ -176,9 +182,9 @@ SET @total = 0;
 SET @qtyBeli = NEW.QTY_PRODUK;
 SET @harga = NEW.HARGA_PRODUK;
 
-SELECT SUM(SUBTOTAL) INTO @total FROM dtrans WHERE ROW_ID_HTRANS = NEW.ROW_ID_HTRANS;
+SELECT SUM(SUBTOTAL) INTO @total FROM DTRANS WHERE ROW_ID_HTRANS = NEW.ROW_ID_HTRANS;
 
-UPDATE htrans SET TOTAL_TRANS = @total WHERE ROW_ID_HTRANS = NEW.ROW_ID_HTRANS;
+UPDATE HTRANS SET TOTAL_TRANS = @total WHERE ROW_ID_HTRANS = NEW.ROW_ID_HTRANS;
 
 END
 $$
@@ -189,13 +195,13 @@ SET @total = 0;
 SET @qtyBeli = NEW.QTY_PRODUK;
 SET @qtyLama = OLD.QTY_PRODUK;
 
-SELECT SUM(SUBTOTAL) INTO @total FROM dtrans WHERE ROW_ID_HTRANS = NEW.ROW_ID_HTRANS;
+SELECT SUM(SUBTOTAL) INTO @total FROM DTRANS WHERE ROW_ID_HTRANS = NEW.ROW_ID_HTRANS;
 
-UPDATE htrans SET TOTAL_TRANS = @total WHERE ROW_ID_HTRANS = NEW.ROW_ID_HTRANS;
+UPDATE HTRANS SET TOTAL_TRANS = @total WHERE ROW_ID_HTRANS = NEW.ROW_ID_HTRANS;
 
-UPDATE produk SET STOK_PRODUK = STOK_PRODUK + @qtyLama WHERE ROW_ID_PRODUK = OLD.ROW_ID_PRODUK;
+UPDATE PRODUK SET STOK_PRODUK = STOK_PRODUK + @qtyLama WHERE ROW_ID_PRODUK = OLD.ROW_ID_PRODUK;
 
-UPDATE produk SET STOK_PRODUK = STOK_PRODUK - @qtyBeli WHERE ROW_ID_PRODUK = NEW.ROW_ID_PRODUK;
+UPDATE PRODUK SET STOK_PRODUK = STOK_PRODUK - @qtyBeli WHERE ROW_ID_PRODUK = NEW.ROW_ID_PRODUK;
 
 
 END
@@ -205,7 +211,7 @@ DELIMITER $$
 CREATE TRIGGER `beforeInsert_dtrans_check` BEFORE INSERT ON `DTRANS` FOR EACH ROW BEGIN
 SET @harga = 0;
 SET @qty = NEW.QTY_PRODUK;
-SELECT HARGA_PRODUK INTO @harga FROM produk WHERE ROW_ID_PRODUK = NEW.ROW_ID_PRODUK;
+SELECT HARGA_PRODUK INTO @harga FROM PRODUK WHERE ROW_ID_PRODUK = NEW.ROW_ID_PRODUK;
 SET NEW.HARGA_PRODUK = @harga;
 SET NEW.SUBTOTAL = @harga * @qty;
 END
@@ -225,7 +231,7 @@ CREATE TABLE `HTRANS` (
   `NO_NOTA` varchar(15) DEFAULT NULL,
   `TOTAL_TRANS` int(11) DEFAULT 0,
   `STATUS_PEMBAYARAN` int(11) NOT NULL COMMENT '0=Pending,  1= Accepted,  2=Rejected',
-  `LOKASI_FOTO_BUKTI_PEMBAYARAN` mediumtext DEFAULT NULL
+  `LOKASI_FOTO_BUKTI_PEMBAYARAN` longtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -233,7 +239,7 @@ CREATE TABLE `HTRANS` (
 --
 
 INSERT INTO `HTRANS` (`ROW_ID_HTRANS`, `ROW_ID_CUSTOMER`, `TANGGAL_TRANS`, `NO_NOTA`, `TOTAL_TRANS`, `STATUS_PEMBAYARAN`, `LOKASI_FOTO_BUKTI_PEMBAYARAN`) VALUES
-(1, 1, '2020-02-20 02:33:56', '2020022000001', 5604815, 2, '1.jpg'),
+(1, 1, '2020-02-20 02:33:56', '2020022000001', 6549815, 2, '1.jpg'),
 (3, 1, '2020-04-14 02:36:31', '2020041400001', 4644000, 1, '3.jpg'),
 (4, 1, '2020-04-16 02:01:01', '2020041600001', 8687000, 2, '4.jpg'),
 (6, 2, '2020-04-17 02:02:04', '2020041700002', 1145082, 1, '6.jpg'),
@@ -258,7 +264,10 @@ INSERT INTO `HTRANS` (`ROW_ID_HTRANS`, `ROW_ID_CUSTOMER`, `TANGGAL_TRANS`, `NO_N
 (29, 1, '2020-05-13 17:12:44', '2020051300001', 2426470, 1, '29.jpg'),
 (30, 1, '2020-05-11 17:13:17', '2020051300002', 3876000, 2, ''),
 (31, 1, '2020-05-13 17:23:35', '2020051300003', 777000, 1, ''),
-(32, 1, '2020-05-13 17:26:15', '2020051300004', 777000, 1, '');
+(32, 1, '2020-05-13 17:26:15', '2020051300004', 777000, 1, ''),
+(45, 27, '2020-05-19 11:55:07', '', 0, 0, ''),
+(53, 1, '2020-05-19 13:06:56', '2020051900001', 197469400, 0, ''),
+(54, 1, '2020-05-19 13:10:19', '2020051900002', 165000000, 0, '');
 
 --
 -- Triggers `HTRANS`
@@ -268,7 +277,7 @@ CREATE TRIGGER `beforeInsert_htrans_check` BEFORE INSERT ON `HTRANS` FOR EACH RO
 	SET @prefixNota = '';
     SET @ctrNota = 0;
     SELECT DATE_FORMAT(NEW.TANGGAL_TRANS,'%Y%m%d') INTO @prefixNota;
-    SELECT COUNT(ROW_ID_HTRANS) + 1 INTO @ctrNota FROM htrans WHERE NO_NOTA LIKE concat(@prefixNota, '%');
+    SELECT COUNT(ROW_ID_HTRANS) + 1 INTO @ctrNota FROM HTRANS WHERE NO_NOTA LIKE concat(@prefixNota COLLATE UTF8MB4_GENERAL_CI, '%' COLLATE UTF8MB4_GENERAL_CI);
     SET NEW.NO_NOTA = concat(@prefixNota, LPAD(@ctrNota,5,'0'));   
 END
 $$
@@ -366,7 +375,8 @@ INSERT INTO `KATEGORI_PRODUK` (`ROW_ID_PRODUK`, `ROW_ID_KATEGORI_PARENT`, `ROW_I
 (13, 25, 26),
 (14, 25, 9),
 (16, 7, 26),
-(20, 9, 3);
+(20, 21, 3),
+(23, 7, 3);
 
 -- --------------------------------------------------------
 
@@ -384,8 +394,8 @@ CREATE TABLE `PRODUK` (
   `DIMENSI_PRODUK` varchar(30) NOT NULL,
   `BERAT_PRODUK` varchar(10) NOT NULL,
   `SATUAN_PRODUK` varchar(10) NOT NULL,
-  `DESKRIPSI_PRODUK` mediumtext DEFAULT NULL,
-  `LOKASI_FOTO_PRODUK` mediumtext DEFAULT NULL,
+  `DESKRIPSI_PRODUK` longtext DEFAULT NULL,
+  `LOKASI_FOTO_PRODUK` longtext DEFAULT NULL,
   `STOK_PRODUK` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -397,7 +407,7 @@ INSERT INTO `PRODUK` (`ROW_ID_PRODUK`, `ID_PRODUK`, `NAMA_PRODUK`, `STATUS_AKTIF
 (3, 'CR001', 'CERAMAX ROJO FSB0371 W/HUNG BASIN', '1', 472500, '40cm X 40cm X 14cm', '38cm X 38cm X 12cm', '9 Kg', 'PCS', 'CERAMAX ROJO FSB0371 Wall Hung Wastafel\r\n\r\nSpesifikasi:\r\n\r\nTipe: Wall Hung Basin\r\nDimensi 380x380x120MM\r\nMaterial: Porselen\r\nFitur:\r\n\r\nHarga terjangkau\r\nMaterial berbahan porselen mudah dibersihkan dan tidak ada tepian yang tajam\r\nSistem pembuangan yang lancar\r\nDesain elegan\r\nHemat ruang', 'CR001.png', -46),
 (5, 'P1001', 'PHILIPS 17401 59449 105 9W 65K MESON CD G3', '1', 195605, '14cm X 12cm X 12cm', '14cm X 12cm X 12cm', '200 gr', 'PCS', 'Keunggulan:\r\n\r\nLED Downlight dengan harga terjangku\r\nTermasuk lampu & driver terintegrasi, Anda bisa langsung\r\nmemasangnya\r\nMudah dipasang\r\nCahaya yang rata dengan diffuser anti silau\r\nHemat Listrik = Hemat Biaya!\r\nTahan lama, umur hingga 15.000 jam\r\nTersedia dalam berbagai macam pilihan ukuran & watt\r\nSpesifikasi:\r\n\r\nColor: Putih (cool day light)\r\nPower: 9W\r\nLumen: 650lm (6500K)\r\nDiameter: 120mm\r\nKetebalan: 47mm\r\nLubang Plafon / Cutout: 105mm / 4.1 inch\r\nKoneksi: flying wire\r\nUmur: hingga 15.000 jam\r\nCRI80\r\nIP20\r\n220-240V ~ 50-60 Hz\r\nTidak dapat diredupkan / Non Dimmable\r\nTidak dapat diganti lampu atau driver-nya saja\r\nUntuk pemakaian di dalam ruangan / Indoor use only', 'P1001.png', -12),
 (6, 'TF001', 'TIDY FSA0042 WHITE ONE PIECE TOILET', '1', 1500000, '70cm X 44cm X 61cm', '68cm X 42cm X 59cm', '41kg', 'SET', 'TIDY FSA0042 WHITE ONE PIECE TOILET\r\n\r\nSpesifikasi:\r\n\r\nTipe: Monoblok / One piece toilet\r\nSistem pembuangan: Siphonic\r\nSoft closing seat cover\r\nAs/Jarak dinding/Rough-in/S-trap 300mm\r\nOutfall diameter 100mm\r\nMaterial: Porselen\r\nFitur:\r\n\r\nHarga relatif terjangkau\r\nOne piece toilet dengan ukuran yang sesuai dengan masyarakat Asia\r\nDesain modern\r\nHemat ruang\r\nSistem syphonic', 'TF001.png', -5),
-(7, 'GX001', 'GLUCKLICH X01HI1 0.3LT 200W RICE COOK', '1', 259000, '20cm X 20cm X 22cm', '18cm X 18cm X 20cm', '3kg', 'UNIT', 'Keunggulan:\r\n\r\nBagian dalam anti lengket\r\nFitur tetap hangat\r\nBahan lebih tebal\r\nPerlindungan sekering ganda\r\nPerlindungan suhu tunggi\r\nBaki pengukus tebal\r\nGaransi service 2 tahun\r\nDapat sendok, mangkuk takar, kabel\r\nSpesifikasi:\r\n\r\nGaris air: 0,3 liter\r\nVolume pot: 3 liter\r\nKetebalan: 0.75mm\r\nTegangan: 50/60Hz, 220V\r\nDaya: 200 Watt', 'GX001.png', 173),
+(7, 'GX001', 'GLUCKLICH X01HI1 0.3LT 200W RICE COOKER', '1', 259000, '20cm X 20cm X 22cm', '18cm X 18cm X 20cm', '3kg', 'UNIT', 'Keunggulan:\r\n\r\nBagian dalam anti lengket\r\nFitur tetap hangat\r\nBahan lebih tebal\r\nPerlindungan sekering ganda\r\nPerlindungan suhu tunggi\r\nBaki pengukus tebal\r\nGaransi service 2 tahun\r\nDapat sendok, mangkuk takar, kabel\r\nSpesifikasi:\r\n\r\nGaris air: 0,3 liter\r\nVolume pot: 3 liter\r\nKetebalan: 0.75mm\r\nTegangan: 50/60Hz, 220V\r\nDaya: 200 Watt', 'GX001.png', 173),
 (8, 'TA001', 'TIDY ALUMIX PVC MIN KC 2 / 02', '1', 1593150, '100cm x 100cm x 100cm', '20cm x 20cm x 20cm', '10KG', 'PCS', 'Ringan dan Kokoh -Tahan terhadap air -Tidak berkarat -Menggunakan kusen aluminium sehingga lebih awet dan tahan lama -Tidak berubah bentuk akibat cuaca', 'TA001.png', 1984),
 (9, 'DU001', 'DOORWAY UPVC DOOR HW017L 3/4KC', '1', 1056400, '70cm x 70cm x 70cm', '20cm x 20 cm x 18cm', '4kg', 'UNIT', 'Pintu uPVC yang cocok untuk pintu kamar mandi, karena keunggulanya yaitu tahan air, tahan rayap, dan kokoh. ditambahkan lagi uPVC merupakan bahan yang akan meredam suara dan ramah lingkungan', 'DU001.png', -2),
 (10, 'NF001', 'NIRO FLEUR GFL03 MARIGOLD PGVT', '1', 381694, '80cm x 80cm x 80cm', '19cm x 19cm x 19cm', '8kg', 'BOX', 'Granite Niro Exclusive Design Only at Mitra10. Granite lantai Glazed Polsihed Digital ukuran 80x80 glossy surface memberikan nuansa mewah untuk ruangan anda\r\n\r\n\r\nFungsi: granite porcelain, porcelain tiles, granite lantai, granite polished, granite 80x80, granite digital, granite niro, granite glaze\r\n\r\nGranite Niro Exclusive Design Only at Mitra10. Granite lantai Glazed Polsihed Digital ukuran 80x80 glossy surface memberikan nuansa mewah untuk ruangan anda\r\n\r\n\r\nFungsi: granite porcelain, porcelain tiles, granite lantai, granite polished, granite 80x80, granite digital, granite niro, granite glaze', 'NF001.png', 4995),
@@ -405,7 +415,8 @@ INSERT INTO `PRODUK` (`ROW_ID_PRODUK`, `ID_PRODUK`, `NAMA_PRODUK`, `STATUS_AKTIF
 (13, 'PP001', 'POLYTRON PRM 28 QS/QB MIRROR 2D REFRIGERATOR', '1', 4099000, '75cm x 75cm x 75cm', '45cm x 45cm x 45', '20kg', 'SET', 'Polytron Belleza 3 hadir dengan mengusung “Zen Design” yang memberikan keseimbangan antara penyempurnaan tampilan dalam (interior) dan tampilan luar (eksterior) dengan menampilkan sentuhan borderless.', 'PP001.png', 745),
 (14, 'EE001', 'ELECTROLUX ETS 3505 POP UP TOASTER', '1', 489000, '43cm x 43cm x 42cm', '34cm x 34cm x 34cm', '25kg', 'UNIT', 'ELECTROLUX ETS 3505 POP UP TOASTER\r\n\r\nMemanggang roti dengan kematangan yang sempurna. Membuat sarapan Anda tersaji dengan lebih baik dan lebih cepat.', 'EE001.png', 484),
 (16, 'PM001', 'PANASONIC MC-CG300X546 VACUUM CLEANER', '1', 1169000, '35cm x 35cm x 35cm', '40cm x 40cm x 40cm', '45kg', 'SET', 'Panasonic MC-CG300X546 merupakan vacuum cleaner yang dapat membersihkan ruangan dari debu, bakteri, jamur, tungau dan allergen lainnya. Dengan Panasonic MC-CG300X546 Anda dapat membersihkan rumah dengan mudah tanpa membutuhkan tenaga ekstra dan menyita banyak waktu Anda.', 'PM001.png', 644),
-(20, 'SA001', 'Keramik Pokemon', '0', 25000, '40 cm X 40 cm X 14 cm', '38 cm X 38 cm X 12 cm', '35 kg', 'PCS', 'This is a shiny pokemon tile', '', 2);
+(20, 'SA001', 'Keramik Pokemon', '1', 25000, '40 cm X 40 cm X 14 cm', '38 cm X 38 cm X 12 cm', '35 kg', 'PCS', 'This is a shiny pokemon tile', 'SA001.png', 2),
+(23, 'PK001', 'poster kassandra mantoel', '0', 9999999, '14 cm x 12 cm', '12 cm x 14 cm', '120 kg', 'PCS', 'EDIT COBA WOY', 'PK001.png', 124);
 
 --
 -- Triggers `PRODUK`
@@ -427,7 +438,7 @@ CREATE TRIGGER `beforeInsert_produk_check` BEFORE INSERT ON `PRODUK` FOR EACH RO
         SELECT SUBSTRING(@nama, @idx + 1, 1) INTO @pre2;
         SELECT CONCAT(@pre1, @pre2) INTO @prefix;      
     END IF;
-    SELECT COUNT(ROW_ID_PRODUK) + 1 INTO @ctr FROM produk WHERE ID_PRODUK LIKE concat(@prefix, '%');
+    SELECT COUNT(ROW_ID_PRODUK) + 1 INTO @ctr FROM PRODUK WHERE ID_PRODUK LIKE concat(@prefix, '%');
     SELECT UPPER(CONCAT(@prefix, LPAD(@ctr,3,'0'))) INTO @prefix;
     SET NEW.ID_PRODUK = @prefix;   
 END
@@ -446,7 +457,7 @@ CREATE TABLE `REVIEW_PRODUK` (
   `ROW_ID_HTRANS` int(11) NOT NULL,
   `ROW_ID_PRODUK` int(11) NOT NULL,
   `WAKTU_REVIEW` datetime NOT NULL,
-  `KONTEN_REVIEW` mediumtext NOT NULL,
+  `KONTEN_REVIEW` longtext NOT NULL,
   `BINTANG_REVIEW` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -518,14 +529,12 @@ CREATE TABLE `WISHLIST` (
 --
 
 INSERT INTO `WISHLIST` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`) VALUES
-(1, 5),
 (1, 6),
 (1, 10),
 (1, 14),
 (1, 16),
 (6, 3),
 (6, 5),
-(6, 6),
 (7, 7),
 (7, 16),
 (9, 8),
@@ -546,7 +555,8 @@ INSERT INTO `WISHLIST` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`) VALUES
 -- Indexes for table `CART`
 --
 ALTER TABLE `CART`
-  ADD PRIMARY KEY (`ROW_ID_CUSTOMER`,`ROW_ID_PRODUK`);
+  ADD PRIMARY KEY (`ROW_ID_CUSTOMER`,`ROW_ID_PRODUK`),
+  ADD KEY `FK_CART_ROW_PRODUK` (`ROW_ID_PRODUK`);
 
 --
 -- Indexes for table `CUSTOMER`
@@ -597,9 +607,9 @@ ALTER TABLE `PRODUK`
 --
 ALTER TABLE `REVIEW_PRODUK`
   ADD PRIMARY KEY (`ROW_ID_REVIEW`),
+  ADD KEY `FK_REVIEW_CUSTOMER` (`ROW_ID_CUSTOMER`),
   ADD KEY `FK_REVIEW_HTRANS` (`ROW_ID_HTRANS`),
-  ADD KEY `FK_REVIEW_PRODUK` (`ROW_ID_PRODUK`),
-  ADD KEY `FK_REVIEW_CUSTOMER` (`ROW_ID_CUSTOMER`);
+  ADD KEY `FK_REVIEW_PRODUK` (`ROW_ID_PRODUK`);
 
 --
 -- Indexes for table `VERIFIKASI_EMAIL`
@@ -629,7 +639,7 @@ ALTER TABLE `CUSTOMER`
 -- AUTO_INCREMENT for table `HTRANS`
 --
 ALTER TABLE `HTRANS`
-  MODIFY `ROW_ID_HTRANS` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `ROW_ID_HTRANS` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `KATEGORI`
@@ -641,7 +651,7 @@ ALTER TABLE `KATEGORI`
 -- AUTO_INCREMENT for table `PRODUK`
 --
 ALTER TABLE `PRODUK`
-  MODIFY `ROW_ID_PRODUK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `ROW_ID_PRODUK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `REVIEW_PRODUK`

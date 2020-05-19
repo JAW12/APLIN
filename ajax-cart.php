@@ -24,11 +24,12 @@
             date_default_timezone_set('asia/jakarta');
             $stmt->bindValue(":tanggal",date('Y-m-d H:i:s'), PDO::PARAM_STR);
             $stmt->bindValue(":status", 0, PDO::PARAM_INT);
+            echo $query;
             $result = $stmt->execute();
             if($result){
                 $rowIdHtrans = $db->lastInsertId();
                 foreach ($registerdtrans as $key => $value) {
-                    $query = "INSERT INTO DTRANS VALUES(:htrans, :idProduk, :qty, '', '')";
+                    $query = "INSERT INTO DTRANS VALUES(:htrans, :idProduk, :qty, 0, 0)";
                     $stmt = $db->prepare($query);
                     $stmt->bindValue(":htrans", $rowIdHtrans, PDO::PARAM_INT);
                     $stmt->bindValue(":idProduk", $value['id'], PDO::PARAM_INT);

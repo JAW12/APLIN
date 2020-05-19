@@ -24,7 +24,7 @@
         $conditionCatParent = "";
         $conditionCatChildren = "";
 
-        $query = "SELECT * FROM PRODUK P, KATEGORI_PRODUK KP";
+        $query = "SELECT DISTINCT * FROM PRODUK P, KATEGORI_PRODUK KP";
         //kalo customer maka hanya munculkan produk yg aktif. kalo admin munculin semua
         if ($jenisUser == "customer") {
             $condition .= " P.STATUS_AKTIF_PRODUK = 1 ";
@@ -101,6 +101,7 @@
         // echo $queryParent . "<br/>";
         // echo $queryChildren . "<br/>";
         // echo "<pre>". print_r($tmpFilterCategory)."</pre><br/>";
+        // echo "<br/";
 
         $listProduk = array();
         try {
@@ -119,9 +120,19 @@
                     $stmt->execute($tmpFilterCategory);
                     $resCatChildren = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 }
-
-                $listProduk = array_unique(array_merge($resCatParent,$resCatChildren), SORT_REGULAR);
+                $hasilMerge = array_merge($resCatParent,$resCatChildren);
+                // echo "hasil merge";
+                // echo "<pre>";
+                // echo print_r($resCatParent);
+                // echo print_r($resCatChildren);
+                // echo "<pre/>";
+                // echo "<br/>";
+                $listProduk = array_unique($hasilMerge, SORT_REGULAR);
                 // $listProduk = array_merge($resCatParent,$resCatChildren);
+                // $listProduk = array_map("unserialize", array_unique(array_map("serialize", $hasilMerge)));
+                // $listProduk = array_intersect_key($hasilMerge, array_unique(array_map('serialize' , $hasilMerge)));
+                // $listProduk = array_map("unserialize", array_unique(array_map("serialize", $hasilMerge)));
+                
             }
             else{
                 $query .= $condition;
