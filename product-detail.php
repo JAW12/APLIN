@@ -58,7 +58,7 @@ if(isset($_SESSION['login'])){
         $produk = getQueryResultRow($db, $query);
         $fotoProduk = "res/img/no-image.png";
         if (!empty($produk['LOKASI_FOTO_PRODUK'])) {
-            $fotoProduk="res/img/produk/".$produk['LOKASI_FOTO_PRODUK'];
+            $fotoProduk="res/img/produk/".$produk['LOKASI_FOTO_PRODUK']."?".time();
         }            
         $namaProduk=$produk['NAMA_PRODUK'];
         $hargaProduk=$produk['HARGA_PRODUK'];
@@ -76,7 +76,7 @@ if(isset($_SESSION['login'])){
             <div class="container">
             <div class="row mt-3 mb-5">
                 <div class="col">
-                    <img src="<?= $fotoProduk?>" width="500px" height="500px"/>
+                    <figure><img src="<?= $fotoProduk?>" width="500px" height="500px"/></figure>
                 </div>
                 <div class="col mt-5">
                     <h1 class="display-5 font-weight-bold mb-4"><?=$namaProduk?></h1>
@@ -231,7 +231,7 @@ if(isset($_SESSION['login'])){
                                     <div class="card border-0 hover-shadow my-4 p-3" style="width: 18rem;box-sizing: border-box">
                                         <form method="post">
                                             <input type="hidden" name="idProduk" value="<?= $value['ROW_ID_PRODUK']?>"/>
-                                            <button type="submit" class="btn btn-link"><img src="<?= "res/img/produk/".$value['LOKASI_FOTO_PRODUK'];?>" width="200px" height="200px"/></button>
+                                            <button type="submit" class="btn btn-link"><img src="<?= "res/img/produk/".$value['LOKASI_FOTO_PRODUK']."?".time();?>" width="200px" height="200px"/></button>
                                         </form>
                                     </div>
                                     <?php

@@ -74,7 +74,7 @@ if(!isset($_POST['idProduk'])){
                             $query = "SELECT * FROM PRODUK WHERE ROW_ID_PRODUK=$_POST[idProduk]";
                             $produk = getQueryResultRowArrays($db, $query);
                         ?>
-                        <div style="width: 100%; height: 100%; background-image: url(res/img/produk/<?=$produk[0]['LOKASI_FOTO_PRODUK']; ?>); background-size: contain; background-repeat: no-repeat;  background-position: center;"></div>
+                        <div style="width: 100%; height: 100%; background-image: url(res/img/produk/<?=$produk[0]['LOKASI_FOTO_PRODUK']."?".time(); ?>); background-size: contain; background-repeat: no-repeat;  background-position: center;"></div>
                     </div>
                     <div class="col-9">
                         <h3><?= $produk[0]["NAMA_PRODUK"];?></h3>

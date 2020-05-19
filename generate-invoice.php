@@ -29,7 +29,7 @@
                                 $query = "SELECT * FROM PRODUK WHERE ROW_ID_PRODUK = {$row_id_produk}";
                                 $dataProduk = getQueryResultRow($db, $query);
                                 $namaProduk = $dataProduk['NAMA_PRODUK'];
-                                $lokasiFoto = "res/img/produk/" . $dataProduk['LOKASI_FOTO_PRODUK'];
+                                $lokasiFoto = "res/img/produk/" . $dataProduk['LOKASI_FOTO_PRODUK']."?".time();
 
                                 $subtotal = $value['SUBTOTAL'];
                                 $grandTotal += $subtotal;

@@ -69,7 +69,7 @@
                                 ?>
                                     <tr>
                                         <th class="align-middle text-center"> <?= $ctrNum ?> </th>
-                                        <td class="text-center"> <img src="res/img/produk/<?= $fotoProduk ?>" style="width: 150px; height: 150px;"></img> </td>
+                                        <td class="text-center"> <img src="res/img/produk/<?= $fotoProduk ."?".time() ?>" style="width: 150px; height: 150px;"></img> </td>
                                         <td class="align-middle"> <?= $namaProduk ?> </td>
                                         <td class="text-center align-middle"> <?= $value['QTY_PRODUK'] ?> </td>
                                         <td class="text-right align-middle"> <?= getSeparatorNumberFormatted($value['HARGA_PRODUK']) ?></td>
@@ -324,7 +324,7 @@
                             $("#reviewModal").modal();
                             $("#reviewModalTitle").text(produk["NAMA_PRODUK"]);
                             var isi = `<div class="text-center">
-                                <img style="width: 400px; height: 400px;" src="res/img/produk/` + produk["LOKASI_FOTO_PRODUK"] + `">
+                                <img style="width: 400px; height: 400px;" src="res/img/produk/` + produk["LOKASI_FOTO_PRODUK"] + `?` + <?= time(); ?> + `">
                                 </div>`;
 
                             $.ajax({

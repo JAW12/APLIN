@@ -160,7 +160,7 @@
                     foreach ($listProduk as $key => $value) {
                         $lokasiFotoProduk = "res/img/no-image.png";
                         if (!empty($value['LOKASI_FOTO_PRODUK'])) {
-                            $lokasiFotoProduk = "res/img/produk/".$value['LOKASI_FOTO_PRODUK'];
+                            $lokasiFotoProduk = "res/img/produk/".$value['LOKASI_FOTO_PRODUK']."?".time();
                         }                        
                         $cl = "";
                         $text = "&nbsp;";
