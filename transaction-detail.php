@@ -102,7 +102,7 @@
                     </div>                    
                 </div>
                 <div class="row">
-                    <div class="col-2">
+                    <div class="col-sm-6 col-md-2">
                         <p class="h5 my-2">Customer Name</p>
                     </div>
                     <div class="col">
@@ -110,7 +110,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-2">
+                    <div class="col-sm-6 col-md-2">
                         <p class="h5 my-2">Invoice Number</p>
                     </div>
                     <div class="col">
@@ -118,7 +118,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-2">
+                    <div class="col-sm-6 col-md-2">
                         <p class="h5 my-2">Order Date</p>
                     </div>
                     <div class="col">
@@ -126,7 +126,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-2">
+                    <div class="col-sm-6 col-md-2">
                         <p class="h5 my-2">Total Transaction</p>
                     </div>
                     <div class="col">

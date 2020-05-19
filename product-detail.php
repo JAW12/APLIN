@@ -227,11 +227,15 @@ if(isset($_SESSION['login'])){
                         while($ctr>0){
                             foreach ($produk as $key => $value) {
                                 if($value['ROW_ID_PRODUK']==$ctrId[$ctr-1]){
+                                    $fotoSimiliar = "res/img/no-image.png";
+                                    if (!empty($value['LOKASI_FOTO_PRODUK'])) {
+                                        $fotoSimiliar = "res/img/produk/".$value['LOKASI_FOTO_PRODUK']."?".time();
+                                    }
                                     ?>
                                     <div class="card border-0 hover-shadow my-4 p-3" style="width: 18rem;box-sizing: border-box">
                                         <form method="post">
                                             <input type="hidden" name="idProduk" value="<?= $value['ROW_ID_PRODUK']?>"/>
-                                            <button type="submit" class="btn btn-link"><img src="<?= "res/img/produk/".$value['LOKASI_FOTO_PRODUK']."?".time();?>" width="200px" height="200px"/></button>
+                                            <button type="submit" class="btn btn-link"><img src="<?= $fotoSimiliar ?>" width="200px" height="200px"/></button>
                                         </form>
                                     </div>
                                     <?php

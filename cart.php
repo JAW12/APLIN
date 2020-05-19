@@ -68,9 +68,11 @@
 
         </div>
         <main>
-            <table id="tableProduct" class="table table-hover table-striped table-bordered container">
-                <td>Table is loading</td>
-            </table>
+            <div class="container my-2 table-responsive">
+                <table id="tableProduct" class="table table-hover table-striped table-bordered container">
+                    <td>Table is loading</td>
+                </table>
+            </div>
             <div class="container text-right">
                 <form method="POST" id="confirmPurchase">
                     <input type="hidden" name="grand" value="<?=$grandTotal?>"/>

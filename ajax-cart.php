@@ -14,6 +14,7 @@
         } catch (Exception $e) {
             echo $e->getMessage();
         }
+        unset($_SESSION['regisdtrans'][$_POST['idProduk']]);
     }
     else if(isset($_POST['grand'])){
         try {
@@ -91,7 +92,10 @@
                             $ctrNum++;
                             $query = "SELECT * FROM PRODUK WHERE ROW_ID_PRODUK = $value[ROW_ID_PRODUK]";
                             $itemData = getQueryResultRow($db, $query);
-                            $fotoItem="res/img/produk/".$itemData['LOKASI_FOTO_PRODUK']."?".time();
+                            $fotoItem = "res/img/no-image.png";
+                            if (!empty($itemData['LOKASI_FOTO_PRODUK'])) {
+                                $fotoItem="res/img/produk/".$itemData['LOKASI_FOTO_PRODUK']."?".time();
+                            }
                             $namaItem=$itemData['NAMA_PRODUK'];
                             $hargaItem = intval($itemData['HARGA_PRODUK']);
                             $jumlahItem = intval($value['QTY']);
