@@ -69,7 +69,7 @@
         </div>
         <main>
             <table id="tableProduct" class="table table-hover table-striped table-bordered container">
-                <td>a</td>
+                <td>Table is loading</td>
             </table>
             <div class="container text-right">
                 <form method="POST" id="confirmPurchase">

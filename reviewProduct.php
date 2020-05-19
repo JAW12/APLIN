@@ -10,7 +10,7 @@
         echo $id_product . ' ' . $id_htrans . ' ' . $rating . ' ' . $comment . '<br>';
         if($comment != ''){
             $date = date('Y-m-d H:i:s');
-            $query = "INSERT INTO REVIEW_PRODUK VALUES('15', '$login[row_id_customer]', '$id_htrans', '$id_product', now(), '$comment', $rating)";
+            $query = "INSERT INTO REVIEW_PRODUK VALUES(null, '$login[row_id_customer]', '$id_htrans', '$id_product', now(), '$comment', $rating)";
             echo $query;
             $stmt = $db->prepare($query);
             $result = $stmt->execute();

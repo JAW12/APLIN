@@ -115,6 +115,49 @@ if(isset($_POST['btnSubmit'])){
             }
         }
     }
+    else{
+        try{
+        $query = "INSERT INTO PRODUK VALUES('0',null, :nama, :status, :harga, :dimensikemasan, :dimensiproduk, :berat, :satuan, :deskripsi, null, :stok)";
+        $stmt = $db->prepare($query);
+        $stmt->bindValue(":nama", $_POST['productName'], PDO::PARAM_STR);
+        $stmt->bindValue(":status", 1, PDO::PARAM_STR);
+        $stmt->bindValue(":harga", intval($_POST['productPrice']), PDO::PARAM_INT);
+        $stmt->bindValue(":dimensikemasan", $_POST['productPackageDimension'], PDO::PARAM_STR);
+        $stmt->bindValue(":dimensiproduk", $_POST['productDimension'], PDO::PARAM_STR);
+        $stmt->bindValue(":berat", $_POST['productWeight'], PDO::PARAM_STR);
+        $stmt->bindValue(":satuan", $_POST['productUnit'], PDO::PARAM_STR);
+        $stmt->bindValue(":deskripsi", $_POST['productDescription'], PDO::PARAM_STR);
+        $stmt->bindValue(":stok", intval($_POST['productStock']), PDO::PARAM_INT);
+        $result = $stmt->execute();
+        }catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        $query = "SELECT ROW_ID_PRODUK AS 'ROW', ID_PRODUK AS 'ID' FROM PRODUK WHERE NAMA_PRODUK =  '$_POST[productName]'";
+        $productId = getQueryResultRowArrays($db, $query);
+        if(isset($_FILES['productImage'])){
+            uploadFile($db, $_FILES['productImage'], "/res/img/produk/", $productId[0]['ID'], $productId[0]['ROW']);
+        }
+        try {
+            $query = "INSERT INTO KATEGORI_PRODUK VALUES(:id, :parent, :child)";
+            $stmt = $db->prepare($query);
+            $stmt->bindValue(":id", $productId[0]['ROW'], PDO::PARAM_INT);
+            $stmt->bindValue(":parent", $_POST['productParentCategory'], PDO::PARAM_INT);
+            $stmt->bindValue(":child", $_POST['productChildCategory'], PDO::PARAM_INT);
+            $result = $stmt->execute();
+            if ($result) {
+            //showInfoDiv("Successful registering product");
+                header('Location: product-list.php');
+                exit;
+            }
+        } catch (Exception $e) {
+            if(isset($_POST['cek'])){
+                showAlertDiv("Failed updating product");
+            }
+            else{
+                showAlertDiv("Failed registering product");
+            }
+        }
+    }
 }
 ?>
 <!doctype html>
@@ -163,48 +206,6 @@ if(isset($_POST['btnSubmit'])){
             </h1>
         </div>
         <?php
-        if(isset($_POST['btnSubmit'])){
-            try{
-            $query = "INSERT INTO PRODUK VALUES('0',null, :nama, :status, :harga, :dimensikemasan, :dimensiproduk, :berat, :satuan, :deskripsi, null, :stok)";
-            $stmt = $db->prepare($query);
-            $stmt->bindValue(":nama", $_POST['productName'], PDO::PARAM_STR);
-            $stmt->bindValue(":status", 1, PDO::PARAM_STR);
-            $stmt->bindValue(":harga", intval($_POST['productPrice']), PDO::PARAM_INT);
-            $stmt->bindValue(":dimensikemasan", $_POST['productPackageDimension'], PDO::PARAM_STR);
-            $stmt->bindValue(":dimensiproduk", $_POST['productDimension'], PDO::PARAM_STR);
-            $stmt->bindValue(":berat", $_POST['productWeight'], PDO::PARAM_STR);
-            $stmt->bindValue(":satuan", $_POST['productUnit'], PDO::PARAM_STR);
-            $stmt->bindValue(":deskripsi", $_POST['productDescription'], PDO::PARAM_STR);
-            $stmt->bindValue(":stok", intval($_POST['productStock']), PDO::PARAM_INT);
-            $result = $stmt->execute();
-            }catch (Exception $e) {
-                echo $e->getMessage();
-            }
-            $query = "SELECT ROW_ID_PRODUK AS 'ROW', ID_PRODUK AS 'ID' FROM PRODUK WHERE NAMA_PRODUK =  '$_POST[productName]'";
-            $productId = getQueryResultRowArrays($db, $query);
-            if(isset($_FILES['productImage'])){
-                print_r($_FILES['productImage']);
-                uploadFile($db, $_FILES['productImage'], "/res/img/produk/", $productId[0]['ID'], $productId[0]['ROW']);
-            }
-            try {
-                $query = "INSERT INTO KATEGORI_PRODUK VALUES(:id, :parent, :child)";
-                $stmt = $db->prepare($query);
-                $stmt->bindValue(":id", $productId[0]['ROW'], PDO::PARAM_INT);
-                $stmt->bindValue(":parent", $_POST['productParentCategory'], PDO::PARAM_INT);
-                $stmt->bindValue(":child", $_POST['productChildCategory'], PDO::PARAM_INT);
-                $result = $stmt->execute();
-                if ($result) {
-                showInfoDiv("Successful registering product");
-                }
-            } catch (Exception $e) {
-                if(isset($_POST['cek'])){
-                    showAlertDiv("Failed updating product");
-                }
-                else{
-                    showAlertDiv("Failed registering product");
-                }
-            }
-        }
         include("header.php");
         ?>
 
@@ -286,7 +287,6 @@ if(isset($_POST['btnSubmit'])){
                     Product Stock : </br>
                     <input type="number" class="form-control" name="productStock" value="<?= isset($_POST['idProduk']) ? $stokProduk : "" ?>" /></br>
                     </br>
-                    <input type="hidden" name="idProduk" value="<?= $_POST['idProduk'] ?>"/>
                     <button type="submit" name="btnSubmit" class="btn btn-success" onclick="location.reload(true)"><?= isset($_POST['idProduk']) ? "Edit Product" : "Add Product" ?></button>
                 </form>
             </section>

@@ -24,7 +24,6 @@
             date_default_timezone_set('asia/jakarta');
             $stmt->bindValue(":tanggal",date('Y-m-d H:i:s'), PDO::PARAM_STR);
             $stmt->bindValue(":status", 0, PDO::PARAM_INT);
-            echo $query;
             $result = $stmt->execute();
             if($result){
                 $rowIdHtrans = $db->lastInsertId();
