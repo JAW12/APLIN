@@ -19,7 +19,7 @@
     else if(isset($_POST['grand'])){
         try {
             $db->beginTransaction();
-            $query = "INSERT INTO HTRANS VALUES(null,:idCust,:tanggal, '', 0, :status, '')";
+            $query = "INSERT INTO HTRANS VALUES(0,:idCust,:tanggal, '', 0, :status, '')";
             $stmt = $db->prepare($query);
             $stmt->bindValue(":idCust", $_POST['idCust'], PDO::PARAM_INT);
             date_default_timezone_set('asia/jakarta');
@@ -92,22 +92,24 @@
                             $ctrNum++;
                             $query = "SELECT * FROM PRODUK WHERE ROW_ID_PRODUK = $value[ROW_ID_PRODUK]";
                             $itemData = getQueryResultRow($db, $query);
-                            $fotoItem = "res/img/no-image.png";
-                            if (!empty($itemData['LOKASI_FOTO_PRODUK'])) {
-                                $fotoItem="res/img/produk/".$itemData['LOKASI_FOTO_PRODUK']."?".time();
+                            if($itemData['STATUS_AKTIF_PRODUK'] == 1){
+                                $fotoItem = "res/img/no-image.png";
+                                if (!empty($itemData['LOKASI_FOTO_PRODUK'])) {
+                                    $fotoItem="res/img/produk/".$itemData['LOKASI_FOTO_PRODUK']."?".time();
+                                }
+                                $namaItem=$itemData['NAMA_PRODUK'];
+                                $hargaItem = intval($itemData['HARGA_PRODUK']);
+                                $jumlahItem = intval($value['QTY']);
+                                $subtotalItem=intval($itemData['HARGA_PRODUK'])*intval($value['QTY']);
+                                $registerdtransbaru = array(
+                                    "id" => $itemData['ROW_ID_PRODUK'],
+                                    "harga" => $itemData['HARGA_PRODUK'],
+                                    "qty" => $value['QTY'],
+                                    "subtotal" => $hargaItem
+                                );
+                                $registerdtrans[$itemData['ROW_ID_PRODUK']] = $registerdtransbaru;
+                                $_SESSION['regisdtrans'] = $registerdtrans;   
                             }
-                            $namaItem=$itemData['NAMA_PRODUK'];
-                            $hargaItem = intval($itemData['HARGA_PRODUK']);
-                            $jumlahItem = intval($value['QTY']);
-                            $subtotalItem=intval($itemData['HARGA_PRODUK'])*intval($value['QTY']);
-                            $registerdtransbaru = array(
-                                "id" => $itemData['ROW_ID_PRODUK'],
-                                "harga" => $itemData['HARGA_PRODUK'],
-                                "qty" => $value['QTY'],
-                                "subtotal" => $hargaItem
-                            );
-                            $registerdtrans[$itemData['ROW_ID_PRODUK']] = $registerdtransbaru;
-                            $_SESSION['regisdtrans'] = $registerdtrans;
                             if($itemData['STATUS_AKTIF_PRODUK'] == "1"){
                                 echo "<tr>";
                                 echo "<td>$ctrNum</td>";

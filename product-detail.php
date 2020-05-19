@@ -38,7 +38,7 @@ if(isset($_SESSION['login'])){
         <!-- CSS Sendiri -->
         <link href="style/index.css" rel="stylesheet">
         
-        <title>Detail Produk</title>
+        <title>Product Detail</title>
     </head>
     <body id="page-top">
         <div class="spaceatas"></br></br></div>
@@ -205,28 +205,33 @@ if(isset($_SESSION['login'])){
             <div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 row-cols-xl-4 card-deck">
             <?php
                 $query = "SELECT * FROM KATEGORI_PRODUK WHERE ROW_ID_PRODUK = $idProduk";
-                $kategoriProduk = getQueryResultRowArrays($db, $query);
-                foreach ($kategoriProduk as $key => $value) {
-                    $kategoriParent=$value['ROW_ID_KATEGORI_PARENT'];
-                    $kategoriChild=$value['ROW_ID_KATEGORI_CHILD'];
-                }
-                $query = "SELECT * FROM KATEGORI_PRODUK WHERE ROW_ID_PRODUK != $idProduk";
-                $kategoriProduk = getQueryResultRowArrays($db, $query);
-                $ctrId = [];
-                $ctr=0;
+                // $kategoriProduk = getQueryResultRowArrays($db, $query);
+                // foreach ($kategoriProduk as $key => $value) {
+                //     $kategoriParent=$value['ROW_ID_KATEGORI_PARENT'];
+                //     $kategoriChild=$value['ROW_ID_KATEGORI_CHILD'];
+                // }
+                $kategoriProduk = getQueryResultRow($db, $query);
+                $kategoriParent = $kategoriProduk['ROW_ID_KATEGORI_PARENT'];
+                $kategoriChild = $kategoriProduk['ROW_ID_KATEGORI_CHILD'];
+                // $query = "SELECT * FROM KATEGORI_PRODUK WHERE ROW_ID_PRODUK != $idProduk";
+                // $kategoriProduk = getQueryResultRowArrays($db, $query);
+                // $ctrId = [];
+                // $ctr=0;
                 if(isset($kategoriParent)){
-                    foreach ($kategoriProduk as $key => $value) {
-                        if($value['ROW_ID_KATEGORI_PARENT'] == $kategoriParent && $value['ROW_ID_KATEGORI_CHILD'] == $kategoriChild){
-                                $ctrId[$ctr] = $value['ROW_ID_PRODUK'];
-                                $ctr = $ctr+1;
-                        }
-                    }
-                    $query = "SELECT * FROM PRODUK";
+                    // foreach ($kategoriProduk as $key => $value) {
+                    //     if($value['ROW_ID_KATEGORI_PARENT'] == $kategoriParent && $value['ROW_ID_KATEGORI_CHILD'] == $kategoriChild){
+                    //             $ctrId[$ctr] = $value['ROW_ID_PRODUK'];
+                    //             $ctr = $ctr+1;
+                    //     }
+                    // }
+                    // $query = "SELECT * FROM PRODUK WHERE 1=2";
+                    $query = "SELECT * FROM PRODUK P, KATEGORI_PRODUK KP WHERE P.ROW_ID_PRODUK = KP.ROW_ID_PRODUK AND KP.ROW_ID_KATEGORI_PARENT = {$kategoriParent} AND KP.ROW_ID_KATEGORI_CHILD = {$kategoriChild} AND STATUS_AKTIF_PRODUK = 1 ORDER BY P.NAMA_PRODUK ASC LIMIT 5";
                     $produk = getQueryResultRowArrays($db, $query);
+                    $ctr = count($produk);
                     if($ctr!="" && $ctr>0){
-                        while($ctr>0){
+                        // while($ctr>0){
                             foreach ($produk as $key => $value) {
-                                if($value['ROW_ID_PRODUK']==$ctrId[$ctr-1]){
+                                // if($value['ROW_ID_PRODUK']==$ctrId[$ctr-1]){
                                     $fotoSimiliar = "res/img/no-image.png";
                                     if (!empty($value['LOKASI_FOTO_PRODUK'])) {
                                         $fotoSimiliar = "res/img/produk/".$value['LOKASI_FOTO_PRODUK']."?".time();
@@ -239,13 +244,13 @@ if(isset($_SESSION['login'])){
                                         </form>
                                     </div>
                                     <?php
-                                    $ctr = $ctr-1;
-                                    if($ctr == 0){
-                                        break;
-                                    }
-                                }
+                                    // $ctr = $ctr-1;
+                                    // if($ctr == 0){
+                                    //     break;
+                                    // }
+                                // }
                             }
-                        }
+                        // }
                     }
                     else{
                         ?>

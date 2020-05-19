@@ -134,7 +134,7 @@ if(isset($_POST['btnSubmit'])){
         }
         $query = "SELECT ROW_ID_PRODUK AS 'ROW', ID_PRODUK AS 'ID' FROM PRODUK WHERE NAMA_PRODUK =  '$_POST[productName]'";
         $productId = getQueryResultRowArrays($db, $query);
-        if(isset($_FILES['productImage'])){
+        if($_FILES['productImage']['error'] <= 0){
             uploadFile($db, $_FILES['productImage'], "/res/img/produk/", $productId[0]['ID'], $productId[0]['ROW']);
         }
         try {
@@ -216,9 +216,9 @@ if(isset($_POST['btnSubmit'])){
             <section class="w-80">
                 <form method="POST" class="container" enctype="multipart/form-data">
                     Product Name : </br>
-                    <input type="text" class="form-control" name="productName" value="<?= isset($_POST['idProduk']) ? $namaProduk : "" ?>" /></br>
+                    <input type="text" class="form-control" name="productName" value="<?= isset($_POST['idProduk']) ? $namaProduk : "" ?>"   /></br>
                     Product Price : </br>
-                    <input type="number" class="form-control" name="productPrice" value="<?= isset($_POST['idProduk']) ? $hargaProduk : "" ?>" /></br>
+                    <input type="number" class="form-control" name="productPrice" value="<?= isset($_POST['idProduk']) ? $hargaProduk : "" ?>"   /></br>
                     Product Parent Category : </br>
                     <select class="form-control" name="productParentCategory">
                     <?php
@@ -271,21 +271,21 @@ if(isset($_POST['btnSubmit'])){
                     }
                     ?>
                     Package Dimension : </br>
-                    <input type="text" class="form-control" name="productPackageDimension" value="<?= isset($_POST['idProduk']) ? $dimensiKemasan : "" ?>" /></br>
+                    <input type="text" class="form-control" name="productPackageDimension" value="<?= isset($_POST['idProduk']) ? $dimensiKemasan : "" ?>"   /></br>
                     Product Dimension : </br>
-                    <input type="text" class="form-control" name="productDimension" value="<?= isset($_POST['idProduk']) ? $dimensiProduk : "" ?>" /></br>
+                    <input type="text" class="form-control" name="productDimension" value="<?= isset($_POST['idProduk']) ? $dimensiProduk : "" ?>"   /></br>
                     Product Weight : </br>
-                    <input type="text" class="form-control" name="productWeight" value="<?= isset($_POST['idProduk']) ? $beratProduk : "" ?>" /></br>
+                    <input type="text" class="form-control" name="productWeight" value="<?= isset($_POST['idProduk']) ? $beratProduk : "" ?>"   /></br>
                     Product Units : </br>
-                    <input type="text" class="form-control" name="productUnit" value="<?= isset($_POST['idProduk']) ? $satuanProduk : "" ?>" /></br>
+                    <input type="text" class="form-control" name="productUnit" value="<?= isset($_POST['idProduk']) ? $satuanProduk : "" ?>"   /></br>
                     Product Description : </br>
                     <textarea class="form-control" name="productDescription" rows="6" value="<?= isset($_POST['idProduk']) ? $deskripsiProduk : "" ?>"><?= isset($_POST['idProduk']) ? $deskripsiProduk : "" ?></textarea></br>
                     Product Image : </br>
                     <h8 class="display-5" style="color: red"><i>Image must be a .PNG</i></h8>
-                    <input type="file" id="files" class="form-control-file" name="productImage" value="<?= isset($_POST['idProduk']) ? $fotoProduk : "" ?>">
+                    <input type="file" id="files" class="form-control-file" name="productImage" value="<?= isset($_POST['idProduk']) ? $fotoProduk : "" ?>"   >
                     <img id="fotoFile"></br></br>
                     Product Stock : </br>
-                    <input type="number" class="form-control" name="productStock" value="<?= isset($_POST['idProduk']) ? $stokProduk : "" ?>" /></br>
+                    <input type="number" class="form-control" name="productStock" value="<?= isset($_POST['idProduk']) ? $stokProduk : "" ?>"   /></br>
                     </br>
                     <button type="submit" name="btnSubmit" class="btn btn-success" onclick="location.reload(true)"><?= isset($_POST['idProduk']) ? "Edit Product" : "Add Product" ?></button>
                 </form>
