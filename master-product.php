@@ -70,7 +70,7 @@ else{
     $query = "SELECT * FROM KATEGORI WHERE STATUS_PARENT = '0'";
     $categoryChild = getQueryResultRowArrays($db,$query);
 }
-if(isset($_POST['btnSubmit'])){
+if(isset($_POST['btnSubmit']) && !empty($_POST['productName']) && !empty($_POST['productPrice']) && !empty($_POST['productPackageDimension']) && !empty($_POST['productDimension']) && !empty($_POST['productWeight']) && !empty($_POST['productUnit']) && !empty($_POST['productDescription']) && !empty($_POST['productStock'])){
     if(isset($_POST['cek'])){
         try {
             $query = "UPDATE PRODUK SET NAMA_PRODUK = :nama, STATUS_AKTIF_PRODUK = :status, HARGA_PRODUK = :harga, DIMENSI_KEMASAN = :dimensikemasan, DIMENSI_PRODUK = :dimensiproduk, BERAT_PRODUK = :berat, SATUAN_PRODUK = :satuan, DESKRIPSI_PRODUK = :deskripsi, STOK_PRODUK = :stok WHERE ROW_ID_PRODUK = :id";
@@ -159,32 +159,21 @@ if(isset($_POST['btnSubmit'])){
         }
     }
 }
+else if(isset($_POST['btnSubmit'])){
+    if(isset($_POST['cek'])){
+        $error = "Failed updating product";
+    }
+    else{
+        $error = "Failed registering product";
+    }
+}
 ?>
 <!doctype html>
 <html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-        <!-- CSS Library Import -->
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
-        <link rel="stylesheet" type="text/css" href="css/datatables.css"/>
-        <link href="css/all.css" rel="stylesheet">
-        <link rel="icon" type="image/png" href="res/img/goblin.png" />    
-         
-
-        <!-- JS Library Import -->
-        <script src="js/jquery-3.4.1.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/jQueryUI.js"></script>
-        <script type="text/javascript" src="js/datatables.js"></script>
-        <script src="script/index.js"></script>
-
-        <!-- CSS Sendiri -->
-        <link href="style/index.css" rel="stylesheet">
-
-        <!-- JS Sendiri -->
+        <?php include "head.php"; ?>
         <style>
             #judul{
                 padding: 0;
@@ -207,6 +196,9 @@ if(isset($_POST['btnSubmit'])){
         </div>
         <?php
         include("header.php");
+        if(!empty($error)){
+            showAlertDiv($error);
+        }
         ?>
 
         <!-- Main Section -->

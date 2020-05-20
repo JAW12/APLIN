@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 20, 2020 at 02:54 AM
+-- Generation Time: May 20, 2020 at 05:49 AM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.12
 
@@ -39,6 +39,7 @@ CREATE TABLE `CART` (
 --
 
 INSERT INTO `CART` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`, `QTY`) VALUES
+(1, 8, 1),
 (6, 3, 50),
 (6, 6, 10),
 (6, 7, 1),
@@ -98,10 +99,12 @@ INSERT INTO `CUSTOMER` (`ROW_ID_CUSTOMER`, `USERNAME`, `PASSWORD`, `EMAIL`, `NAM
 (32, 'YAULLAH', '$2y$10$mnauX1wW3et8S8F74M.mIOilicERMu4LZWsPCCOA.gzT5W1mDB8ze', 'hongary.kevin@stts.edu', 'honga', 'sadasad', 'L'),
 (33, 'jaw', '$2y$10$1ptyvPgkOIWbbXkUZoPLPeDCzjocB3PEbCXfJjZZzUHGQSOYKIh3.', 'jem.angkasa91@gmail.com', 'jem', 'angkasa', 'L'),
 (34, 'kevin', '$2y$10$Uoycw9Fz47yTidLGpXTrLOXyvctouiv3JW0pAsL8k/1IowYKwijjq', 'hongary@gmail.com', 'kevin', 'honga', 'L'),
-(35, '000webhost', '$2y$10$wBFUUTyxDp7/OtIEAXTYkeevgcwThfPZwwtAPKbtqvWC2pSmEl8bi', 'hendrapogobiru@gmail.com', 'hendra', 'pogo', 'U'),
-(36, 'jajal', '$2y$10$HtL4Mek22YgQ7048vgB13Onoi9snJqYLKuTJyp3HXKCBKi.nMAn4m', 'hongary.kevin@gmail.com', 'kevin', 'hong', 'L'),
+(35, '000webhost', '$2y$10$wBFUUTyxDp7/OtIEAXTYkeevgcwThfPZwwtAPKbtqvWC2pSmEl8bi', 'inihendra@gmail.com', 'hendra', 'pogo', 'U'),
+(36, 'jajal', '$2y$10$HtL4Mek22YgQ7048vgB13Onoi9snJqYLKuTJyp3HXKCBKi.nMAn4m', 'hongarytutu@gmail.com', 'kevin', 'hong', 'L'),
 (37, 'piekoe', '$2y$10$Uw4AeipCAcGQFphdUlOcMOqn3EwM.rKN9CGu6e.MVTOaxhiEn5Cfq', 'kevin3@mhs.stts.edu', 'kevin', 'mhs', 'L'),
-(38, 'seque', '$2y$10$r69ecO8SvWSWTZ6uZxy5ludTjAXUomZ9uMj0EOndHRu8HCgXLzNki', 'squeeesstore24@gmail.com', 'sque', 'store', 'U');
+(38, 'seque', '$2y$10$r69ecO8SvWSWTZ6uZxy5ludTjAXUomZ9uMj0EOndHRu8HCgXLzNki', 'squeeesstore24@gmail.com', 'sque', 'store', 'U'),
+(39, 'lmao', '$2y$10$vEQV6VmYrTcWJ8bOD8nXweugaPhQJC2yT/D0Xu9cxJNEBb9hKB19C', 'hongary.kevin@gmail.com', 'lmao', 'yay', 'L'),
+(40, 'pogo', '$2y$10$vExYZ3Zv1Kj0HQiu3dZIou6tDOISTQ2SdRyCdM8Y9heyhXMUjuytu', 'hendrapogobiru@gmail.com', 'hendra', 'pogo', 'L');
 
 -- --------------------------------------------------------
 
@@ -192,7 +195,24 @@ INSERT INTO `DTRANS` (`ROW_ID_HTRANS`, `ROW_ID_PRODUK`, `QTY_PRODUK`, `HARGA_PRO
 (68, 7, 1, 259000, 259000),
 (69, 35, 1, 1500000, 1500000),
 (71, 7, 11, 259000, 2849000),
-(71, 14, 4, 489000, 1956000);
+(71, 14, 4, 489000, 1956000),
+(74, 7, 10, 259000, 2590000),
+(74, 13, 100, 4099000, 409900000),
+(75, 7, 1, 259000, 259000),
+(75, 14, 1, 489000, 489000),
+(76, 7, 1, 259000, 259000),
+(77, 10, 10, 381694, 3816940),
+(77, 16, 10, 1169000, 11690000),
+(78, 7, 5, 259000, 1295000),
+(78, 8, 5, 1593150, 7965750),
+(79, 8, 1, 1593150, 1593150),
+(80, 8, 1, 1593150, 1593150),
+(80, 27, 1, 30000, 30000),
+(80, 39, 10, 425000, 4250000),
+(81, 8, 1, 1593150, 1593150),
+(81, 16, 1, 1169000, 1169000),
+(81, 27, 1, 30000, 30000),
+(81, 39, 10, 425000, 4250000);
 
 --
 -- Triggers `DTRANS`
@@ -300,7 +320,15 @@ INSERT INTO `HTRANS` (`ROW_ID_HTRANS`, `ROW_ID_CUSTOMER`, `TANGGAL_TRANS`, `NO_N
 (68, 1, '2020-05-20 04:19:52', '2020052000005', 259000, 0, ''),
 (69, 27, '2020-05-20 07:00:30', '2020052000006', 1500000, 1, ''),
 (70, 33, '2020-05-20 07:35:10', '2020052000007', 0, 2, ''),
-(71, 33, '2020-05-20 07:37:55', '2020052000008', 4805000, 1, '71.png');
+(71, 33, '2020-05-20 07:37:55', '2020052000008', 4805000, 1, '71.png'),
+(74, 1, '2020-05-20 11:22:57', '2020052000009', 412490000, 0, ''),
+(75, 1, '2020-05-20 11:27:42', '2020052000010', 748000, 0, ''),
+(76, 1, '2020-05-20 11:40:19', '2020052000011', 259000, 0, ''),
+(77, 1, '2020-05-20 11:43:21', '2020052000012', 15506940, 0, ''),
+(78, 1, '2020-05-20 11:53:06', '2020052000013', 9260750, 0, ''),
+(79, 1, '2020-05-20 11:59:14', '2020052000014', 1593150, 0, ''),
+(80, 1, '2020-05-20 12:02:43', '2020052000015', 5873150, 0, ''),
+(81, 1, '2020-05-20 12:09:09', '2020052000016', 7042150, 0, '');
 
 --
 -- Triggers `HTRANS`
@@ -446,22 +474,22 @@ INSERT INTO `PRODUK` (`ROW_ID_PRODUK`, `ID_PRODUK`, `NAMA_PRODUK`, `STATUS_AKTIF
 (3, 'CR001', 'CERAMAX ROJO FSB0371 W/HUNG BASIN', '1', 472500, '40cm X 40cm X 14cm', '38cm X 38cm X 12cm', '9 Kg', 'PCS', 'CERAMAX ROJO FSB0371 Wall Hung Wastafel\r\n\r\nSpesifikasi:\r\n\r\nTipe: Wall Hung Basin\r\nDimensi 380x380x120MM\r\nMaterial: Porselen\r\nFitur:\r\n\r\nHarga terjangkau\r\nMaterial berbahan porselen mudah dibersihkan dan tidak ada tepian yang tajam\r\nSistem pembuangan yang lancar\r\nDesain elegan\r\nHemat ruang', 'CR001.png', -46),
 (5, 'P1001', 'PHILIPS 17401 59449 105 9W 65K MESON CD G3', '1', 195605, '14cm X 12cm X 12cm', '14cm X 12cm X 12cm', '200 gr', 'PCS', 'Keunggulan:\r\n\r\nLED Downlight dengan harga terjangku\r\nTermasuk lampu & driver terintegrasi, Anda bisa langsung\r\nmemasangnya\r\nMudah dipasang\r\nCahaya yang rata dengan diffuser anti silau\r\nHemat Listrik = Hemat Biaya!\r\nTahan lama, umur hingga 15.000 jam\r\nTersedia dalam berbagai macam pilihan ukuran & watt\r\nSpesifikasi:\r\n\r\nColor: Putih (cool day light)\r\nPower: 9W\r\nLumen: 650lm (6500K)\r\nDiameter: 120mm\r\nKetebalan: 47mm\r\nLubang Plafon / Cutout: 105mm / 4.1 inch\r\nKoneksi: flying wire\r\nUmur: hingga 15.000 jam\r\nCRI80\r\nIP20\r\n220-240V ~ 50-60 Hz\r\nTidak dapat diredupkan / Non Dimmable\r\nTidak dapat diganti lampu atau driver-nya saja\r\nUntuk pemakaian di dalam ruangan / Indoor use only', 'P1001.png', -12),
 (6, 'TF001', 'TIDY FSA0042 WHITE ONE PIECE TOILET', '0', 1500000, '70cm X 44cm X 61cm', '68cm X 42cm X 59cm', '41kg', 'SET', 'TIDY FSA0042 WHITE ONE PIECE TOILET\r\n\r\nSpesifikasi:\r\n\r\nTipe: Monoblok / One piece toilet\r\nSistem pembuangan: Siphonic\r\nSoft closing seat cover\r\nAs/Jarak dinding/Rough-in/S-trap 300mm\r\nOutfall diameter 100mm\r\nMaterial: Porselen\r\nFitur:\r\n\r\nHarga relatif terjangkau\r\nOne piece toilet dengan ukuran yang sesuai dengan masyarakat Asia\r\nDesain modern\r\nHemat ruang\r\nSistem syphonic', 'TF001.png', -5),
-(7, 'GX001', 'GLUCKLICH X01HI1 0.3LT 200W RICE COOKER', '1', 259000, '20cm X 20cm X 22cm', '18cm X 18cm X 20cm', '3kg', 'UNIT', 'Keunggulan:\r\n\r\nBagian dalam anti lengket\r\nFitur tetap hangat\r\nBahan lebih tebal\r\nPerlindungan sekering ganda\r\nPerlindungan suhu tunggi\r\nBaki pengukus tebal\r\nGaransi service 2 tahun\r\nDapat sendok, mangkuk takar, kabel\r\nSpesifikasi:\r\n\r\nGaris air: 0,3 liter\r\nVolume pot: 3 liter\r\nKetebalan: 0.75mm\r\nTegangan: 50/60Hz, 220V\r\nDaya: 200 Watt', 'GX001.png', 148),
+(7, 'GX001', 'GLUCKLICH X01HI1 0.3LT 200W RICE COOKER', '0', 259000, '20cm X 20cm X 22cm', '18cm X 18cm X 20cm', '3kg', 'UNIT', 'Keunggulan:\r\n\r\nBagian dalam anti lengket\r\nFitur tetap hangat\r\nBahan lebih tebal\r\nPerlindungan sekering ganda\r\nPerlindungan suhu tunggi\r\nBaki pengukus tebal\r\nGaransi service 2 tahun\r\nDapat sendok, mangkuk takar, kabel\r\nSpesifikasi:\r\n\r\nGaris air: 0,3 liter\r\nVolume pot: 3 liter\r\nKetebalan: 0.75mm\r\nTegangan: 50/60Hz, 220V\r\nDaya: 200 Watt', 'GX001.png', 148),
 (8, 'TA001', 'TIDY ALUMIX PVC MIN KC 2 / 02', '0', 1593150, '100cm x 100cm x 100cm', '20cm x 20cm x 20cm', '10KG', 'PCS', 'Ringan dan Kokoh -Tahan terhadap air -Tidak berkarat -Menggunakan kusen aluminium sehingga lebih awet dan tahan lama -Tidak berubah bentuk akibat cuaca', 'TA001.png', 1983),
 (9, 'DU001', 'DOORWAY UPVC DOOR HW017L 3/4KC', '1', 1056400, '70cm x 70cm x 70cm', '20cm x 20 cm x 18cm', '4kg', 'UNIT', 'Pintu uPVC yang cocok untuk pintu kamar mandi, karena keunggulanya yaitu tahan air, tahan rayap, dan kokoh. ditambahkan lagi uPVC merupakan bahan yang akan meredam suara dan ramah lingkungan', 'DU001.png', -2),
-(10, 'NF001', 'NIRO FLEUR GFL03 MARIGOLD PGVT', '1', 381694, '80cm x 80cm x 80cm', '19cm x 19cm x 19cm', '8kg', 'BOX', 'Granite Niro Exclusive Design Only at Mitra10. Granite lantai Glazed Polsihed Digital ukuran 80x80 glossy surface memberikan nuansa mewah untuk ruangan anda\r\n\r\n\r\nFungsi: granite porcelain, porcelain tiles, granite lantai, granite polished, granite 80x80, granite digital, granite niro, granite glaze\r\n\r\nGranite Niro Exclusive Design Only at Mitra10. Granite lantai Glazed Polsihed Digital ukuran 80x80 glossy surface memberikan nuansa mewah untuk ruangan anda\r\n\r\n\r\nFungsi: granite porcelain, porcelain tiles, granite lantai, granite polished, granite 80x80, granite digital, granite niro, granite glaze', 'NF001.png', 4992),
+(10, 'NF001', 'NIRO FLEUR GFL03 MARIGOLD PGVT', '0', 381694, '80cm x 80cm x 80cm', '19cm x 19cm x 19cm', '8kg', 'BOX', 'Granite Niro Exclusive Design Only at Mitra10. Granite lantai Glazed Polsihed Digital ukuran 80x80 glossy surface memberikan nuansa mewah untuk ruangan anda\r\n\r\n\r\nFungsi: granite porcelain, porcelain tiles, granite lantai, granite polished, granite 80x80, granite digital, granite niro, granite glaze\r\n\r\nGranite Niro Exclusive Design Only at Mitra10. Granite lantai Glazed Polsihed Digital ukuran 80x80 glossy surface memberikan nuansa mewah untuk ruangan anda\r\n\r\n\r\nFungsi: granite porcelain, porcelain tiles, granite lantai, granite polished, granite 80x80, granite digital, granite niro, granite glaze', 'NF001.png', 4992),
 (11, 'ZT001', 'ZEHN TANGGA ALUMINIUM YKF-403 ( 3 X 4 STEP )', '0', 1161000, '20cm x 30cm x 30cm', '19cm x 20cm x 20cm', '20kg', 'SET', 'Zehn Tangga Aluminium 403 adalah jenis tangga yang bisa dilipat empat, dengan total panjang 3,70 m. Tangga ini bisa disetel/adjust (multipurpose)', 'ZT001.png', 825),
-(13, 'PP001', 'POLYTRON PRM 28 QS/QB MIRROR 2D REFRIGERATOR', '1', 4099000, '75cm x 75cm x 75cm', '45cm x 45cm x 45', '20kg', 'SET', 'Polytron Belleza 3 hadir dengan mengusung “Zen Design” yang memberikan keseimbangan antara penyempurnaan tampilan dalam (interior) dan tampilan luar (eksterior) dengan menampilkan sentuhan borderless.', 'PP001.png', 745),
-(14, 'EE001', 'ELECTROLUX ETS 3505 POP UP TOASTER', '1', 489000, '43cm x 43cm x 42cm', '34cm x 34cm x 34cm', '25kg', 'UNIT', 'ELECTROLUX ETS 3505 POP UP TOASTER\r\n\r\nMemanggang roti dengan kematangan yang sempurna. Membuat sarapan Anda tersaji dengan lebih baik dan lebih cepat.', 'EE001.png', 380),
-(16, 'PM001', 'PANASONIC MC-CG300X546 VACUUM CLEANER', '1', 1169000, '35cm x 35cm x 35cm', '40cm x 40cm x 40cm', '45kg', 'SET', 'Panasonic MC-CG300X546 merupakan vacuum cleaner yang dapat membersihkan ruangan dari debu, bakteri, jamur, tungau dan allergen lainnya. Dengan Panasonic MC-CG300X546 Anda dapat membersihkan rumah dengan mudah tanpa membutuhkan tenaga ekstra dan menyita banyak waktu Anda.', 'PM001.png', 644),
+(13, 'PP001', 'POLYTRON PRM 28 QS/QB MIRROR 2D REFRIGERATOR', '0', 4099000, '75cm x 75cm x 75cm', '45cm x 45cm x 45', '20kg', 'SET', 'Polytron Belleza 3 hadir dengan mengusung “Zen Design” yang memberikan keseimbangan antara penyempurnaan tampilan dalam (interior) dan tampilan luar (eksterior) dengan menampilkan sentuhan borderless.', 'PP001.png', 745),
+(14, 'EE001', 'ELECTROLUX ETS 3505 POP UP TOASTER', '0', 489000, '43cm x 43cm x 42cm', '34cm x 34cm x 34cm', '25kg', 'UNIT', 'ELECTROLUX ETS 3505 POP UP TOASTER\r\n\r\nMemanggang roti dengan kematangan yang sempurna. Membuat sarapan Anda tersaji dengan lebih baik dan lebih cepat.', 'EE001.png', 380),
+(16, 'PM001', 'PANASONIC MC-CG300X546 VACUUM CLEANER', '0', 1169000, '35cm x 35cm x 35cm', '40cm x 40cm x 40cm', '45kg', 'SET', 'Panasonic MC-CG300X546 merupakan vacuum cleaner yang dapat membersihkan ruangan dari debu, bakteri, jamur, tungau dan allergen lainnya. Dengan Panasonic MC-CG300X546 Anda dapat membersihkan rumah dengan mudah tanpa membutuhkan tenaga ekstra dan menyita banyak waktu Anda.', 'PM001.png', 644),
 (23, 'PK001', 'poster kassandra mantoel', '0', 9999999, '14 cm x 12 cm', '12 cm x 14 cm', '120 kg', 'PCS', 'EDIT COBA WOY', 'PK001.png', 124),
-(27, 'KP001', 'Keramik Pokemon3', '1', 30000, '40 cm X 40 cm X 14 cm', '38 cm X 38 cm X 12 cm', '35 kg', 'PCS', 'This is a shiny pokemon tile', 'KP001.png', 2),
-(28, 'KP002', 'Keramik Pokemon', '1', 35000, '40 cm X 40 cm X 14 cm', '38 cm X 38 cm X 12 cm', '35 kg', 'PCS', 'fwergerger', 'KP002.png', 2),
+(27, 'KP001', 'Keramik Pokemon3', '0', 30000, '40 cm X 40 cm X 14 cm', '38 cm X 38 cm X 12 cm', '35 kg', 'PCS', 'This is a shiny pokemon tile', 'KP001.png', 2),
+(28, 'KP002', 'Keramik Pokemon', '0', 35000, '40 cm X 40 cm X 14 cm', '38 cm X 38 cm X 12 cm', '35 kg', 'PCS', 'fwergerger', 'KP002.png', 2),
 (29, 'KP003', 'Keramik Pokemon2', '1', 35000, '40 cm X 40 cm X 14 cm', '38 cm X 38 cm X 12 cm', '35 kg', 'PCS', 'fwergerger', 'KP003.png', 0),
 (30, 'KP004', 'Keramik Pokemon2', '1', 35000, '40 cm X 40 cm X 14 cm', '38 cm X 38 cm X 12 cm', '35 kg', 'PCS', 'fwergerger', NULL, 2),
 (31, 'KP005', 'Keramik Pokemon4', '0', 50000, '40 cm X 40 cm X 14 cm', '38 cm X 38 cm X 12 cm', '35 kg', 'PCS', 'tyjktyj', 'KP005.png', 20),
 (35, 'KT001', 'KERAMIK TANPA FOTO', '1', 1500000, '14cm X 12cm X 12cm', '14cm X 12cm X 12cm', '200 gr', 'BOX', 'ini keramik yang ga punya foto ', NULL, 79),
-(38, '019', 'LAMPU TAMAN', '1', 30000, '70 CM', '70 CM', '15 KG', 'UNIT', 'ini lampu taman', '019.png', 5),
+(38, '019', 'LAMPU TAMAN', '0', 30000, '70 CM', '70 CM', '15 KG', 'UNIT', 'ini lampu taman', '019.png', 5),
 (39, 'AM001', 'AIR MANCUR', '1', 425000, '120 CM', '120 CM', '20 KG', 'UNIT', 'ini air mancur', 'AM001.png', 30);
 
 --
@@ -564,7 +592,9 @@ INSERT INTO `VERIFIKASI_EMAIL` (`ROW_ID_VERIFIKASI`, `ROW_ID_CUSTOMER`, `KODE_VE
 (33, 35, '27932', '0', '2020-05-20 02:23:51', NULL),
 (34, 36, '43875', '0', '2020-05-20 02:28:27', NULL),
 (35, 37, '77529', '0', '2020-05-20 02:43:43', NULL),
-(36, 38, '16914', '0', '2020-05-20 02:48:08', NULL);
+(36, 38, '16914', '0', '2020-05-20 02:48:08', NULL),
+(37, 39, '33193', '0', '2020-05-20 02:56:52', NULL),
+(38, 40, '52128', '1', '2020-05-20 03:09:11', NULL);
 
 -- --------------------------------------------------------
 
@@ -691,13 +721,13 @@ ALTER TABLE `WISHLIST`
 -- AUTO_INCREMENT for table `CUSTOMER`
 --
 ALTER TABLE `CUSTOMER`
-  MODIFY `ROW_ID_CUSTOMER` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `ROW_ID_CUSTOMER` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `HTRANS`
 --
 ALTER TABLE `HTRANS`
-  MODIFY `ROW_ID_HTRANS` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `ROW_ID_HTRANS` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT for table `KATEGORI`
@@ -721,7 +751,7 @@ ALTER TABLE `REVIEW_PRODUK`
 -- AUTO_INCREMENT for table `VERIFIKASI_EMAIL`
 --
 ALTER TABLE `VERIFIKASI_EMAIL`
-  MODIFY `ROW_ID_VERIFIKASI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `ROW_ID_VERIFIKASI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- Constraints for dumped tables

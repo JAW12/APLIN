@@ -10,12 +10,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- CSS Library Import -->
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
-        <link rel="stylesheet" type="text/css" href="css/datatables.css"/>
-        <link href="css/all.css" rel="stylesheet">
-        <link rel="icon" type="image/png" href="res/img/goblin.png" />         
+        <?php include "head.php"; ?>      
 
         <!-- CSS template login -->
         <!--===============================================================================================-->        
@@ -40,7 +35,6 @@
         <!-- CSS Sendiri -->
         <link href="style/lrc.css" rel="stylesheet">
 
-        <!-- JS Sendiri -->
         <title>Register Page</title>
     </head>
     <body>
@@ -79,13 +73,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- JS Library Import -->
-        <script src="js/jquery-3.4.1.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/jQueryUI.js"></script>
-        <script type="text/javascript" src="js/datatables.js"></script>
-        
+        <?php include "script.php"; ?>
         <!-- JS template login -->
         <!--===============================================================================================-->
         <script src="vendor/login/animsition/js/animsition.min.js"></script>
