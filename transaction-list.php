@@ -129,8 +129,8 @@
                                     
                                     <div class="container-filter w-100">
                                         <p class="text-sm-left mx-2 my-2">Total Amount Range</p>
-                                        <input type="number" class="form-control form-control-sm mx-2 my-2 w-100" placeholder="Minimum Total" name="min">
-                                        <input type="number" class="form-control form-control-sm mx-2 my-2 w-100" placeholder="Maximum Total" name="max">
+                                        <input type="number" class="form-control form-control-sm mx-2 my-2 w-100" placeholder="Minimum Total" name="min" min="0">
+                                        <input type="number" class="form-control form-control-sm mx-2 my-2 w-100" placeholder="Maximum Total" name="max" min="0">
 
                                         <p class="text-sm-left mx-2 my-2 mt-3 w-100">
                                             <span class="align-middle">Date Range</span><br/>
