@@ -97,31 +97,35 @@
                             ?>
                             <form class="login100-form validate-form p-b-33 p-t-5" method="post">
                                 <div class="wrap-input100 validate-input" data-validate="Enter Username">
-                                    <input class="input100" type="text" name="username" placeholder="Username">
+                                    <input class="input100 form-control" type="text" name="username" placeholder="Username">
                                     <span class="focus-input100" data-placeholder="&#xe82a;"></span>
                                 </div>
 
-                                <div class="wrap-input100 validate-input" data-validate="Enter Password">
-                                    <input class="input100" type="password" name="pass" placeholder="Password">
+                                <div class="wrap-input100 input-group validate-input" data-validate="Enter Password">
+                                    <input class="input100 form-control" type="password" name="pass" id="inputPass" placeholder="Password">
                                     <span class="focus-input100" data-placeholder="&#xe80f;"></span>
+                                    <div class="input-group-append" id="show_hide_password">
+                                        <button class="btn btn-outline-secondary" type="button" id="btnHide"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                      </div>
                                 </div>
+                                
                                 <div class="wrap-input100 validate-input" data-validate="Enter Email">
-                                    <input class="input100" type="text" name="email" placeholder="Email">
+                                    <input class="input100 form-control" type="text" name="email" placeholder="Email">
                                     <span class="focus-input100" data-placeholder="&#xe818;"></span>
                                 </div>
                                 <div class="wrap-input100 validate-input" data-validate="Enter First Name">
-                                    <input class="input100" type="text" name="firstname" placeholder="First Name">
+                                    <input class="input100 form-control" type="text" name="firstname" placeholder="First Name">
                                     <span class="focus-input100" data-placeholder="&#xe890;"></span>
                                 </div>
                                 <div class="wrap-input100 validate-input" data-validate="Enter Last Name">
-                                    <input class="input100" type="text" name="lastname" placeholder="Last Name">
+                                    <input class="input100 form-control" type="text" name="lastname" placeholder="Last Name">
                                     <span class="focus-input100" data-placeholder="&#xe892;"></span>
                                 </div>
                                 <div class="wrap-input100 validate-input" data-validate="Enter Gender">
-                                    <select class="input100" name="gridRadios" placeholder="Laki - Laki">
-                                    <option value="laki">Laki-Laki</option>
-                                    <option value="perempuan">Perempuan</option>
-                                    <option value="undefiend">Undefiend</option>
+                                    <select class="input100 form-control" name="gridRadios" placeholder="Laki - Laki">
+                                    <option value="laki">Male</option>
+                                    <option value="perempuan">Female</option>
+                                    <option value="undefiend">Rather Not Say</option>
                                     </select>
                                     <span class="focus-input100" data-placeholder="&#xe82b;"></span>
                                 </div>
@@ -205,6 +209,22 @@
                 );        
             }
         }
+        </script>
+        <script>
+            $(document).ready(function() {
+                $("#show_hide_password").on('click', function(event) {
+                    event.preventDefault();
+                    if($('#inputPass').attr("type") == "text"){
+                        $('#inputPass').attr('type', 'password');
+                        $('#show_hide_password i').addClass( "fa-eye-slash" );
+                        $('#show_hide_password i').removeClass( "fa-eye" );
+                    }else if($('#inputPass').attr("type") == "password"){
+                        $('#inputPass').attr('type', 'text');
+                        $('#show_hide_password i').removeClass( "fa-eye-slash" );
+                        $('#show_hide_password i').addClass( "fa-eye" );
+                    }
+                });
+            });
         </script>
     </body>
 </html>

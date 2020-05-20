@@ -1,3 +1,11 @@
+<?php
+include __DIR__."/system/load.php";
+
+if(isset($_SESSION['login'])){
+    header("location: index.php");
+    exit;
+}
+?>
 <!doctype html>
 <html>
     <head>
@@ -40,8 +48,8 @@
         <div class="limiter">
             <div class="container-login100" style="background-image: url('res/img/login/bg-06.jpg');">
                 <div class="wrap-login100 p-t-30 p-b-50">      
-                    <!-- <span class="login100-form-title p-b-41">
-                        Account Login
+                     <span class="login100-form-title p-b-41">
+                        Admin Login
                     </span> -->
                     <div class="card rounded">
                         <div class="text-center mt-5">
@@ -53,13 +61,16 @@
                             </div>                 
                             <form class="login100-form validate-form p-b-33 p-t-5" method="post">
                                 <div class="wrap-input100 validate-input" data-validate="Enter username">
-                                    <input class="input100" type="text" name="username" placeholder="Username">
+                                    <input class="form-control input100" type="text" name="username" placeholder="Username">
                                     <span class="focus-input100" data-placeholder="&#xe82a;"></span>
                                 </div>
 
-                                <div class="wrap-input100 validate-input" data-validate="Enter password">
-                                    <input class="input100" type="password" name="pass" placeholder="Password">
+                                <div class="wrap-input100 input-group validate-input" data-validate="Enter password">
+                                    <input class=" form-control input100" type="password" id="inputPass" name="pass" placeholder="Password">
                                     <span class="focus-input100" data-placeholder="&#xe80f;"></span>
+                                    <div class="input-group-append" id="show_hide_password">
+                                        <button class="btn btn-outline-secondary" type="button" id="btnHide"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                      </div>
                                 </div>
 
                                 <div class="container-login100-form-btn m-t-32 d-flex justify-content-around">
@@ -96,5 +107,21 @@
         <!--===============================================================================================-->
         <script src="js/login.js"></script>
         <script src="script/index.js"></script>
+        <script>
+            $(document).ready(function() {
+                $("#show_hide_password").on('click', function(event) {
+                    event.preventDefault();
+                    if($('#inputPass').attr("type") == "text"){
+                        $('#inputPass').attr('type', 'password');
+                        $('#show_hide_password i').addClass( "fa-eye-slash" );
+                        $('#show_hide_password i').removeClass( "fa-eye" );
+                    }else if($('#inputPass').attr("type") == "password"){
+                        $('#inputPass').attr('type', 'text');
+                        $('#show_hide_password i').removeClass( "fa-eye-slash" );
+                        $('#show_hide_password i').addClass( "fa-eye" );
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

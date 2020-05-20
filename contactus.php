@@ -208,11 +208,11 @@
                         data: $("#contact-form").serialize(),
                         success: function(res){
                             if(res.includes("Message has been sent!")){
-                                $("#alertContact").html('<div class="alert alert-success">Email Berhasil Dikirim!</div>');
+                                $("#alertContact").html('<div class="alert alert-success">Email Successfuly Sent!</div>');
                                 // showAlertModal('bg-success', '<i class="fas fa-check"></i>', '<h4>Yay!</h4><p>Email Berhasil Dikirim!</p>', 'Close', '');
                             }
                             else{
-                                $("#alertContact").html('<div class="alert alert-danger">Email Gagal Dikirim!</div>');
+                                $("#alertContact").html('<div class="alert alert-danger">Email Failed To Be Sent!</div>');
                                 // showAlertModal('bg-danger', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Ooops!</h4><p>Email Gagal Dikirim!</p>', 'Close', '');
                             }
                             $(':input','#contact-form')

@@ -102,12 +102,12 @@
                         <h1 class="text-center">Our History</h1>
                     </div>
                     <div class="col-1"></div>
-                    <div class="col-5 text-justify mb-3">
+                    <div class="col-xl-5 col-sm-12 text-justify mb-3">
                         <p style="text-indent: 2em;">
                         PT Squee Store Indonesia (SQS) with the SqueeStore brand, which is a subsidiary of PT Squee Company (SQC), is the first modern retail that gave birth to the concept of shopping for building materials and home appliances under one roof in Indonesia. At its inception, in 1997-1998, SqueeStore opened 10 supermarkets in the Greater Jakarta area. Furthermore, with aggressive business expansion, the total of SqueeStore stores has so far reached 34 stores, spread across Jabodetabek, Cibarusah Cikarang, Karawang, Cirebon, Yogyakarta, Solo, Sidoarjo, Surabaya, Bali, Lampung, Palembang, Medan, Batam, and Makassar. SqueeStore will also be present at a number of other strategic locations. The expansion of the business wing will continue with the target of reaching a total of 50 stores in the next two years in Indonesia.
                         </p>
                     </div>
-                    <div class="col-5 text-justify">
+                    <div class="col-xl-5 col-sm-12 text-justify">
                         <p style="text-indent: 2em;">
                         Wanting to take advantage of market opportunities in the digital era which is currently developing very rapidly, in 2016 SqueeStore started running an e-commerce business with the address of SqueeStore.com's store. For this online business, customers can not only order products through the website and then send it to their address (delivery home), but also provide their own pick-up service to the nearest store after ordering it online (click & collect). Through this online business, SqueeStore wants to reach wider customers and help them get goods in an easier and cheaper way.
                         </p>

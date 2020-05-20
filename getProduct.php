@@ -6,6 +6,12 @@
         $row_id_produk = $_POST['id'];
         $query = "SELECT * FROM PRODUK WHERE ROW_ID_PRODUK = {$row_id_produk}";
         $produk = getQueryResultRow($db, $query);
+        if($produk["LOKASI_FOTO_PRODUK"] == ''){
+            $produk["LOKASI_FOTO_PRODUK"] = "res/img/no-image.png";
+        }
+        else{
+            $produk["LOKASI_FOTO_PRODUK"] = "res/img/produk/" . $produk["LOKASI_FOTO_PRODUK"] . "?" . time();
+        }
         echo json_encode($produk);
     }
     

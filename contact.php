@@ -252,4 +252,4 @@ $body = "
 
 echo $body;
 
-sendEmail("squeesquee.store@gmail.com", $subject, $body);
+sendEmail("squeestore123@gmail.com", $subject, $body);

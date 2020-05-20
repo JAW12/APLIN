@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 19, 2020 at 09:22 PM
+-- Generation Time: May 20, 2020 at 12:59 AM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.12
 
@@ -93,9 +93,10 @@ INSERT INTO `CUSTOMER` (`ROW_ID_CUSTOMER`, `USERNAME`, `PASSWORD`, `EMAIL`, `NAM
 (14, 'juci', '$2y$10$PM3e9kxez/RiGHMgMIsZn.jKzUw63WYCi3TeFNSpTw/tGVqA1qzzK', 'juci@gmail.com', 'juci', 'tjipta', 'U'),
 (15, 'hamdani', '$2y$10$vh2giCeSaFCKroFiz3HUt.zBzcjkOFzq81.jIB/5b9ABSau.yjXoK', 'hamdani2@gmail.com', 'hamdani', 'evan', 'U'),
 (24, 'windakece', '$2y$10$9EyCyWw1SnZHa4WkjBTqfugr6Ns2/0ffKEipS0CdZglMEE.jshrxq', 'winda1@mhs.stts.edu', 'winda', 'kece', 'P'),
-(27, 'jem', '$2y$10$DgWR1wR6hDQFQIIt/e44ueEaYF99C/zeQVDmmJ4iqSN6zuguxPdVG', 'jem.angkasa91@gmail.com', 'jem', 'angkasa', 'L'),
+(27, 'jem', '$2y$10$DgWR1wR6hDQFQIIt/e44ueEaYF99C/zeQVDmmJ4iqSN6zuguxPdVG', 'jem@mhs.stts.edu', 'jem', 'angkasa', 'L'),
 (28, 'hendralw12', '$2y$10$Hy6U5TxJysqcHl03H5ZFwe1171q5okiGT2n4gN0K1KZuChFWdUd9O', 'hendralw3@gmail.com', 'Hendra Lingga', 'Wijaya', 'L'),
-(32, 'YAULLAH', '$2y$10$mnauX1wW3et8S8F74M.mIOilicERMu4LZWsPCCOA.gzT5W1mDB8ze', 'hongary.kevin@gmail.com', 'honga', 'sadasad', 'L');
+(32, 'YAULLAH', '$2y$10$mnauX1wW3et8S8F74M.mIOilicERMu4LZWsPCCOA.gzT5W1mDB8ze', 'hongary.kevin@gmail.com', 'honga', 'sadasad', 'L'),
+(33, 'jaw', '$2y$10$1ptyvPgkOIWbbXkUZoPLPeDCzjocB3PEbCXfJjZZzUHGQSOYKIh3.', 'jem.angkasa91@gmail.com', 'jem', 'angkasa', 'L');
 
 -- --------------------------------------------------------
 
@@ -183,7 +184,10 @@ INSERT INTO `DTRANS` (`ROW_ID_HTRANS`, `ROW_ID_PRODUK`, `QTY_PRODUK`, `HARGA_PRO
 (62, 7, 1, 259000, 259000),
 (63, 7, 10, 259000, 2590000),
 (63, 35, 20, 1500000, 30000000),
-(68, 7, 1, 259000, 259000);
+(68, 7, 1, 259000, 259000),
+(69, 35, 1, 1500000, 1500000),
+(71, 7, 11, 259000, 2849000),
+(71, 14, 4, 489000, 1956000);
 
 --
 -- Triggers `DTRANS`
@@ -288,7 +292,10 @@ INSERT INTO `HTRANS` (`ROW_ID_HTRANS`, `ROW_ID_CUSTOMER`, `TANGGAL_TRANS`, `NO_N
 (60, 1, '2020-05-20 02:24:27', '2020052000002', 259000, 0, ''),
 (62, 1, '2020-05-20 02:28:30', '2020052000003', 259000, 0, ''),
 (63, 1, '2020-05-20 02:29:57', '2020052000004', 32590000, 1, ''),
-(68, 1, '2020-05-20 04:19:52', '2020052000005', 259000, 0, '');
+(68, 1, '2020-05-20 04:19:52', '2020052000005', 259000, 0, ''),
+(69, 27, '2020-05-20 07:00:30', '2020052000006', 1500000, 1, ''),
+(70, 33, '2020-05-20 07:35:10', '2020052000007', 0, 0, ''),
+(71, 33, '2020-05-20 07:37:55', '2020052000008', 4805000, 0, '71.png');
 
 --
 -- Triggers `HTRANS`
@@ -401,7 +408,9 @@ INSERT INTO `KATEGORI_PRODUK` (`ROW_ID_PRODUK`, `ROW_ID_KATEGORI_PARENT`, `ROW_I
 (28, 21, 3),
 (29, 21, 3),
 (31, 21, 3),
-(35, 21, 3);
+(35, 21, 3),
+(38, 23, 6),
+(39, 23, 2);
 
 -- --------------------------------------------------------
 
@@ -446,7 +455,9 @@ INSERT INTO `PRODUK` (`ROW_ID_PRODUK`, `ID_PRODUK`, `NAMA_PRODUK`, `STATUS_AKTIF
 (29, 'KP003', 'Keramik Pokemon2', '1', 35000, '40 cm X 40 cm X 14 cm', '38 cm X 38 cm X 12 cm', '35 kg', 'PCS', 'fwergerger', 'KP003.png', 0),
 (30, 'KP004', 'Keramik Pokemon2', '1', 35000, '40 cm X 40 cm X 14 cm', '38 cm X 38 cm X 12 cm', '35 kg', 'PCS', 'fwergerger', NULL, 2),
 (31, 'KP005', 'Keramik Pokemon4', '0', 50000, '40 cm X 40 cm X 14 cm', '38 cm X 38 cm X 12 cm', '35 kg', 'PCS', 'tyjktyj', 'KP005.png', 20),
-(35, 'KT001', 'KERAMIK TANPA FOTO', '1', 1500000, '14cm X 12cm X 12cm', '14cm X 12cm X 12cm', '200 gr', 'BOX', 'ini keramik yang ga punya foto ', NULL, 80);
+(35, 'KT001', 'KERAMIK TANPA FOTO', '1', 1500000, '14cm X 12cm X 12cm', '14cm X 12cm X 12cm', '200 gr', 'BOX', 'ini keramik yang ga punya foto ', NULL, 79),
+(38, '019', 'LAMPU TAMAN', '1', 30000, '70 CM', '70 CM', '15 KG', 'UNIT', 'ini lampu taman', '019.png', 5),
+(39, 'AM001', 'AIR MANCUR', '1', 425000, '120 CM', '120 CM', '20 KG', 'UNIT', 'ini air mancur', 'AM001.png', 30);
 
 --
 -- Triggers `PRODUK`
@@ -541,7 +552,8 @@ INSERT INTO `VERIFIKASI_EMAIL` (`ROW_ID_VERIFIKASI`, `ROW_ID_CUSTOMER`, `KODE_VE
 (27, 24, '12344', '1', '2020-05-18 15:04:15', '2020-05-18 15:08:56'),
 (28, 27, '12344', '1', '2020-05-18 15:04:15', '2020-05-18 15:08:56'),
 (29, 28, '1234444', '1', '2020-05-18 15:04:15', '2020-05-18 15:08:56'),
-(30, 32, '12344', '1', '2020-05-18 15:04:15', '2020-05-18 15:08:56');
+(30, 32, '12344', '1', '2020-05-18 15:04:15', '2020-05-18 15:08:56'),
+(31, 33, '61586', '1', '2020-05-20 00:20:27', NULL);
 
 -- --------------------------------------------------------
 
@@ -575,7 +587,12 @@ INSERT INTO `WISHLIST` (`ROW_ID_CUSTOMER`, `ROW_ID_PRODUK`) VALUES
 (13, 6),
 (14, 13),
 (27, 5),
-(27, 6);
+(27, 6),
+(27, 35),
+(33, 3),
+(33, 7),
+(33, 13),
+(33, 27);
 
 --
 -- Indexes for dumped tables
@@ -663,13 +680,13 @@ ALTER TABLE `WISHLIST`
 -- AUTO_INCREMENT for table `CUSTOMER`
 --
 ALTER TABLE `CUSTOMER`
-  MODIFY `ROW_ID_CUSTOMER` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `ROW_ID_CUSTOMER` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `HTRANS`
 --
 ALTER TABLE `HTRANS`
-  MODIFY `ROW_ID_HTRANS` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `ROW_ID_HTRANS` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `KATEGORI`
@@ -681,7 +698,7 @@ ALTER TABLE `KATEGORI`
 -- AUTO_INCREMENT for table `PRODUK`
 --
 ALTER TABLE `PRODUK`
-  MODIFY `ROW_ID_PRODUK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `ROW_ID_PRODUK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `REVIEW_PRODUK`
@@ -693,7 +710,7 @@ ALTER TABLE `REVIEW_PRODUK`
 -- AUTO_INCREMENT for table `VERIFIKASI_EMAIL`
 --
 ALTER TABLE `VERIFIKASI_EMAIL`
-  MODIFY `ROW_ID_VERIFIKASI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `ROW_ID_VERIFIKASI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- Constraints for dumped tables

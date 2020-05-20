@@ -32,6 +32,7 @@
 
     function showReviewTable($db, $detailTrans){
         ?>
+        <div class="container table-responsive">
             <table class="table table-striped table-bordered border-dark mt-3">
                 <thead class="thead-dark text-center">
                     <th scope="col">#</th>
@@ -64,12 +65,18 @@
                                 $namaProduk = getQueryResultRowField($db, $query, "NAMA_PRODUK");
                                 $query = "SELECT LOKASI_FOTO_PRODUK FROM PRODUK WHERE ROW_ID_PRODUK = {$row_id_produk}";
                                 $fotoProduk = getQueryResultRowField($db, $query, "LOKASI_FOTO_PRODUK");
+                                if($fotoProduk == false){
+                                    $fotoProduk = "res/img/no-image.png";
+                                }
+                                else{
+                                    $fotoProduk = "res/img/produk/" . $fotoProduk . "?" . time();
+                                }
                                 $subtotal = $value['SUBTOTAL'];
                                 $grandTotal += $subtotal;
                                 ?>
                                     <tr>
                                         <th class="align-middle text-center"> <?= $ctrNum ?> </th>
-                                        <td class="text-center"> <img src="res/img/produk/<?= $fotoProduk ."?".time() ?>" style="width: 150px; height: 150px;"></img> </td>
+                                        <td class="text-center"> <img src="<?= $fotoProduk ?>" style="width: 150px; height: 150px;"></img> </td>
                                         <td class="align-middle"> <?= $namaProduk ?> </td>
                                         <td class="text-center align-middle"> <?= $value['QTY_PRODUK'] ?> </td>
                                         <td class="text-right align-middle"> <?= getSeparatorNumberFormatted($value['HARGA_PRODUK']) ?></td>
@@ -89,6 +96,7 @@
                     ?>                            
                 </tbody>
             </table>
+            </div>
         <?php
     }
 ?>
@@ -324,7 +332,7 @@
                             $("#reviewModal").modal();
                             $("#reviewModalTitle").text(produk["NAMA_PRODUK"]);
                             var isi = `<div class="text-center">
-                                <img style="width: 400px; height: 400px;" src="res/img/produk/` + produk["LOKASI_FOTO_PRODUK"] + `?` + <?= time(); ?> + `">
+                                <img style="width: 400px; height: 400px;" src="` + produk["LOKASI_FOTO_PRODUK"] + `">
                                 </div>`;
 
                             $.ajax({

@@ -25,7 +25,22 @@
 
 </style>
 <nav class="navbar navbar-expand-lg navbar-fixed-top fixed-top navbar-light bg-light">
-    <a class="navbar-brand js-scroll-trigger" href="index.php"><img src="res/img/logo.png" style="width: 100px;"></a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <a class="navbar-brand js-scroll-trigger" href="index.php"><img src="res/img/logo.png" style="width: 100px;">
+    <p class="d-inline ml-3">
+        <?php
+            if (isset($_SESSION['login'])){
+                if($_SESSION['login']['role'] == 1){
+                    echo "Hello " . ucwords($_SESSION['login']['firstname']) . ' ' . ucwords($_SESSION['login']['lastname']) . '!';   
+                }
+                else if($_SESSION['login']['role'] == 0){
+                    echo "Hello Admin!";
+                }
+            }
+        ?>
+    </p>
+    </a>
+    
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
     <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto my-2 my-lg-0 mr-4">

@@ -34,6 +34,8 @@ if(isset($_GET['customer'])){
             updateDataSession('login', array(
                 "row_id_customer" => $user["ROW_ID_CUSTOMER"],
                 "username" => $user['USERNAME'],
+                "firstname" => $user['NAMA_DEPAN_CUSTOMER'],
+                "lastname" => $user['NAMA_BELAKANG_CUSTOMER'],
                 "password" => hashPassword($p, false), // true => hash, false => gapake
                 "role" => 1
             ));
@@ -46,7 +48,7 @@ if(isset($_GET['customer'])){
         }
     }
     else{
-        // header("location: login.php?error=notfound");
+        header("location: login.php?error=notfound");
         exit;
     }
 }
