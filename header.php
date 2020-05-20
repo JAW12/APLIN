@@ -30,7 +30,7 @@
         <?php
             if (isset($_SESSION['login'])){
                 if($_SESSION['login']['role'] == 1){
-                    echo "Hello " . ucwords($_SESSION['login']['firstname']) . ' ' . ucwords($_SESSION['login']['lastname']) . '!';   
+                    echo "Hello " . ucwords(strtolower($_SESSION['login']['firstname']) . ' ' . strtolower($_SESSION['login']['lastname'])) . '!';   
                 }
                 else if($_SESSION['login']['role'] == 0){
                     echo "Hello Admin!";

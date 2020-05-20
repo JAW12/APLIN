@@ -17,41 +17,61 @@
         unset($_SESSION['regisdtrans'][$_POST['idProduk']]);
     }
     else if(isset($_POST['grand'])){
-        try {
-            $db->beginTransaction();
-            $query = "INSERT INTO HTRANS VALUES(0,:idCust,:tanggal, '', 0, :status, '')";
-            $stmt = $db->prepare($query);
-            $stmt->bindValue(":idCust", $_POST['idCust'], PDO::PARAM_INT);
-            date_default_timezone_set('asia/jakarta');
-            $stmt->bindValue(":tanggal",date('Y-m-d H:i:s'), PDO::PARAM_STR);
-            $stmt->bindValue(":status", 0, PDO::PARAM_INT);
-            $result = $stmt->execute();
-            if($result){
-                $rowIdHtrans = $db->lastInsertId();
-                foreach ($registerdtrans as $key => $value) {
-                    $query = "INSERT INTO DTRANS VALUES(:htrans, :idProduk, :qty, 0, 0)";
-                    $stmt = $db->prepare($query);
-                    $stmt->bindValue(":htrans", $rowIdHtrans, PDO::PARAM_INT);
-                    $stmt->bindValue(":idProduk", $value['id'], PDO::PARAM_INT);
-                    $stmt->bindValue(":qty", $value['qty'], PDO::PARAM_INT);
-                    $result = $stmt->execute();
+        if(isset($_SESSION['regisdtrans']) && !empty($_SESSION['regisdtrans'])){
+            $aktif = true;
+            foreach ($registerdtrans as $key => $value) {
+                if(intval($value['status']) == 0){
+                    $aktif = false;
                 }
-                unset($_SESSION['regisdtrans']);
             }
-            showInfoDiv("Purchase Confirmed");
-            try {
-                $query = "DELETE FROM CART WHERE ROW_ID_CUSTOMER = :idCust";
+            if($aktif == true){
+                try {
+                $db->beginTransaction();
+                $query = "INSERT INTO HTRANS VALUES(0,:idCust,:tanggal, '', 0, :status, '')";
                 $stmt = $db->prepare($query);
                 $stmt->bindValue(":idCust", $_POST['idCust'], PDO::PARAM_INT);
+                date_default_timezone_set('asia/jakarta');
+                $stmt->bindValue(":tanggal",date('Y-m-d H:i:s'), PDO::PARAM_STR);
+                $stmt->bindValue(":status", 0, PDO::PARAM_INT);
                 $result = $stmt->execute();
-            } catch (Exception $e) {
-                echo $e->getMessage();
+                if($result){
+                    $rowIdHtrans = $db->lastInsertId();
+                    foreach ($registerdtrans as $key => $value) {
+                        // if(intval($value['status']) == 1){
+                            $query = "INSERT INTO DTRANS VALUES(:htrans, :idProduk, :qty, 0, 0)";
+                            $stmt = $db->prepare($query);
+                            $stmt->bindValue(":htrans", $rowIdHtrans, PDO::PARAM_INT);
+                            $stmt->bindValue(":idProduk", $value['id'], PDO::PARAM_INT);
+                            $stmt->bindValue(":qty", $value['qty'], PDO::PARAM_INT);
+                            $result = $stmt->execute();
+                        // }
+                    }
+                    unset($_SESSION['regisdtrans']);
+                }
+                showInfoDiv("Purchase Confirmed");
+                try {
+                    $query = "DELETE FROM CART WHERE ROW_ID_CUSTOMER = :idCust";
+                    $stmt = $db->prepare($query);
+                    $stmt->bindValue(":idCust", $_POST['idCust'], PDO::PARAM_INT);
+                    $result = $stmt->execute();
+                } catch (Exception $e) {
+                    echo $e->getMessage();
+                }
+                $db->commit();
+                } catch (Exception $e) {
+                    echo $e->getMessage();
+                }
+                $_SESSION['regisdtrans'] = [];
             }
-            $db->commit();
-        } catch (Exception $e) {
-            echo $e->getMessage();
+            else{
+                showAlertDiv('Inactive Products Found!');
+            }
+            
         }
-        $_SESSION['regisdtrans'] = [];
+        else{
+            showAlertDiv('Your cart is empty');
+        }
+        
     }
     else if(isset($_POST['load'])){
         ?>
@@ -92,50 +112,53 @@
                             $ctrNum++;
                             $query = "SELECT * FROM PRODUK WHERE ROW_ID_PRODUK = $value[ROW_ID_PRODUK]";
                             $itemData = getQueryResultRow($db, $query);
-                            if($itemData['STATUS_AKTIF_PRODUK'] == 1){
-                                $fotoItem = "res/img/no-image.png";
-                                if (!empty($itemData['LOKASI_FOTO_PRODUK'])) {
-                                    $fotoItem="res/img/produk/".$itemData['LOKASI_FOTO_PRODUK']."?".time();
-                                }
-                                $namaItem=$itemData['NAMA_PRODUK'];
-                                $hargaItem = intval($itemData['HARGA_PRODUK']);
-                                $jumlahItem = intval($value['QTY']);
-                                $subtotalItem=intval($itemData['HARGA_PRODUK'])*intval($value['QTY']);
-                                $registerdtransbaru = array(
-                                    "id" => $itemData['ROW_ID_PRODUK'],
-                                    "harga" => $itemData['HARGA_PRODUK'],
-                                    "qty" => $value['QTY'],
-                                    "subtotal" => $hargaItem
-                                );
-                                $registerdtrans[$itemData['ROW_ID_PRODUK']] = $registerdtransbaru;
-                                $_SESSION['regisdtrans'] = $registerdtrans;   
+                            $fotoItem = "res/img/no-image.png";
+                            if (!empty($itemData['LOKASI_FOTO_PRODUK'])) {
+                                $fotoItem="res/img/produk/".$itemData['LOKASI_FOTO_PRODUK']."?".time();
                             }
-                            if($itemData['STATUS_AKTIF_PRODUK'] == "1"){
-                                echo "<tr>";
-                                echo "<td>$ctrNum</td>";
-                                ?>
-                                <td><div class="text-center"><img src="<?= $fotoItem?>" width="100px" height="100px"/></div></td>
-                                <?php
-                                echo "<td>$namaItem</td>";
-                                ?>
-                                <td style="text-align: right"><?= number_format($hargaItem, 0, ',', '.')?></td>
-                                <td style="text-align: right"><?= $jumlahItem ?></td>
-                                <td style="text-align: right"><?= number_format($subtotalItem, 0, ',', '.')?></td>
-                                <?php
-                                ?>
-                                <td style="text-align: center;">
-                                    <form method="POST" class="delItem">
-                                        <input type="hidden" name="idProduk" value="<?=$itemData['ROW_ID_PRODUK']?>"/>
-                                        <input type="hidden" name="delete" value="a"/>
-                                        <input type="hidden" name="idCust" value="<?=$idCustomer?>">
-                                        <button type="button" class="btn btn-danger btn-delete" name="btnDelete">Delete Item</button>
-                                    </form>
-                                </td>
-                                
-                                <?php
-                                $grandTotal = $grandTotal + $subtotalItem;
-                                echo "</tr>";
-                            }
+                            $namaItem=$itemData['NAMA_PRODUK'];
+                            $hargaItem = intval($itemData['HARGA_PRODUK']);
+                            $jumlahItem = intval($value['QTY']);
+                            $subtotalItem=intval($itemData['HARGA_PRODUK'])*intval($value['QTY']);
+                            $registerdtransbaru = array(
+                                "id" => $itemData['ROW_ID_PRODUK'],
+                                "harga" => $itemData['HARGA_PRODUK'],
+                                "qty" => $value['QTY'],
+                                "subtotal" => $hargaItem,
+                                "status" => $itemData['STATUS_AKTIF_PRODUK']
+                            );
+                            $registerdtrans[$itemData['ROW_ID_PRODUK']] = $registerdtransbaru;
+                            $_SESSION['regisdtrans'] = $registerdtrans;   
+                            echo "<tr>";
+                            echo "<td>$ctrNum</td>";
+                            ?>
+                            <td><div class="text-center"><img src="<?= $fotoItem?>" class="<?= (intval($itemData['STATUS_AKTIF_PRODUK']) == 0) ? 'grayscale' : '';?>" width="100px" height="100px"/></div>
+                            <?php
+                              if(intval($itemData['STATUS_AKTIF_PRODUK']) == 0){
+                                  echo "<p class='font-weight-bold text-danger text-right'>Inactive</p>";
+                              }  
+                            ?>
+                            </td>
+                            <?php
+                            echo "<td>$namaItem</td>";
+                            ?>
+                            <td style="text-align: right"><?= number_format($hargaItem, 0, ',', '.')?></td>
+                            <td style="text-align: right"><?= $jumlahItem ?></td>
+                            <td style="text-align: right"><?= number_format($subtotalItem, 0, ',', '.')?></td>
+                            <?php
+                            ?>
+                            <td style="text-align: center;">
+                                <form method="POST" class="delItem">
+                                    <input type="hidden" name="idProduk" value="<?=$itemData['ROW_ID_PRODUK']?>"/>
+                                    <input type="hidden" name="delete" value="a"/>
+                                    <input type="hidden" name="idCust" value="<?=$idCustomer?>">
+                                    <button type="button" class="btn btn-danger btn-delete" name="btnDelete">Delete Item</button>
+                                </form>
+                            </td>
+                            
+                            <?php
+                            $grandTotal = $grandTotal + $subtotalItem;
+                            echo "</tr>";
                             ?>
                             <?php
                         }

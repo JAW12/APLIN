@@ -21,23 +21,7 @@ if(isset($_SESSION['login'])){
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- CSS Library Import -->
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
-        <link rel="stylesheet" type="text/css" href="css/datatables.css"/>
-        <link href="css/all.css" rel="stylesheet">
-        <link rel="icon" type="image/png" href="res/img/goblin.png" />    
-
-        <!-- JS Library Import -->
-        <script src="js/jquery-3.4.1.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/jQueryUI.js"></script>
-        <script type="text/javascript" src="js/datatables.js"></script>
-        <script src="script/index.js"></script>
-
-        <!-- CSS Sendiri -->
-        <link href="style/index.css" rel="stylesheet">
-        
+        <?php include "head.php"; ?>
         <title>Product Detail</title>
     </head>
     <body id="page-top">
@@ -225,7 +209,7 @@ if(isset($_SESSION['login'])){
                     //     }
                     // }
                     // $query = "SELECT * FROM PRODUK WHERE 1=2";
-                    $query = "SELECT * FROM PRODUK P, KATEGORI_PRODUK KP WHERE P.ROW_ID_PRODUK = KP.ROW_ID_PRODUK AND KP.ROW_ID_KATEGORI_PARENT = {$kategoriParent} AND KP.ROW_ID_KATEGORI_CHILD = {$kategoriChild} AND STATUS_AKTIF_PRODUK = 1 ORDER BY P.NAMA_PRODUK ASC LIMIT 5";
+                    $query = "SELECT * FROM PRODUK P, KATEGORI_PRODUK KP WHERE P.ROW_ID_PRODUK = KP.ROW_ID_PRODUK AND P.ROW_ID_PRODUK != {$idProduk} AND KP.ROW_ID_KATEGORI_PARENT = {$kategoriParent} AND KP.ROW_ID_KATEGORI_CHILD = {$kategoriChild} AND STATUS_AKTIF_PRODUK = 1 ORDER BY P.NAMA_PRODUK ASC LIMIT 5";
                     $produk = getQueryResultRowArrays($db, $query);
                     $ctr = count($produk);
                     if($ctr!="" && $ctr>0){
@@ -270,7 +254,7 @@ if(isset($_SESSION['login'])){
         <div id="alert"></div>
         <!-- Footer Section -->
         <?php include("footer.php"); ?>
-
+        <?php include "script.php"; ?>
         <script>
 
             $("#addCart").submit(function(e){

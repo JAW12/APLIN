@@ -7,25 +7,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- CSS Library Import -->
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
-        <link rel="stylesheet" type="text/css" href="css/datatables.css"/>
-        <link href="css/all.css" rel="stylesheet">
-        <link rel="icon" type="image/png" href="res/img/goblin.png" />    
-         
-
-        <!-- JS Library Import -->
-        <script src="js/jquery-3.4.1.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/jQueryUI.js"></script>
-        <script type="text/javascript" src="js/datatables.js"></script>
-        <script src="script/index.js"></script>
-
-        <!-- CSS Sendiri -->
-        <link href="style/index.css" rel="stylesheet">
-
-        <!-- JS Sendiri -->
+        <?php include "head.php"; ?>
         <title>Home</title>
         <style>
         .col-md-6:hover{
@@ -74,6 +56,7 @@
                 //showAlertModal('bg-danger', '<i class="fas fa-exclamation-triangle"></i>', '<h4>Ooops!</h4><p>Error deh!</p>', 'Close', '');
             ?>
         </main>
+        <?php include "script.php"; ?>
         <!-- Footer Section -->
         <?php include("footer.php"); ?>
     </body>

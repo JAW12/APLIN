@@ -1,15 +1,18 @@
 <?php
     include __DIR__."/system/load.php";
      /** @var PDO $db Prepared Statement */
-
+    
     $login = getDataLogin();
 
-    $jenisUser = "";
+    $jenisUser = "customer";
     if (isset($login) && is_array($login)) {
-        $jenisUser = "admin";
+        $jenisUser = "customer";
         $rowIdUserAktif = -1;
         if ($login['role'] == 1) {
             $jenisUser = "customer";
+        }
+        else if ($login['role'] == 0) {
+            $jenisUser = "admin";
         }
         
         if ($jenisUser == "customer") {
@@ -17,7 +20,7 @@
             $rowIdUserAktif = $dataCustomer['ROW_ID_CUSTOMER'];
         }
     }
-
+    
     function getParentCategories($db){
         $query = "SELECT * FROM KATEGORI WHERE STATUS_AKTIF_KATEGORI = 1 AND STATUS_PARENT = 1";
         $dataCategory = getQueryResultRowArrays($db, $query);
@@ -74,16 +77,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-        <!-- CSS Library Import -->
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
-        <link rel="stylesheet" type="text/css" href="css/datatables.css"/>
-        <link href="css/all.css" rel="stylesheet">
-        <link rel="icon" type="image/png" href="res/img/goblin.png" />    
-
-        <!-- CSS Sendiri -->
-        <link href="style/index.css" rel="stylesheet">
+        
+        <?php include "head.php"; ?>
         <style>
             .hover-shadow{
                 box-shadow: 0px 0px 0px white;
@@ -179,8 +174,8 @@
                                     </div>
                                                                         
                                     <div class="container-filter">
-                                        <input type="number" class="form-control form-control-sm ml-2 my-2" placeholder="Minimum Price" name="min" value="<?= $min ?>">
-                                        <input type="number" class="form-control form-control-sm ml-2 my-2" placeholder="Maximum Price" name="max" value="<?= $max ?>">
+                                        <input type="number" class="form-control form-control-sm ml-2 my-2" placeholder="Minimum Price" min="0" name="min" value="<?= $min ?>">
+                                        <input type="number" class="form-control form-control-sm ml-2 my-2" placeholder="Maximum Price" min="0" name="max" value="<?= $max ?>">
                                     </div>
                                 </div>
                                 <hr class="<?= $class_hr ?>">
@@ -225,13 +220,7 @@
         <div id="alert"></div>
         <!-- Footer Section -->
         <?php include ("footer.php"); ?>
-
-        <!-- JS Library Import -->
-        <script src="js/jquery-3.4.1.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/jQueryUI.js"></script>
-        <script type="text/javascript" src="js/datatables.js"></script>
-        <script src="script/index.js"></script>
+        <?php include "script.php"; ?>
         <script>
             function loadProductList(){
                 $.ajax({

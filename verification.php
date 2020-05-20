@@ -11,14 +11,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-        <!-- CSS Library Import -->
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
-        <link rel="stylesheet" type="text/css" href="css/datatables.css"/>
-        <link href="css/all.css" rel="stylesheet">
-        <link rel="icon" type="image/png" href="res/img/goblin.png" /> 
-
+    
+        <?php include "head.php"; ?>
         <!-- CSS template login -->
         <!--===============================================================================================-->        
         <link rel="icon" type="image/png" href="res/img/goblin.png" />     
@@ -76,7 +70,7 @@
                                 <?php
                                 if($gagal != "") {
                                     echo "<div class='validate-input' style='color:red;'>";
-                                        echo "<center><span class='text-secondary mt-2'>Your Code is wrong</span></center>"; 
+                                        echo "<center><span class='text-danger mt-2'>Your code is wrong</span></center>"; 
                                     echo "</div>"; 
                                 }
                                 ?>
@@ -136,12 +130,7 @@
                 }
             }
         </script>
-
-        <!-- JS Library Import -->
-        <script src="js/jquery-3.4.1.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/jQueryUI.js"></script>
-        <script type="text/javascript" src="js/datatables.js"></script>
+        <?php include "script.php"; ?>
 
         <!-- JS template login -->
         <!--===============================================================================================-->
