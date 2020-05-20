@@ -191,7 +191,7 @@
                                                 Rp. <?= getSeparatorNumberFormatted($value['HARGA_PRODUK']) ?>
                                             </p><br/>
                                             <p>
-                                                <button class="btn btn-link text-left text-dark text-decoration-none" style="width : 230px;height:100px;" name="lihatDetail">
+                                                <button class="btn btn-link text-left text-dark text-decoration-none" style="width : 230px;height:100px;" name="lihatDetail" formaction="product-detail.php">
                                                     <?= strtoupper($value['NAMA_PRODUK']) ?>
                                                 </button>                                                 
                                             </p>
