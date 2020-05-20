@@ -3,12 +3,15 @@
      /** @var PDO $db Prepared Statement */
     $login = getDataLogin();
 
-    $jenisUser = "";
+    $jenisUser = "customer";
     if (isset($login) && is_array($login)) {
-        $jenisUser = "admin";
+        $jenisUser = "customer";
         $rowIdUserAktif = -1;
         if ($login['role'] == 1) {
             $jenisUser = "customer";
+        }
+        else if ($login['role'] == 0) {
+            $jenisUser = "admin";
         }
         
         if ($jenisUser == "customer") {
@@ -98,11 +101,6 @@
         $queryParent = $query . $condition . $conditionCatParent; 
         $queryChildren = $query . $condition . $conditionCatChildren;
 
-        // echo $queryParent . "<br/>";
-        // echo $queryChildren . "<br/>";
-        // echo "<pre>". print_r($tmpFilterCategory)."</pre><br/>";
-        // echo "<br/";
-
         $listProduk = array();
         try {
              /** @var PDO $db Prepared Statement */
@@ -121,17 +119,8 @@
                     $resCatChildren = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 }
                 $hasilMerge = array_merge($resCatParent,$resCatChildren);
-                // echo "hasil merge";
-                // echo "<pre>";
-                // echo print_r($resCatParent);
-                // echo print_r($resCatChildren);
-                // echo "<pre/>";
-                // echo "<br/>";
+                
                 $listProduk = array_unique($hasilMerge, SORT_REGULAR);
-                // $listProduk = array_merge($resCatParent,$resCatChildren);
-                // $listProduk = array_map("unserialize", array_unique(array_map("serialize", $hasilMerge)));
-                // $listProduk = array_intersect_key($hasilMerge, array_unique(array_map('serialize' , $hasilMerge)));
-                // $listProduk = array_map("unserialize", array_unique(array_map("serialize", $hasilMerge)));
                 
             }
             else{

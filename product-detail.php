@@ -225,7 +225,7 @@ if(isset($_SESSION['login'])){
                     //     }
                     // }
                     // $query = "SELECT * FROM PRODUK WHERE 1=2";
-                    $query = "SELECT * FROM PRODUK P, KATEGORI_PRODUK KP WHERE P.ROW_ID_PRODUK = KP.ROW_ID_PRODUK AND KP.ROW_ID_KATEGORI_PARENT = {$kategoriParent} AND KP.ROW_ID_KATEGORI_CHILD = {$kategoriChild} AND STATUS_AKTIF_PRODUK = 1 ORDER BY P.NAMA_PRODUK ASC LIMIT 5";
+                    $query = "SELECT * FROM PRODUK P, KATEGORI_PRODUK KP WHERE P.ROW_ID_PRODUK = KP.ROW_ID_PRODUK AND P.ROW_ID_PRODUK != {$idProduk} AND KP.ROW_ID_KATEGORI_PARENT = {$kategoriParent} AND KP.ROW_ID_KATEGORI_CHILD = {$kategoriChild} AND STATUS_AKTIF_PRODUK = 1 ORDER BY P.NAMA_PRODUK ASC LIMIT 5";
                     $produk = getQueryResultRowArrays($db, $query);
                     $ctr = count($produk);
                     if($ctr!="" && $ctr>0){

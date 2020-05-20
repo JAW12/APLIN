@@ -1,15 +1,18 @@
 <?php
     include __DIR__."/system/load.php";
      /** @var PDO $db Prepared Statement */
-
+    
     $login = getDataLogin();
 
-    $jenisUser = "";
+    $jenisUser = "customer";
     if (isset($login) && is_array($login)) {
-        $jenisUser = "admin";
+        $jenisUser = "customer";
         $rowIdUserAktif = -1;
         if ($login['role'] == 1) {
             $jenisUser = "customer";
+        }
+        else if ($login['role'] == 0) {
+            $jenisUser = "admin";
         }
         
         if ($jenisUser == "customer") {
@@ -17,7 +20,7 @@
             $rowIdUserAktif = $dataCustomer['ROW_ID_CUSTOMER'];
         }
     }
-
+    
     function getParentCategories($db){
         $query = "SELECT * FROM KATEGORI WHERE STATUS_AKTIF_KATEGORI = 1 AND STATUS_PARENT = 1";
         $dataCategory = getQueryResultRowArrays($db, $query);
