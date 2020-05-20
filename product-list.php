@@ -174,8 +174,8 @@
                                     </div>
                                                                         
                                     <div class="container-filter">
-                                        <input type="number" class="form-control form-control-sm ml-2 my-2" placeholder="Minimum Price" name="min" value="<?= $min ?>">
-                                        <input type="number" class="form-control form-control-sm ml-2 my-2" placeholder="Maximum Price" name="max" value="<?= $max ?>">
+                                        <input type="number" class="form-control form-control-sm ml-2 my-2" placeholder="Minimum Price" min="0" name="min" value="<?= $min ?>">
+                                        <input type="number" class="form-control form-control-sm ml-2 my-2" placeholder="Maximum Price" min="0" name="max" value="<?= $max ?>">
                                     </div>
                                 </div>
                                 <hr class="<?= $class_hr ?>">
